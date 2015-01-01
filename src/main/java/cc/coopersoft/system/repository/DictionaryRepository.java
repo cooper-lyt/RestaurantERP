@@ -25,4 +25,8 @@ public interface DictionaryRepository extends EntityRepository<Dictionary,String
 
     @Query("select dic from Dictionary dic where dic.category.id =?1 and dic.enable = true order by dic.pri")
     List<Dictionary> getValidDictionaries(String categoryId);
+
+
+    @Query("select dic from Dictionary dic left join fetch dic.category where dic.id=?1")
+    Dictionary getDictionary(String dictionaryId);
 }

@@ -3,7 +3,7 @@ package cc.coopersoft.restaurant.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Date;
+import java.util.*;
 
 /**
  * Created by cooper on 6/10/16.
@@ -36,6 +36,8 @@ public class Office implements java.io.Serializable {
     private Date botime;
     private OfficeStatus status;
     private Type type;
+
+    private Set<Employee> employees = new HashSet<Employee>(0);
 
     public Office() {
     }
@@ -103,6 +105,22 @@ public class Office implements java.io.Serializable {
 
     public void setType(Type type) {
         this.type = type;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "office")
+    public Set<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(Set<Employee> employees) {
+        this.employees = employees;
+    }
+
+    @Transient
+    public List<Employee> getEmployeeList(){
+        List<Employee> result = new ArrayList<Employee>(getEmployees());
+        Collections.sort(result);
+        return result;
     }
 
     @Override

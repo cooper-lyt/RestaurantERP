@@ -10,7 +10,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "EMPLOYEE",catalog = "RESTAURANT")
-public class Employee implements java.io.Serializable{
+public class Employee implements java.io.Serializable , Comparable<Employee>{
 
     public enum Status{
         NORMAL,LEAVE
@@ -22,7 +22,6 @@ public class Employee implements java.io.Serializable{
     private String level;
     private String phone;
     private Status status;
-    private Date moneyBeginDay;
     private Date joinDate;
     private String workCode;
 
@@ -132,5 +131,9 @@ public class Employee implements java.io.Serializable{
 
     public void setWorkCode(String workCode) {
         this.workCode = workCode;
+    }
+
+    public int compareTo(Employee o) {
+        return getJoinDate().compareTo(o.getJoinDate());
     }
 }

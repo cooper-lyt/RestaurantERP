@@ -4,33 +4,229 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:b="http://bootsfaces.net/ui"
-                xmlns:ng="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:o="http://omnifaces.org/ui">
 
     <ui:define name="custom-header">
+
+        <h:outputStylesheet library="bootstrap-select" name="css/bootstrap-select.min.css"/>
+        <h:outputStylesheet library="bootstrap-select" name="css/bootstrap-select-plug.css"/>
+        <h:outputScript library="bootstrap-select" name="js/bootstrap-select.min.js"/>
+
+        <h:outputScript library="floatThead" name="jquery.floatThead.min.js"/>
+        <h:outputScript>
+
+
+
+
+        </h:outputScript>
+
         <f:metadata>
-            <o:viewParam name="dictionaryCategoryId" value="#{dictionaryCategoryHome.id}"/>
-            <o:viewParam name="dictionaryId" value="#{dictionaryHome.id}"/>
+            <o:viewParam name="officeId" value="#{officeHome.id}"/>
+            <o:viewParam name="employeeId" value="#{employeeHome.id}"/>
         </f:metadata>
     </ui:define>
 
+    <o:form id="jobChange" includeViewParams="true">
+        <b:modal id="jobChangeModal" title="#{employeeHome.instance.name}(#{employeeHome.id})" styleClass="jobChangeModal">
+
+         <p:outputPanel id="jobChangeInputs">
+            <b:messages/>
+
+
+             <div class="form-group">
+             <h:outputLabel for="office" value="工作地点" styleClass="bf-required"/>
+            <h:selectOneMenu id="office" required="true" value="#{employeeHome.instance.office}"
+                             pt:data-live-search="true"
+                             pt:data-header="请选择工作地点"
+                             pt:data-size="auto" converter="erpEntityConvert"
+                             styleClass="js-selectpicker form-control edit-select select-theme"  >
+                <f:selectItems value="#{officeList}" pt:data-tokens="#{_office.name}" var="_office" itemLabel="#{_office.name}" itemValue="#{_office}"/>
+            </h:selectOneMenu>
+             </div>
+
+            <b:selectOneMenu value="#{employeeHome.instance.jobs}" label="岗位" renderLabel="true" required="true">
+                <f:selectItems value="#{dictionaryProducer.getDictionaries('hr.job')}" var="_job"
+                               itemValue="#{_job.id}" itemLabel="#{_job.name}"/>
+            </b:selectOneMenu>
+
+            <b:selectOneMenu value="#{employeeHome.instance.level}" label="级别" renderLabel="true" required="true">
+                <f:selectItems value="#{dictionaryProducer.getDictionaries('hr.level')}" var="_level"
+                               itemValue="#{_level.id}" itemLabel="#{_level.name}"/>
+            </b:selectOneMenu>
+
+            <b:inputText label="工作编号" renderLabel="true" value="#{employeeHome.instance.workCode}"/>
+
+
+            <b:fetchBeanInfos />
+            <h:outputScript>
+                var noFailedMessages = #{facesContext.maximumSeverity==null || facesContext.maximumSeverity.ordinal lt 2};
+            </h:outputScript>
+
+         </p:outputPanel>
+            <f:facet name="footer">
+                <b:button value="取消" dismiss="modal"  onclick="return false;"/>
+
+
+                <b:commandButton ajax="true" value="确定"
+                                 oncomplete="if(!validationFailed &amp;&amp; noFailedMessages) $('.jobChangeModal').modal('hide');"
+                                 action="#{employeeHome.saveOrUpdate}" look="success" update="jobChangeInputs,employees">
+                </b:commandButton>
+            </f:facet>
+
+        </b:modal>
+        <h:outputScript>
+            $('.js-selectpicker').selectpicker();
+        </h:outputScript>
+    </o:form>
+
+    <o:form id="edit" includeViewParams="true">
+    <b:modal id="editModal" title="#{employeeHome.id}" styleClass="editModal"  >
+        <p:outputPanel id="editInputs" >
+
+            <b:messages/>
+
+            <b:inputText value="#{employeeHome.instance.name}" label="姓名" required="true" renderLabel="true"/>
+
+            <b:inputText value="#{employeeHome.instance.phone}" label="联系电话" renderLabel="true"/>
+
+
+            <b:fetchBeanInfos />
+            <h:outputScript>
+                var noFailedMessages = #{facesContext.maximumSeverity==null || facesContext.maximumSeverity.ordinal lt 2};
+            </h:outputScript>
+
+
+        </p:outputPanel>
+
+        <f:facet name="footer">
+            <b:button value="取消" dismiss="modal"  onclick="return false;"/>
+
+
+            <b:commandButton ajax="true" value="确定"
+                             oncomplete="if(!validationFailed &amp;&amp; noFailedMessages) $('.editModal').modal('hide');"
+                             action="#{employeeHome.saveOrUpdate}" look="success" update="editInputs,employees">
+            </b:commandButton>
+        </f:facet>
+
+    </b:modal>
+    </o:form>
 
     <b:row style="margin-top: 20px;">
         <b:column colMd="3">
+
             <o:form id="offices" includeViewParams="true">
+                <ui:remove>
                <b:tree value="#{officeTree}" renderRoot="false" showCheckbox="false" showTags="true"
                        enableLinks="false" nodeSelectionListener="#{employeeList}"
                        showBorder="true"/>
+
+                </ui:remove>
+
+                <nav class="menu">
+
+                    <ui:repeat value="#{officeList}" var="_office">
+                        <p:commandLink ajax="true" immediate="true" styleClass="menu-item #{officeHome.id eq _office.id ? 'selected' : ''}"
+                                       update="offices,employees" process="@this"
+                                       value="#{_office.name}">
+                            <f:setPropertyActionListener value="#{_office.id}" target="#{officeHome.id}"/>
+                        </p:commandLink>
+                    </ui:repeat>
+
+                </nav>
             </o:form>
 
         </b:column>
 
         <b:column colMd="9">
+            <o:form id="employees" includeViewParams="true">
+            <h:dataTable value="#{employeeList.employeeList}"
+                         styleClass="table table-striped table-hover table-floatThead"
+                         columnClasses="width-20percent,width-35percent,width-15percent,width-15percent,width-15percent,width-min"
+                         var="_emp" rendered="#{officeHome.idDefined and (not empty employeeList.employeeList)}">
 
+                <h:column>
+                    <f:facet name="header">
+                        员工编号
+                    </f:facet>
+                    #{_emp.data.id}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">
+                        员工姓名
+                    </f:facet>
+                    #{_emp.data.name}
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">
+                        岗位
+                    </f:facet>
+
+                    <h:outputText style="white-space:nowrap;" value="#{dictionaryProducer.getDictionaryValue(_emp.data.jobs)}"/>
+
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        级别
+                    </f:facet>
+
+                    <h:outputText style="white-space:nowrap;" value="#{dictionaryProducer.getDictionaryValue(_emp.data.level)}"/>
+
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        状态
+                    </f:facet>
+                    <h:outputText style="white-space:nowrap;" value="#{enumHelper.getLabel(_emp.data.status)}"/>
+
+                </h:column>
+
+                <h:column>
+                    <div class="list-actions right" style="width: 110px">
+
+
+                        <b:commandButton styleClass="list-action" tooltip="编辑" immediate="true"
+                                         process="@this" ajax="true" icon="pencil" look="link"
+                                         oncomplete="$('.editModal').modal();" update="edit">
+                            <f:setPropertyActionListener value="#{_emp.data.id}" target="#{employeeHome.id}"/>
+                        </b:commandButton>
+
+                        <b:commandButton styleClass="list-action" tooltip="工作调动" immediate="true"
+                                         process="@this" ajax="true" icon="pencil" look="link"
+                                         oncomplete="$('.jobChangeModal').modal();" update="jobChange">
+                            <f:setPropertyActionListener value="#{_emp.data.id}" target="#{employeeHome.id}"/>
+                        </b:commandButton>
+
+
+                        <b:commandButton styleClass="list-action" tooltip="查看" immediate="true"
+                                         icon="pencil" look="link" action="/erp/hr/employeeInfo.xhtml">
+                            <f:setPropertyActionListener value="#{_emp.data.id}" target="#{employeeHome.id}"/>
+                        </b:commandButton>
+                    </div>
+
+
+                </h:column>
+
+            </h:dataTable>
+
+                <h:outputScript>
+                    $(function(){
+                    $(".table.table-floatThead").floatThead({
+                    top:50,
+                    responsiveContainer: function($table){
+                    return $table.closest(".table-responsive");
+                    }
+                    });
+                    });
+                </h:outputScript>
+            </o:form>
         </b:column>
 
     </b:row>
+
 
 
 </ui:composition>

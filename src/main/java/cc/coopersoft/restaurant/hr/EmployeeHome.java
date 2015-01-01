@@ -7,7 +7,9 @@ import cc.coopersoft.restaurant.hr.repository.EmployeeRepository;
 import org.apache.deltaspike.data.api.EntityRepository;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ConversationScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -27,6 +29,9 @@ public class EmployeeHome extends EntityHome<Employee,String> {
     @ErpEM
     private EntityManager entityManager;
 
+    @Inject
+    private FacesContext facesContext;
+
     protected Employee createInstance() {
         return new Employee(Employee.Status.NORMAL,new Date());
     }
@@ -39,5 +44,9 @@ public class EmployeeHome extends EntityHome<Employee,String> {
         return entityManager;
     }
 
+    @PostConstruct
+    public void initParam(){
+        setId(facesContext.getExternalContext().getRequestParameterMap().get("employeeId"));
+    }
 
 }
