@@ -7,18 +7,17 @@
 
 
     <persistence-unit name="systemEntityManagerFactory" transaction-type="JTA">
-        <jta-data-source>java:jboss/datasources/HMPLATXADS</jta-data-source>
+        <jta-data-source>java:jboss/datasources/SystemXADS</jta-data-source>
 
-        <class>cc.cooperosft.system.model.User</class>
+        <class>cc.coopersoft.system.model.User</class>
 
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
             <property name="hibernate.hbm2ddl.auto" value="validate"/>
-            <property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
             <property name="hibernate.jdbc.batch_size" value="27"/>
-            <property name="jboss.entity.manager.factory.jndi.name" value="java:/PlatEntityManagerFactory"/>
         </properties>
     </persistence-unit>
 
