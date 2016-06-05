@@ -1,10 +1,13 @@
 package cc.coopersoft.system;
 
+import cc.coopersoft.restaurant.ErpEM;
 import org.picketlink.annotations.PicketLink;
 import org.picketlink.authentication.BaseAuthenticator;
 import org.picketlink.credential.DefaultLoginCredentials;
 import org.picketlink.idm.model.basic.User;
 
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -21,8 +24,11 @@ public class SimpleAuthenticator extends BaseAuthenticator {
     private DefaultLoginCredentials credentials;
 
     @Inject
+    @ErpEM
     private EntityManager entityManager;
 
+    @Inject
+    private FacesContext facesContext;
 
     public void authenticate() {
         if ("root".equals(credentials.getUserId()) &&
@@ -30,22 +36,14 @@ public class SimpleAuthenticator extends BaseAuthenticator {
             setStatus(AuthenticationStatus.SUCCESS);
             setAccount(new User("root"));
             //TODO roles;
-        } else {
+        } else if (!AuthenticationStatus.SUCCESS.equals(getStatus())){
 
-            try {
-                entityManager.createQuery("select user from User user where user.id=:id and user.password=:password", cc.coopersoft.system.model.User.class)
-                        .setParameter("id", credentials.getUserId())
-                        .setParameter("password", credentials.getPassword()).getSingleResult();
-                setStatus(AuthenticationStatus.SUCCESS);
-                setAccount(new User(credentials.getUserId()));
-                //TODO roles;
 
-            }catch (NoResultException e){
 
-                setStatus(AuthenticationStatus.FAILURE);
-                //facesContext.addMessage(null, new FacesMessage(
-                //        "Authentication Failure - The username or password you provided were invalid."));
-            }
+
+                facesContext.addMessage(null, new FacesMessage(
+                      "Authentication Failure - The username or password you provided were invalid."));
+
 
         }
     }
