@@ -1,12 +1,30 @@
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:b="http://bootsfaces.net/ui"
+        xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>BootsFaces Basic Page</title>
+</h:head>
+
 <h:body>
-    <h:form method="POST" prependId="false">
-        <h:inputText id="j_username" />
-        <h:inputSecret id="j_password"/>
-        <h:commandButton id="login" value="Login" action="#{identity.login()}"/>
-    </h:form>
+
+    <b:container layout="fluid">
+        <b:row>
+            <b:column offsetXs="0" offsetSm="2" offsetMd="4" offsetLg="5">
+                <h:form method="POST" prependId="false">
+                    <h:inputText id="j_username" value="#{loginCredentials.userId}"/>
+                    <h:inputSecret id="j_password" value="#{loginCredentials.password}"/>
+                    <h:commandButton id="login" value="Login" action="#{loginController.login}"/>
+                </h:form>
+            </b:column>
+        </b:row>
+    </b:container>
+
+
 
 
 </h:body>

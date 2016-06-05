@@ -9,7 +9,18 @@
     <persistence-unit name="systemEntityManagerFactory" transaction-type="JTA">
         <jta-data-source>java:jboss/datasources/SystemXADS</jta-data-source>
 
-        <class>cc.coopersoft.system.model.User</class>
+
+        <class>org.picketlink.idm.jpa.model.sample.simple.PartitionTypeEntity</class>
+
+        <class>org.picketlink.idm.jpa.model.sample.simple.AttributedTypeEntity</class>
+        <class>org.picketlink.idm.jpa.model.sample.simple.AccountTypeEntity</class>
+        <class>org.picketlink.idm.jpa.model.sample.simple.RoleTypeEntity</class>
+        <class>org.picketlink.idm.jpa.model.sample.simple.GroupTypeEntity</class>
+        <class>org.picketlink.idm.jpa.model.sample.simple.IdentityTypeEntity</class>
+        <class>org.picketlink.idm.jpa.model.sample.simple.RelationshipTypeEntity</class>
+        <class>org.picketlink.idm.jpa.model.sample.simple.RelationshipIdentityTypeEntity</class>
+        <class>org.picketlink.idm.jpa.model.sample.simple.PasswordCredentialTypeEntity</class>
+        <class>org.picketlink.idm.jpa.model.sample.simple.AttributeTypeEntity</class>
 
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
@@ -18,9 +29,9 @@
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
             <property name="hibernate.jdbc.batch_size" value="27"/>
+
+
         </properties>
     </persistence-unit>
-
-
 
 </persistence>

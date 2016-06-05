@@ -16,7 +16,7 @@ import javax.persistence.NoResultException;
  * Created by cooper on 6/5/16.
  */
 
-@PicketLink
+//@PicketLink
 public class SimpleAuthenticator extends BaseAuthenticator {
 
 

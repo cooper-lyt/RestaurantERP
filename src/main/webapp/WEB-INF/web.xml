@@ -7,7 +7,26 @@
 >
   <display-name>Archetype Created Web Application</display-name>
 
+  <context-param>
+    <param-name>javax.faces.PROJECT_STAGE</param-name>
+    <param-value>Development</param-value>
+  </context-param>
 
+
+  <context-param>
+    <param-name>primefaces.THEME</param-name>
+    <param-value>bootstrap</param-value>
+  </context-param>
+
+  <context-param>
+    <param-name>BootsFaces_USETHEME</param-name>
+    <param-value>default</param-value>
+  </context-param>
+
+  <context-param>
+    <param-name>BootsFaces_THEME</param-name>
+    <param-value>cerulean</param-value>
+  </context-param>
 
   <!-- Standard JSF settings. -->
 
@@ -45,12 +64,6 @@
   </context-param>
 
 
-  <!-- MyFaces specific settings. -->
-
-  <context-param>
-    <param-name>org.apache.myfaces.RESOURCE_MAX_TIME_EXPIRES</param-name>
-    <param-value>3628800000</param-value> <!-- 6 weeks. -->
-  </context-param>
 
 
   <!-- OmniFaces specific settings. -->
@@ -94,9 +107,26 @@
     <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
+  <!-- Map these files with JSF -->
+  <servlet-mapping>
+    <servlet-name>facesServlet</servlet-name>
+    <url-pattern>/faces/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>facesServlet</servlet-name>
+    <url-pattern>*.jsf</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>facesServlet</servlet-name>
+    <url-pattern>*.faces</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>facesServlet</servlet-name>
     <url-pattern>*.xhtml</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>facesServlet</servlet-name>
+    <url-pattern>/javax.faces.resource/*</url-pattern>
   </servlet-mapping>
 
   <filter>

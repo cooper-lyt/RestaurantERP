@@ -1,5 +1,7 @@
 package cc.coopersoft.restaurant;
 
+import org.picketlink.annotations.PicketLink;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Default;
@@ -15,18 +17,18 @@ import javax.persistence.PersistenceUnit;
 @ApplicationScoped
 public class EntityManagerProducer {
 
-    @PersistenceUnit
+    @PersistenceUnit(unitName = "systemEntityManagerFactory")
     private EntityManagerFactory entityManagerFactory;
 
     @Produces
-    @Default
-    @RequestScoped
+    @ErpEM
+    @PicketLink
     public EntityManager create()
     {
         return this.entityManagerFactory.createEntityManager();
     }
 
-    public void dispose(@Disposes @Default EntityManager entityManager)
+    public void dispose(@Disposes @ErpEM EntityManager entityManager)
     {
         if (entityManager.isOpen())
         {
