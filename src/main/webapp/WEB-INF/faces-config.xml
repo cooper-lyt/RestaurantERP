@@ -23,7 +23,9 @@
               version="2.0">
 
     <application>
+
         <resource-handler>org.omnifaces.resourcehandler.CombinedResourceHandler
+
         </resource-handler>
         <locale-config>
             <default-locale>en</default-locale>

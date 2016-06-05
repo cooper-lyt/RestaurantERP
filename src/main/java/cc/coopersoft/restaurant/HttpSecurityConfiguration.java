@@ -14,13 +14,13 @@ public class HttpSecurityConfiguration {
         SecurityConfigurationBuilder builder = event.getBuilder();
 
         builder.http()
-                .allPaths()
-                    .authenticateWith()
-                    .form()
-                    .authenticationUri("/login.xhtml")
-                    .loginPage("/login.xhtml")
-                    .errorPage("/error.xhtml")
-                    .restoreOriginalRequest()
+//                .allPaths()
+//                    .authenticateWith()
+//                    .form()
+//                    .authenticationUri("/login.xhtml")
+//                    .loginPage("/login.xhtml")
+//                    .errorPage("/error.xhtml")
+//                    .restoreOriginalRequest()
                 .forPath("/logout")
                     .logout()
                     .redirectTo("/index.html");

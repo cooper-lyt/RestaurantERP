@@ -9,7 +9,7 @@
 
   <context-param>
     <param-name>javax.faces.PROJECT_STAGE</param-name>
-    <param-value>Development</param-value>
+    <param-value>Production</param-value>
   </context-param>
 
 
@@ -107,26 +107,10 @@
     <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
-  <!-- Map these files with JSF -->
-  <servlet-mapping>
-    <servlet-name>facesServlet</servlet-name>
-    <url-pattern>/faces/*</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>facesServlet</servlet-name>
-    <url-pattern>*.jsf</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>facesServlet</servlet-name>
-    <url-pattern>*.faces</url-pattern>
-  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>facesServlet</servlet-name>
     <url-pattern>*.xhtml</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>facesServlet</servlet-name>
-    <url-pattern>/javax.faces.resource/*</url-pattern>
+    <url-pattern>*.jsf</url-pattern>
   </servlet-mapping>
 
   <filter>
