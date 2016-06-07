@@ -1,0 +1,7 @@
+.session-authentication{
+    background-color: #f9f9f9;
+}
+
+.session-authentication .auth-form .btn{
+    margin-top: 20px;
+}

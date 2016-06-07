@@ -24,11 +24,18 @@
 
     <application>
 
-        <resource-handler>org.omnifaces.resourcehandler.CombinedResourceHandler
+        <resource-handler>org.omnifaces.resourcehandler.CombinedResourceHandler</resource-handler>
 
-        </resource-handler>
         <locale-config>
-            <default-locale>en</default-locale>
+            <default-locale>zh_CN</default-locale>
+            <supported-locale>bg</supported-locale>
+            <supported-locale>de</supported-locale>
+            <supported-locale>en</supported-locale>
+            <supported-locale>fr</supported-locale>
+            <supported-locale>it</supported-locale>
+            <supported-locale>tr</supported-locale>
+            <supported-locale>da</supported-locale>
+            <supported-locale>zh_CN</supported-locale>
         </locale-config>
     </application>
 
