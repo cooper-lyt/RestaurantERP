@@ -21,14 +21,13 @@ public class EntityManagerProducer {
     private EntityManagerFactory entityManagerFactory;
 
     @Produces
-    @ErpEM
     @PicketLink
     public EntityManager create()
     {
         return this.entityManagerFactory.createEntityManager();
     }
 
-    public void dispose(@Disposes @ErpEM EntityManager entityManager)
+    public void dispose(@Disposes @PicketLink EntityManager entityManager)
     {
         if (entityManager.isOpen())
         {
