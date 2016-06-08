@@ -1,5 +1,7 @@
 package cc.coopersoft.system;
 
+import cc.coopersoft.restaurant.Messages;
+import org.apache.deltaspike.jsf.api.message.JsfMessage;
 import org.picketlink.Identity;
 
 import javax.ejb.Stateless;
@@ -19,15 +21,12 @@ public class LoginController {
     private Identity identity;
 
     @Inject
-    private FacesContext facesContext;
+    private JsfMessage<Messages> messages;
 
     public void login() {
         Identity.AuthenticationResult result = identity.login();
         if (Identity.AuthenticationResult.FAILED.equals(result)) {
-            facesContext.addMessage(
-                    null,
-                    new FacesMessage("Authentication was unsuccessful.  Please check your username and password "
-                            + "before trying again."));
+            messages.addFatal().authenticateFail();
         }
     }
 

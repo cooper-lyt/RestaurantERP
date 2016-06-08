@@ -5,3 +5,33 @@
 .session-authentication .auth-form .btn{
     margin-top: 20px;
 }
+
+.session-authentication .header-logged-out {
+    padding: 40px 0 20px;
+    background-color: transparent;
+    border-bottom: 0;
+}
+
+.session-authentication .header-logo {
+    display: block;
+    width: 48px;
+    height: 48px;
+    margin: 0 auto;
+    color: #333;
+}
+
+.session-authentication .auth-form-header {
+    padding: 10px 0;
+    margin-bottom: 15px;
+    color: #333;
+    text-align: center;
+    text-shadow: none;
+    background-color: transparent;
+    border: 0;
+}
+
+.session-authentication .auth-form-header h1 {
+    font-size: 24px;
+    font-weight: 300;
+    letter-spacing: -0.5px;
+}

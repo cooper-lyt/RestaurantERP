@@ -26,6 +26,12 @@
 
         <resource-handler>org.omnifaces.resourcehandler.CombinedResourceHandler</resource-handler>
 
+
+        <resource-bundle>
+            <base-name>cc.coopersoft.restaurant.Messages</base-name>
+            <var>messages</var>
+        </resource-bundle>
+
         <locale-config>
             <default-locale>zh_CN</default-locale>
             <supported-locale>bg</supported-locale>

@@ -16,6 +16,11 @@
 
 
   <context-param>
+    <param-name>net.bootsfaces.get_fontawesome_from_cdn</param-name>
+    <param-value>false</param-value>
+  </context-param>
+
+  <context-param>
     <param-name>primefaces.THEME</param-name>
     <param-value>bootstrap</param-value>
   </context-param>
@@ -69,6 +74,24 @@
 
 
   <!-- OmniFaces specific settings. -->
+
+  <!-- activate resource caching -->
+  <context-param>
+    <param-name>org.omnifaces.COMBINED_RESOURCE_ACTIVATE_RESOURCE_CACHING</param-name>
+    <param-value>
+      true
+    </param-value>
+  </context-param>
+  <!-- cache ten combined resources at most -->
+  <context-param>
+    <param-name>org.omnifaces.CACHE_SETTING_APPLICATION_MAX_CAPACITY</param-name>
+    <param-value>30</param-value>
+  </context-param>
+  <!-- set the maximum time-to-live of cache entries to one day -->
+  <context-param>
+    <param-name>org.omnifaces.CACHE_SETTING_APPLICATION_TTL</param-name>
+    <param-value>86400</param-value>
+  </context-param>
 
   <context-param>
     <param-name>org.omnifaces.CACHE_SETTING_SESSION_MAX_CAPACITY</param-name>

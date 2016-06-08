@@ -183,7 +183,7 @@
     <dependency>
       <groupId>net.bootsfaces</groupId>
       <artifactId>bootsfaces</artifactId>
-      <version>0.8.5</version>
+      <version>0.8.6</version>
       <scope>compile</scope>
     </dependency>
 

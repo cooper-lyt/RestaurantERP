@@ -5,30 +5,49 @@
         xmlns:h="http://java.sun.com/jsf/html"
         xmlns:ui="http://java.sun.com/jsf/facelets"
         xmlns:b="http://bootsfaces.net/ui"
+        xmlns:ng="http://xmlns.jcp.org/jsf/passthrough"
         xmlns:f="http://xmlns.jcp.org/jsf/core">
 <h:head>
-    <title>BootsFaces Basic Page</title>
-
-
+    <title>#{messages.application_title}</title>
+    <f:facet name="no-fa">true</f:facet>
+    <h:outputStylesheet name="theme.css" position="last"/>
+    <h:outputStylesheet library="font-awesome" name="css/font-awesome.min.css" position="last"/>
+    <h:outputScript library="bsf" name="js/button.js"/>
 </h:head>
-<h:outputStylesheet name="theme.css" position="last"/>
+
 <h:body styleClass="session-authentication">
 
 
+    <div class="header header-logged-out" role="banner">
+        <b:container layout="fluid">
+            <span class="header-logo">
+            <b:iconAwesome size="3x" name="cutlery"/>
+            </span>
+        </b:container>
+    </div>
 
     <b:container layout="fluid">
+
+
         <b:row>
             <b:column offsetXs="0" colXs="12" offsetSm="2" colSm="8" offsetMd="3" colMd="6" offsetLg="4" colLg="4">
+
+
+                    <div class="auth-form-header">
+                        <h1 style="margin:0;">登录餐饮资源管理系统</h1>
+                    </div>
+
 
                 <b:messages escape="false"/>
 
                 <b:panel>
                     <h:form method="POST" prependId="false" styleClass="auth-form">
                         <b:inputText id="j_username" value="#{loginCredentials.userId}" required="true"
-                                     label="Enter your name"  renderLabel="true" />
+                                     label="用户名"  renderLabel="true" />
                         <b:inputSecret id="j_password" value="#{loginCredentials.password}"
-                                       label="password"  renderLabel="true"/>
-                        <b:commandButton look="success" styleClass="btn-block" id="login" value="Login" action="#{loginController.login}"/>
+                                       label="密码"  renderLabel="true"/>
+                        <b:commandButton look="success" styleClass="btn-block" id="login" value="登陆"
+                                         ng:data-loading-text="认证中..." onclick="$(this).button('loading');" action="#{loginController.login}"/>
                     </h:form>
                 </b:panel>
 
