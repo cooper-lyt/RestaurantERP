@@ -14,11 +14,10 @@
             <h:form >
             <div class="flex-table search-form-fluid">
                 <div class="flex-table-item flex-table-item-primary">
-                    <input  autocapitalize="off" autofocus="" aria-label="Search"/>
-                    <b:inputText styleClass="form-control input-block" placeholder="名称"/>
+                    <b:inputText styleClass="form-control input-block" aria-label="Search"  placeholder="查询条件"/>
                 </div>
                 <div class="flex-table-item">
-                    <button class="btn" type="submit" tabindex="3">查询</button>
+                    <b:commandButton look="default">查询</b:commandButton>
                 </div>
             </div>
 
@@ -28,8 +27,12 @@
     </div>
 
 
+        <ui:insert name="data-context-body">
+        <b:container style="min-height:350px">
 
-
+            <ui:insert/>
+        </b:container>
+        </ui:insert>
 
     </ui:define>
 

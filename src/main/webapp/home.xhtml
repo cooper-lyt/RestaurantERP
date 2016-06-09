@@ -8,7 +8,7 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets">
 
 
-    <b:row>
+    <b:row style="padding-top: 30px;">
         <b:column colMd="9" ng:role="complementary" hidden="sm" styleClass="operation-list">
 
             <div class="account-fun">
@@ -34,10 +34,13 @@
                                iconAwesome="sliders" />
                     <b:navLink></b:navLink>
                     <b:navLink header="系统设置"/>
+                    <b:navLink href="#{request.contextPath}/erp/operational/shopMgr.xhtml"  value="店面管理"
+                               iconAwesome="beer" />
+                    <b:navLink></b:navLink>
+                    <b:navLink header="系统设置"/>
                     <b:navLink href="#" value="字典管理"
                                iconAwesome="book" />
-                    <b:navLink href="#" value="店面管理"
-                               iconAwesome="beer" />
+
 
                     <b:navLink></b:navLink>
                 </b:listLinks>

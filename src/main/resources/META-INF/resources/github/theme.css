@@ -171,3 +171,54 @@ label {
 .operation-list .account-fun {
     margin-bottom: 20px;
 }
+
+.pagehead {
+    position: relative;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.datasearch-head {
+    padding-bottom: 20px;
+}
+
+
+.datasearch-head.pagehead h1 {
+    float: left;
+    width: 250px;
+    line-height: 33px;
+}
+
+.pagehead h1 {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 20px;
+    font-weight: normal;
+    line-height: 28px;
+}
+
+.flex-table {
+    display: table;
+}
+
+.flex-table-item {
+    display: table-cell;
+    width: 1%;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.flex-table-item-primary {
+    width: 99%;
+}
+
+.search-form-fluid .flex-table-item-primary {
+    position: relative;
+    padding-right: 6px;
+}
+
+.flex-table-item .form-group{
+    margin-bottom: 0;
+}

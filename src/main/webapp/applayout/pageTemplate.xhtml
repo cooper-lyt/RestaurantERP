@@ -16,7 +16,7 @@
     <h:outputStylesheet library="github" name="theme.css" position="last"/>
     <ui:insert name="custom-header"/>
 </h:head>
-<h:body style="padding-top: 85px;">
+<h:body style="padding-top: 50px;">
 
     <b:navBar brand="垠丰" brand-href="#{request.contextPath}/home.xhtml" position="top" sticky="true">
         <b:container>
@@ -33,7 +33,7 @@
                 </b:dropMenu>
 
                 <b:dropMenu iconAwesome="users" value="营运资源">
-                    <b:navLink href="#" value="店面管理"
+                    <b:navLink href="#{request.contextPath}/erp/operational/shopMgr.xhtml" value="店面管理"
                                iconAwesome="beer" />
                 </b:dropMenu>
 
@@ -54,7 +54,7 @@
     </b:navBar>
 
     <ui:insert name="context">
-    <b:container>
+    <b:container style="min-height:400px">
         <ui:insert/>
     </b:container>
     </ui:insert>
