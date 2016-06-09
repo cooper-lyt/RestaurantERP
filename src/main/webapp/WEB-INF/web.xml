@@ -32,7 +32,7 @@
 
   <context-param>
     <param-name>BootsFaces_THEME</param-name>
-    <param-value>default</param-value>
+    <param-value>custom</param-value>
   </context-param>
 
   <!-- Standard JSF settings. -->
