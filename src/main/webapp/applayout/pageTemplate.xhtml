@@ -18,17 +18,29 @@
 </h:head>
 <h:body style="padding-top: 85px;">
 
-    <b:navBar brand="科世" brand-href="/home.xhtml" position="top" sticky="true">
+    <b:navBar brand="垠丰" brand-href="#{request.contextPath}/home.xhtml" position="top" sticky="true">
         <b:container>
             <b:navbarLinks>
                 <b:dropMenu iconAwesome="users" value="人力资源">
-                    <b:navLink value="Action" href="#"></b:navLink>
-                    <b:navLink value="Another action" href="#"></b:navLink>
-                    <b:navLink value="Something else here" href="#"></b:navLink>
+                    <b:navLink iconAwesome="users" value="员工管理" href="#"></b:navLink>
+                    <b:navLink iconAwesome="money" value="薪酬结算" href="#"></b:navLink>
+
+                    <b:navLink iconAwesome="gift" value="奖励发放" href="#"></b:navLink>
+                    <b:navLink iconAwesome="sliders" value="薪酬方案" href="#"></b:navLink>
                     <b:navLink></b:navLink>
-                    <b:navLink header="Nav header"></b:navLink>
-                    <b:navLink value="Separated link" href="#"></b:navLink>
-                    <b:navLink value="One more separated link" href="#"></b:navLink>
+                    <b:navLink header="统计报表"></b:navLink>
+                    <b:navLink value="人效" href="#"></b:navLink>
+                </b:dropMenu>
+
+                <b:dropMenu iconAwesome="users" value="营运资源">
+                    <b:navLink href="#" value="店面管理"
+                               iconAwesome="beer" />
+                </b:dropMenu>
+
+                <b:dropMenu iconAwesome="cogs" value="系统设置">
+                    <b:navLink href="#" value="字典管理"
+                               iconAwesome="book" />
+
                 </b:dropMenu>
                 <b:navLink/>
             </b:navbarLinks>
@@ -41,8 +53,24 @@
         </b:container>
     </b:navBar>
 
-    <b:container style="">
+    <ui:insert name="context">
+    <b:container>
         <ui:insert/>
+    </b:container>
+    </ui:insert>
+
+    <b:container styleClass="site-footer-container">
+        <div class="site-footer" role="contentinfo">
+
+
+            <span class="site-footer-mark">
+                <b:iconAwesome name="cutlery" size="lg"/>
+            </span>
+
+            <ul class="site-footer-links">
+                <li>© 2016 <span title="0.31745s from github-fe137-cp1-prd.iad.github.net">Cooper's soft</span>, Studio.</li>
+            </ul>
+        </div>
     </b:container>
 
 

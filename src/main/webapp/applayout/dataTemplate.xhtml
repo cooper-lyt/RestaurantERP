@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:composition template="/applayout/pageTemplate.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:ng="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:define name="context">
+    <div class="pagehead datasearch-head">
+        <b:container>
+            <h1>店面管理</h1>
+            <h:form >
+            <div class="flex-table search-form-fluid">
+                <div class="flex-table-item flex-table-item-primary">
+                    <input  autocapitalize="off" autofocus="" aria-label="Search"/>
+                    <b:inputText styleClass="form-control input-block" placeholder="名称"/>
+                </div>
+                <div class="flex-table-item">
+                    <button class="btn" type="submit" tabindex="3">查询</button>
+                </div>
+            </div>
+
+        </h:form>
+
+        </b:container>
+    </div>
+
+
+
+
+
+    </ui:define>
+
+</ui:composition>

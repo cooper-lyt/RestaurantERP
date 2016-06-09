@@ -9,34 +9,37 @@
 
 
     <b:row>
-        <b:column colMd="9" ng:role="complementary">
+        <b:column colMd="9" ng:role="complementary" hidden="sm" styleClass="operation-list">
 
+            <div class="account-fun">
             <b:dropButton value="#{identity.account.firstName} #{identity.account.lastName}">
-                <b:navLink value="Action" href="#"></b:navLink>
-                <b:navLink value="Another action" href="#"></b:navLink>
-                <b:navLink value="Something else here" href="#"></b:navLink>
-                <b:navLink></b:navLink>
-                <b:navLink header="Nav header"></b:navLink>
-                <b:navLink value="Separated link" href="#"></b:navLink>
-                <b:navLink value="One more separated link" href="#"></b:navLink>
+                <b:navLink iconAwesome="key" value="修改密码" href="#"></b:navLink>
+                <b:navLink iconAwesome="cog" value="帐户设置" href="#"></b:navLink>
             </b:dropButton>
-
+            </div>
 
         </b:column>
         <b:column colMd="3" ng:role="main">
-            <b:panel look="primary" title="Sidebar">
+            <b:panel look="default" title="#{messages.application_title}">
                 <b:listLinks>
-                    <b:navLink header="BootsFaces" />
-                    <b:navLink href="http://www.bootsfaces.net" value="BootsFaces"
-                               icon="globe" iconAlign="right"/>
+                    <b:navLink header="人力资源" />
+                    <b:navLink href="#" value="员工管理"
+                               iconAwesome="users" />
+
+                    <b:navLink href="#" value="薪酬结算"
+                               iconAwesome="money" />
+                    <b:navLink iconAwesome="gift" value="奖励发放" href="#"></b:navLink>
+
+                    <b:navLink href="#" value="薪酬方案"
+                               iconAwesome="sliders" />
                     <b:navLink></b:navLink>
-                    <b:navLink header="Bootstrap"/>
-                    <b:navLink href="http://getbootstrap.com/components/#navbar" value="Bootstrap" icon="link"></b:navLink>
+                    <b:navLink header="系统设置"/>
+                    <b:navLink href="#" value="字典管理"
+                               iconAwesome="book" />
+                    <b:navLink href="#" value="店面管理"
+                               iconAwesome="beer" />
+
                     <b:navLink></b:navLink>
-                    <b:navLink header="Preview"/>
-                    <b:navLink value="Labels and Badges" outcome="/bootstrap/labelsbadge"
-                               icon="tag" iconAlign="right"/>
-                    <b:navLink value="Slider" outcome="/jquery-ui/slider" iconAwesome="sliders" />
                 </b:listLinks>
             </b:panel>
         </b:column>
