@@ -14,10 +14,37 @@
 
     <h:outputStylesheet library="github" name="bootstrap.min.css"/>
     <h:outputStylesheet library="github" name="theme.css" position="last"/>
-    <ui:insert name="custom-header" />
+    <ui:insert name="custom-header"/>
 </h:head>
-<h:body style="padding-top: 85px;padding-bottom: 85px;" addLabels="false" addMessages="false">
+<h:body style="padding-top: 85px;">
 
-    <ui:insert/>
+    <b:navBar brand="科世" brand-href="/home.xhtml" position="top" sticky="true">
+        <b:container>
+            <b:navbarLinks>
+                <b:dropMenu iconAwesome="users" value="人力资源">
+                    <b:navLink value="Action" href="#"></b:navLink>
+                    <b:navLink value="Another action" href="#"></b:navLink>
+                    <b:navLink value="Something else here" href="#"></b:navLink>
+                    <b:navLink></b:navLink>
+                    <b:navLink header="Nav header"></b:navLink>
+                    <b:navLink value="Separated link" href="#"></b:navLink>
+                    <b:navLink value="One more separated link" href="#"></b:navLink>
+                </b:dropMenu>
+                <b:navLink/>
+            </b:navbarLinks>
+            <b:navbarLinks pull="right">
+                <b:navLink icon="sign-out">
+
+                </b:navLink>
+            </b:navbarLinks>
+
+        </b:container>
+    </b:navBar>
+
+    <b:container style="">
+        <ui:insert/>
+    </b:container>
+
+
 </h:body>
 </html>

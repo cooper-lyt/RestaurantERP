@@ -1,5 +1,6 @@
 package cc.coopersoft.system;
 
+import org.picketlink.Identity;
 import org.picketlink.idm.IdentityManager;
 import org.picketlink.idm.PartitionManager;
 import org.picketlink.idm.credential.Password;
@@ -22,6 +23,7 @@ public class SystemInitializer {
 
     @PostConstruct
     public void create() {
+
 //        User john = new User("hr");
 //        john.setEmail("hr@acme.com");
 //        john.setFirstName("hr");
