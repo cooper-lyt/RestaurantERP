@@ -10,11 +10,14 @@
 
     <ui:param name="fun_title" value="店面管理"/>
     <ui:define name="search-condition">
-        <b:inputText styleClass="form-control input-block" aria-label="Search"  placeholder="查询条件"/>
+        <b:inputText value="#{officeManager.condition}" styleClass="form-control input-block" aria-label="Search"  placeholder="查询条件"/>
     </ui:define>
     <ui:define name="search-action">
         <b:commandButton look="default">查询</b:commandButton>
     </ui:define>
+
+
+
 
 
 </ui:composition>
