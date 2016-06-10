@@ -49,7 +49,7 @@ public class Office implements java.io.Serializable {
     }
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "JOIN_DATE", nullable = false, length = 19, columnDefinition = "DATETIME")
+    @Column(name = "BOTIME", nullable = false, length = 19, columnDefinition = "DATETIME")
     @NotNull
     public Date getBotime() {
         return botime;
