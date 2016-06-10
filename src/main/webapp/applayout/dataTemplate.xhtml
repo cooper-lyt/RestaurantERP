@@ -10,14 +10,14 @@
     <ui:define name="context">
     <div class="pagehead datasearch-head">
         <b:container>
-            <h1>店面管理</h1>
+            <h1>#{fun_title}</h1>
             <h:form >
             <div class="flex-table search-form-fluid">
                 <div class="flex-table-item flex-table-item-primary">
-                    <b:inputText styleClass="form-control input-block" aria-label="Search"  placeholder="查询条件"/>
+                    <ui:insert name="search-condition"/>
                 </div>
                 <div class="flex-table-item">
-                    <b:commandButton look="default">查询</b:commandButton>
+                    <ui:insert name="search-action"/>
                 </div>
             </div>
 
