@@ -4,6 +4,7 @@ import cc.coopersoft.restaurant.operation.model.Office;
 import cc.coopersoft.restaurant.operation.repository.OfficeRepository;
 
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Model;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.ArrayList;
@@ -12,13 +13,16 @@ import java.util.List;
 /**
  * Created by cooper on 6/10/16.
  */
-@Named
+@Model
 @RequestScoped
 public class OfficeManager {
 
 
     @Inject
     private OfficeRepository officeRepository;
+
+
+    private Office office;
 
     private boolean showDestroy;
 
@@ -38,6 +42,29 @@ public class OfficeManager {
 
     public void setCondition(String condition) {
         this.condition = condition;
+    }
+
+    public Office getOffice() {
+        return office;
+    }
+
+    public void setOffice(Office office) {
+        this.office = office;
+    }
+
+    public String getOfficeId() {
+        if (office == null){
+            return null;
+        }
+        return office.getId();
+    }
+
+    public void setOfficeId(String officeId) {
+        if (officeId == null || officeId.trim().equals("")){
+            office = new Office();
+        }else {
+
+        }
     }
 
     private List<Office> resultList;

@@ -5,7 +5,8 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:b="http://bootsfaces.net/ui"
                 xmlns:ng="http://xmlns.jcp.org/jsf/passthrough"
-                xmlns:ui="http://java.sun.com/jsf/facelets">
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
 
 
     <ui:param name="fun_title" value="店面管理"/>
@@ -17,7 +18,68 @@
     </ui:define>
 
 
+    <b:modal id="amodal" title="Modal Example" styleClass="modalPseudoClass">
+
+        <h:form id="editForm">
+
+            <b:inputText value=""/>
+
+        </h:form>
+
+
+        <f:facet name="footer">
+            <b:button value="close" dismiss="modal" onclick="return false;"/>
+            <b:button value="Ok" look="primary" dismiss="modal" onclick="return false;"/>
+        </f:facet>
+    </b:modal>
 
 
 
+
+
+    <h:form id="resultData">
+
+<ui:fragment rendered="#{empty officeManager.resultList}">
+    <div class="blankslate blankslate-spacious blankslate-large">
+        <b:iconAwesome name="search" size="4x" styleClass="blankslate-icon"/>
+
+        <h3>没找到店面.</h3>
+        <p>你可以 <a href="/settings/notifications">清空条件</a> 或 <a href="/settings/notifications">新建店面</a>.</p>
+    </div>
+</ui:fragment>
+
+    <h:dataTable value="#{officeManager.resultList}"
+                 styleClass="table table-striped table-hover table-floatThead"
+                 headerClass="table-tools-header"
+                 columnClasses=",,,,action-col"
+                 var="_office" rendered="#{not empty officeManager.resultList}">
+
+        <f:facet name="header">
+
+
+            <h3>
+                #{messages.SerachResultCount}#{' '}
+                <h:outputText value="#{employeeList.resultCount}">
+                    <f:convertNumber type="number" groupingUsed="true"/>
+                </h:outputText>
+                #{''}#{messages.SerachResultCountPrefx}
+            </h3>
+        </f:facet>
+
+        <h:column headerText="Id">
+            <h:outputText value="#{_office.id}" />
+        </h:column>
+        <h:column headerText="Year">
+            <h:outputText value="#{_office.name}" />
+        </h:column>
+        <h:column headerText="Brand">
+            <h:outputText value="#{_office.status}" />
+        </h:column>
+
+            </h:dataTable>
+
+    </h:form>
+
+
+    <h:outputScript library="floatThead" name="jquery.floatThead.min.js"/>
 </ui:composition>
