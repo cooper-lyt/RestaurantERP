@@ -3,6 +3,7 @@ package cc.coopersoft.system;
 import org.picketlink.annotations.PicketLink;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.ConversationScoped;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Disposes;
 import javax.enterprise.inject.Produces;
@@ -44,7 +45,7 @@ public class EntityManagerProducer {
 
     @Produces
     @SystemEM
-    @RequestScoped
+    @ConversationScoped
     public EntityManager createSystemEM()
     {
 

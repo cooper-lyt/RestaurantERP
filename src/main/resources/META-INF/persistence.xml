@@ -31,6 +31,10 @@
             <property name="hibernate.jdbc.batch_size" value="27"/>
 
 
+
+
+            <property name="hibernate.transaction.manager_lookup_class" value="org.hibernate.transaction.JBossTransactionManagerLookup"/>
+
         </properties>
     </persistence-unit>
 
@@ -49,6 +53,8 @@
             <property name="hibernate.format_sql" value="true"/>
             <property name="hibernate.jdbc.batch_size" value="27"/>
 
+
+            <property name="hibernate.transaction.manager_lookup_class" value="org.hibernate.transaction.JBossTransactionManagerLookup"/>
 
         </properties>
     </persistence-unit>

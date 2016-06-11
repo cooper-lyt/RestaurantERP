@@ -21,9 +21,6 @@ public class OfficeManager {
     @Inject
     private OfficeRepository officeRepository;
 
-
-    private Office office;
-
     private boolean showDestroy;
 
     private String condition;
@@ -44,28 +41,6 @@ public class OfficeManager {
         this.condition = condition;
     }
 
-    public Office getOffice() {
-        return office;
-    }
-
-    public void setOffice(Office office) {
-        this.office = office;
-    }
-
-    public String getOfficeId() {
-        if (office == null){
-            return null;
-        }
-        return office.getId();
-    }
-
-    public void setOfficeId(String officeId) {
-        if (officeId == null || officeId.trim().equals("")){
-            office = new Office();
-        }else {
-
-        }
-    }
 
     private List<Office> resultList;
 

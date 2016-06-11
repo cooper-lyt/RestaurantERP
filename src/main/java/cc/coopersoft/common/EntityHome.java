@@ -3,7 +3,6 @@ package cc.coopersoft.common;
 import org.apache.deltaspike.data.api.EntityRepository;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
 
-import javax.persistence.EntityManager;
 import java.io.Serializable;
 
 /**
@@ -168,7 +167,6 @@ public abstract class EntityHome<E, PK extends Serializable> extends MutableCont
     }
 
     /**
-     * Utility method to load entity instance from the {@link EntityManager}.
      * Called by {@link #find()}.
      * <br />
      * Can be overridden to support eager fetching of associations.

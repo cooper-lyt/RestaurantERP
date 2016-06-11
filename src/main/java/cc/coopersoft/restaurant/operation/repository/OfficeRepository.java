@@ -14,7 +14,7 @@ import java.util.List;
  * Created by cooper on 6/10/16.
  */
 @Repository
-@EntityManagerConfig(entityManagerResolver = ErpEntityManagerResolver.class, flushMode = FlushModeType.AUTO)
+@EntityManagerConfig(entityManagerResolver = ErpEntityManagerResolver.class, flushMode = FlushModeType.COMMIT)
 public interface OfficeRepository extends EntityRepository<Office,String> {
 
     @Query("select office from Office office where office.name like ?1 and office.status <> 'DESTROY' order by office.botime")

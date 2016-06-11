@@ -18,11 +18,11 @@
     </ui:define>
 
 
-    <b:modal id="amodal" title="Modal Example" styleClass="modalPseudoClass">
+    <b:modal id="amodal" title="Modal Example" styleClass="modalEdit">
 
         <h:form id="editForm">
 
-            <b:inputText value=""/>
+            <b:inputText value="#{officeHome.instance.name}"/>
 
         </h:form>
 
@@ -44,7 +44,12 @@
         <b:iconAwesome name="search" size="4x" styleClass="blankslate-icon"/>
 
         <h3>没找到店面.</h3>
-        <p>你可以 <a href="/settings/notifications">清空条件</a> 或 <a href="/settings/notifications">新建店面</a>.</p>
+        <p>你可以 <a href="/settings/notifications">清空条件</a> 或
+            <b:commandButton value="新建店面" ajax="true" update="editForm"
+                             look="link"
+                             oncomplete="$('.modalEdit').modal();">
+                <f:param name="officeId" value=""/>
+            </b:commandButton></p>
     </div>
 </ui:fragment>
 
