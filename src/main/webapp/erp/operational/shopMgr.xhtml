@@ -6,82 +6,128 @@
                 xmlns:b="http://bootsfaces.net/ui"
                 xmlns:ng="http://xmlns.jcp.org/jsf/passthrough"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui" xmlns:butter="http://butterfaces.org/components"
+                xmlns:o="http://omnifaces.org/ui">
 
 
     <ui:param name="fun_title" value="店面管理"/>
     <ui:define name="search-condition">
-        <b:inputText value="#{officeManager.condition}" styleClass="form-control input-block" aria-label="Search"  placeholder="查询条件"/>
+        <b:inputText value="#{officeManager.condition}" styleClass="form-control input-block" aria-label="Search"
+                     placeholder="查询条件"/>
     </ui:define>
     <ui:define name="search-action">
         <b:commandButton look="default">查询</b:commandButton>
     </ui:define>
 
-
-    <b:modal id="amodal" title="Modal Example" styleClass="modalEdit">
-
-        <h:form id="editForm">
-
-            <b:inputText value="#{officeHome.instance.name}"/>
-
-        </h:form>
-
-
-        <f:facet name="footer">
-            <b:button value="close" dismiss="modal" onclick="return false;"/>
-            <b:button value="Ok" look="primary" dismiss="modal" onclick="return false;"/>
-        </f:facet>
-    </b:modal>
+    <ui:define name="custom-header">
 
 
 
+        <f:metadata>
+            <o:viewParam name="officeId" value="#{officeHome.id}" />
+        </f:metadata>
 
+    </ui:define>
+
+
+    <div class="ttttt">
+        <o:form id="editForm" includeViewParams="true">
+
+
+            <b:modal id="amodal" title="店面" styleClass="modalEdit">
+
+
+                <b:inputText value="#{officeHome.instance.id}" required="true" disabled="#{officeHome.managed}"
+                             label="编号" renderLabel="true"/>
+
+
+                <b:inputText value="#{officeHome.instance.name}" required="true"
+                             label="名称" renderLabel="true"/>
+
+
+                #{facesContext.maximumSeverity}
+
+                <f:facet name="footer">
+                    <b:button value="取消" dismiss="modal"  onclick="return false;"/>
+                    <h:commandButton value="333" action="#{officeHome.printParam}">
+                        <f:ajax  />
+                    </h:commandButton>
+                    <b:commandButton ajax="true" value="确定"
+                                     oncomplete="if (#{facesContext.maximumSeverity==null} || #{facesContext.maximumSeverity.ordinal lt 2}){$('.modalEdit').modal('hide')}"
+                                     action="#{officeHome.save}" look="success" update="resultData">
+                    </b:commandButton>
+                </f:facet>
+            </b:modal>
+
+        </o:form>
+
+    </div>
 
     <h:form id="resultData">
 
-<ui:fragment rendered="#{empty officeManager.resultList}">
-    <div class="blankslate blankslate-spacious blankslate-large">
-        <b:iconAwesome name="search" size="4x" styleClass="blankslate-icon"/>
+        <ui:fragment rendered="#{empty officeManager.resultList}">
+            <div class="blankslate blankslate-spacious blankslate-large">
+                <b:iconAwesome name="search" size="4x" styleClass="blankslate-icon"/>
 
-        <h3>没找到店面.</h3>
-        <p>你可以 <a href="/settings/notifications">清空条件</a> 或
-            <b:commandButton value="新建店面" ajax="true" update="editForm"
-                             look="link"
-                             oncomplete="$('.modalEdit').modal();">
-                <f:param name="officeId" value=""/>
-            </b:commandButton></p>
-    </div>
-</ui:fragment>
+                <h3>没找到店面.</h3>
+                <p>你可以 <a href="/settings/notifications">清空条件</a> 或
+                    <b:commandButton value="新建店面" ajax="true" update="@(.ttttt)"
+                                     look="link"
+                                     oncomplete="$('.modalEdit').modal();">
+                        <f:setPropertyActionListener value="#{_office.id}" target="#{officeHome.id}"/>
+                    </b:commandButton></p>
+            </div>
+        </ui:fragment>
 
-    <h:dataTable value="#{officeManager.resultList}"
-                 styleClass="table table-striped table-hover table-floatThead"
-                 headerClass="table-tools-header"
-                 columnClasses=",,,,action-col"
-                 var="_office" rendered="#{not empty officeManager.resultList}">
+        <h:dataTable value="#{officeManager.resultList}"
+                     styleClass="table table-striped table-hover table-floatThead"
+                     headerClass="table-tools-header"
+                     columnClasses=",,,,action-col"
+                     var="_office" rendered="#{not empty officeManager.resultList}">
 
-        <f:facet name="header">
+            <f:facet name="header">
 
 
-            <h3>
-                #{messages.SerachResultCount}#{' '}
-                <h:outputText value="#{employeeList.resultCount}">
-                    <f:convertNumber type="number" groupingUsed="true"/>
-                </h:outputText>
-                #{''}#{messages.SerachResultCountPrefx}
-            </h3>
-        </f:facet>
+                <h3>
+                    找到
+                    <h:outputText value="#{officeManager.resultList.size()}">
+                        <f:convertNumber type="number" groupingUsed="true"/>
+                    </h:outputText> 个符合条件的店面
+                </h3>
+            </f:facet>
 
-        <h:column headerText="Id">
-            <h:outputText value="#{_office.id}" />
-        </h:column>
-        <h:column headerText="Year">
-            <h:outputText value="#{_office.name}" />
-        </h:column>
-        <h:column headerText="Brand">
-            <h:outputText value="#{_office.status}" />
-        </h:column>
+            <h:column>
+                <f:facet name="header">
+                    编号
+                </f:facet>
+                <h:outputText value="#{_office.id}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    名称
+                </f:facet>
+                <h:outputText value="#{_office.name}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    状态
+                </f:facet>
+                <h:outputText value="#{_office.status}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
 
-            </h:dataTable>
+                </f:facet>
+
+
+
+                <b:commandButton ajax="true" look="link" icon="pencil"  oncomplete="$('.modalEdit').modal();" update="editForm">
+                    <f:setPropertyActionListener value="#{_office.id}" target="#{officeHome.id}"/>
+                </b:commandButton>
+            </h:column>
+
+
+        </h:dataTable>
 
     </h:form>
 

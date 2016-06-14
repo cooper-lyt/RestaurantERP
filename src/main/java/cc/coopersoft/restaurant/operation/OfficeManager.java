@@ -48,10 +48,23 @@ public class OfficeManager {
         if (resultList == null){
             resultList = new ArrayList<Office>();
 
+            String sqlCondition = condition;
+
             if (showDestroy){
-                resultList = officeRepository.findByConditionAll(condition);
+                if (sqlCondition == null || sqlCondition.trim().equals("")){
+                    resultList = officeRepository.findAll();
+                }else {
+                    sqlCondition = "*" + condition.trim() + "*";
+                    resultList = officeRepository.findByConditionAll(sqlCondition);
+                }
             }else{
-                resultList = officeRepository.findByCondition(condition);
+                if (sqlCondition == null || sqlCondition.trim().equals("")){
+                    resultList = officeRepository.findAllVaild();
+                }else{
+                    sqlCondition = "*" + condition.trim() + "*";
+                    resultList = officeRepository.findByCondition(sqlCondition);
+                }
+
             }
 
         }

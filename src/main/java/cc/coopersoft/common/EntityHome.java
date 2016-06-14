@@ -3,12 +3,18 @@ package cc.coopersoft.common;
 import org.apache.deltaspike.data.api.EntityRepository;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
 
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
 import java.io.Serializable;
+import java.util.logging.Logger;
 
 /**
  * Created by cooper on 6/10/16.
  */
 public abstract class EntityHome<E, PK extends Serializable> extends MutableController {
+
+    @Inject
+    protected Logger logger;
 
     private static final long serialVersionUID = -5462396456614090423L;
 
@@ -126,11 +132,12 @@ public abstract class EntityHome<E, PK extends Serializable> extends MutableCont
      *
      * @return "updated" if the update is successful
      */
+
     @Transactional
     public void save()
     {
         setInstance(getEntityRepository().saveAndFlushAndRefresh(getInstance()));
-
+        logger.config("save entity");
     }
 
 
@@ -165,6 +172,19 @@ public abstract class EntityHome<E, PK extends Serializable> extends MutableCont
             return result;
 
     }
+
+    @Inject
+    private EntityManager entityManager;
+
+    @Transactional
+    public boolean isManaged()
+    {
+
+        return getInstance()!=null &&
+                entityManager.contains( getInstance() );
+    }
+
+
 
     /**
      * Called by {@link #find()}.

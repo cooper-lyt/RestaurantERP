@@ -29,6 +29,11 @@ public class Office implements java.io.Serializable {
         this.botime = botime;
     }
 
+    public Office(Date botime, OfficeStatus status) {
+        this.botime = botime;
+        this.status = status;
+    }
+
     @Id
     @Column(name = "ID", unique = true, nullable = false, length = 32)
     @NotNull
