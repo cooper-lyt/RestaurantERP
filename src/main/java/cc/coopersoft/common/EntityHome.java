@@ -5,6 +5,7 @@ import org.apache.deltaspike.jpa.api.transaction.Transactional;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.logging.Logger;
 
@@ -136,7 +137,9 @@ public abstract class EntityHome<E, PK extends Serializable> extends MutableCont
     @Transactional
     public void save()
     {
+
         setInstance(getEntityRepository().saveAndFlushAndRefresh(getInstance()));
+
         logger.config("save entity");
     }
 

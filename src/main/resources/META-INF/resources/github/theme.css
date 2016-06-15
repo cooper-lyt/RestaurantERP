@@ -11,6 +11,10 @@ label {
     border-radius: 3px;
 }
 
+label.bf-required:after {
+    content: " *";
+}
+
 .btn-success {
     color: #fff;
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15);
@@ -276,4 +280,48 @@ label {
     background: none;
     border: 0;
     box-shadow: none
+}
+
+.list-actions {
+    margin-left: 60px;
+}
+
+.list-action {
+    display: block;
+    float: left;
+    padding: 8px 10px;
+    color: #767676;
+}
+
+.list-action.btn-link{
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.table-tools-header h3{
+    margin-top: 10px;
+}
+
+
+
+.width-20percent{
+    width: 20%;
+}
+
+.width-10percent{
+    width: 10%;
+}
+
+.width-70percent{
+    width: 70%;
+}
+
+.width-min{
+    width: 1px;
+}
+
+table.floatThead-table {
+    border-top: none;
+    border-bottom: none;
+    background-color: #FFF;
 }

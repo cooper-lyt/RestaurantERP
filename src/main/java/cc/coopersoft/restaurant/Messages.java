@@ -11,4 +11,7 @@ public interface Messages {
 
     @MessageTemplate("{authenticate_fail}")
     String authenticateFail();
+
+    @MessageTemplate("{primary_key_conflict}")
+    String primaryKeyConflict();
 }

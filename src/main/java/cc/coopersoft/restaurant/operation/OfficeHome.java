@@ -1,15 +1,19 @@
 package cc.coopersoft.restaurant.operation;
 
 import cc.coopersoft.common.EntityHome;
+import cc.coopersoft.restaurant.Messages;
 import cc.coopersoft.restaurant.operation.model.Office;
 import cc.coopersoft.restaurant.operation.repository.OfficeRepository;
 import org.apache.deltaspike.data.api.EntityRepository;
+import org.apache.deltaspike.jsf.api.message.JsfMessage;
 import org.omnifaces.cdi.Param;
 import org.omnifaces.cdi.ViewScoped;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ConversationScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.Date;
@@ -25,9 +29,22 @@ public class OfficeHome extends EntityHome<Office,String> {
     @Inject
     private OfficeRepository officeRepository;
 
+    @Inject
+    private JsfMessage<Messages> messages;
 
     @Inject
     private FacesContext facesContext;
+
+    public void saveOrUpdate(){
+        if (isIdDefined()){
+            save();
+        }else if(officeRepository.findBy(getInstance().getId()) == null){
+                save();
+        }else{
+            throw new ValidatorException(new FacesMessage(messages.addError().primaryKeyConflict()));
+        }
+
+    }
 
     @PostConstruct
     public void initParam(){

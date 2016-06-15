@@ -20,48 +20,48 @@
     </ui:define>
 
     <ui:define name="custom-header">
-
-
-
         <f:metadata>
             <o:viewParam name="officeId" value="#{officeHome.id}" />
         </f:metadata>
-
     </ui:define>
 
 
-    <div class="ttttt">
         <o:form id="editForm" includeViewParams="true">
 
 
-            <b:modal id="amodal" title="店面" styleClass="modalEdit">
+            <b:modal id="amodal" title="店面" styleClass="modalEdit" >
 
+
+
+                <b:messages id="editMessages" globalOnly="false"/>
 
                 <b:inputText value="#{officeHome.instance.id}" required="true" disabled="#{officeHome.managed}"
-                             label="编号" renderLabel="true"/>
+                             label="编号" renderLabel="true" />
 
 
-                <b:inputText value="#{officeHome.instance.name}" required="true"
-                             label="名称" renderLabel="true"/>
+                <b:inputText id="name" value="#{officeHome.instance.name}"
+                             label="名称" renderLabel="true" required="true"/>
 
-
-                #{facesContext.maximumSeverity}
-
+                <p:outputPanel id="fetchBeanInfo">
+                    <b:fetchBeanInfos />
+                </p:outputPanel>
+                <h:outputScript>
+                    var successFailed=true;
+                </h:outputScript>
                 <f:facet name="footer">
                     <b:button value="取消" dismiss="modal"  onclick="return false;"/>
-                    <h:commandButton value="333" action="#{officeHome.printParam}">
-                        <f:ajax  />
-                    </h:commandButton>
+
+
                     <b:commandButton ajax="true" value="确定"
-                                     oncomplete="if (#{facesContext.maximumSeverity==null} || #{facesContext.maximumSeverity.ordinal lt 2}){$('.modalEdit').modal('hide')}"
-                                     action="#{officeHome.save}" look="success" update="resultData">
+                                        onsuccess="successFailed = false"
+                                        oncomplete="if(!validationFailed &amp;&amp; !successFailed) $('.modalEdit').modal('hide');"
+                                     action="#{officeHome.saveOrUpdate}" look="success" update="fetchBeanInfo,editMessages,resultData">
                     </b:commandButton>
                 </f:facet>
             </b:modal>
 
         </o:form>
 
-    </div>
 
     <h:form id="resultData">
 
@@ -71,23 +71,28 @@
 
                 <h3>没找到店面.</h3>
                 <p>你可以 <a href="/settings/notifications">清空条件</a> 或
-                    <b:commandButton value="新建店面" ajax="true" update="@(.ttttt)"
-                                     look="link"
+                    <b:commandButton value="新建店面" ajax="true" update="editForm"
+                                     look="link" process="@this"
                                      oncomplete="$('.modalEdit').modal();">
-                        <f:setPropertyActionListener value="#{_office.id}" target="#{officeHome.id}"/>
+                        <f:setPropertyActionListener value="" target="#{officeHome.id}"/>
                     </b:commandButton></p>
             </div>
         </ui:fragment>
 
+
+
         <h:dataTable value="#{officeManager.resultList}"
                      styleClass="table table-striped table-hover table-floatThead"
                      headerClass="table-tools-header"
-                     columnClasses=",,,,action-col"
+                     columnClasses="width-20percent,width-70percent,width-10percent,width-min"
                      var="_office" rendered="#{not empty officeManager.resultList}">
 
             <f:facet name="header">
-
-
+                <b:commandButton value="新建店面" ajax="true" update="editForm"
+                                 look="success" process="@this" styleClass="right"
+                                 oncomplete="$('.modalEdit').modal();">
+                    <f:setPropertyActionListener value="" target="#{officeHome.id}"/>
+                </b:commandButton>
                 <h3>
                     找到
                     <h:outputText value="#{officeManager.resultList.size()}">
@@ -118,12 +123,11 @@
                 <f:facet name="header">
 
                 </f:facet>
-
-
-
-                <b:commandButton ajax="true" look="link" icon="pencil"  oncomplete="$('.modalEdit').modal();" update="editForm">
-                    <f:setPropertyActionListener value="#{_office.id}" target="#{officeHome.id}"/>
-                </b:commandButton>
+                <div class="list-actions right">
+                    <b:commandButton styleClass="list-action" process="@this" ajax="true" icon="pencil" look="link" oncomplete="$('.modalEdit').modal();" update="editForm">
+                        <f:setPropertyActionListener value="#{_office.id}" target="#{officeHome.id}"/>
+                    </b:commandButton>
+                </div>
             </h:column>
 
 
@@ -133,4 +137,14 @@
 
 
     <h:outputScript library="floatThead" name="jquery.floatThead.min.js"/>
+    <h:outputScript>
+        $(function(){
+            $(".table.table-floatThead").floatThead({
+                top:50,
+                responsiveContainer: function($table){
+                    return $table.closest(".table-responsive");
+                }
+            });
+        });
+    </h:outputScript>
 </ui:composition>
