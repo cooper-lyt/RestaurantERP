@@ -41,7 +41,7 @@ public class OfficeHome extends EntityHome<Office,String> {
         }else if(officeRepository.findBy(getInstance().getId()) == null){
                 save();
         }else{
-            throw new ValidatorException(new FacesMessage(messages.addError().primaryKeyConflict()));
+            messages.addError().primaryKeyConflict();
         }
 
     }

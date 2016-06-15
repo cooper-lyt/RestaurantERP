@@ -44,17 +44,17 @@
 
                 <p:outputPanel id="fetchBeanInfo">
                     <b:fetchBeanInfos />
+                    <h:outputScript>
+                        var noFailedMessages = #{facesContext.maximumSeverity==null || facesContext.maximumSeverity.ordinal lt 2};
+                    </h:outputScript>
                 </p:outputPanel>
-                <h:outputScript>
-                    var successFailed=true;
-                </h:outputScript>
+
                 <f:facet name="footer">
                     <b:button value="取消" dismiss="modal"  onclick="return false;"/>
 
 
                     <b:commandButton ajax="true" value="确定"
-                                        onsuccess="successFailed = false"
-                                        oncomplete="if(!validationFailed &amp;&amp; !successFailed) $('.modalEdit').modal('hide');"
+                                        oncomplete="if(!validationFailed &amp;&amp; noFailedMessages) $('.modalEdit').modal('hide');"
                                      action="#{officeHome.saveOrUpdate}" look="success" update="fetchBeanInfo,editMessages,resultData">
                     </b:commandButton>
                 </f:facet>
@@ -99,6 +99,13 @@
                         <f:convertNumber type="number" groupingUsed="true"/>
                     </h:outputText> 个符合条件的店面
                 </h3>
+                <b:switch value="#num;{checkboxBean.cbxError}"
+                          id="checkboxWithErrorMessage"
+                          caption="click to toggle the error message"
+                          label="error"
+                          onchange="ajax:checkboxBean.action();"
+                          update="@form"
+                />
             </f:facet>
 
             <h:column>
