@@ -1,5 +1,6 @@
-package cc.coopersoft.system.util;
+package cc.coopersoft.common.util;
 
+import java.util.ResourceBundle;
 import java.util.logging.Logger;
 
 import javax.enterprise.context.RequestScoped;
@@ -18,6 +19,14 @@ public class Resources {
     @Produces
     public Logger produceLog(InjectionPoint injectionPoint) {
         return Logger.getLogger(injectionPoint.getMember().getDeclaringClass().getName());
+    }
+
+    @Produces
+    @MessageBundle
+    public ResourceBundle getBundle() {
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        return context.getApplication().getResourceBundle(context, "messages");
     }
 
     @Named

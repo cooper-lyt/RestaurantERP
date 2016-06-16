@@ -8,6 +8,7 @@ import javax.enterprise.inject.Model;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
 /**
@@ -41,6 +42,9 @@ public class OfficeManager {
         this.condition = condition;
     }
 
+    public List<Office.OfficeStatus> getAllOfficeStatusList(){
+        return new ArrayList<Office.OfficeStatus>(EnumSet.of(Office.OfficeStatus.PREPARE,Office.OfficeStatus.OPEN, Office.OfficeStatus.CLOSE, Office.OfficeStatus.DESTROY));
+    }
 
     private List<Office> resultList;
 
