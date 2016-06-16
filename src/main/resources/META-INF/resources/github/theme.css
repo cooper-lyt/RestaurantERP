@@ -299,10 +299,17 @@ label.bf-required:after {
 }
 
 .table-tools-header h3{
-    margin-top: 10px;
+    margin-top: 0;
 }
 
+.table-tools-header .form-group{
+    margin-bottom: 0;
+}
 
+.table-tools-header .form-group .checkbox{
+    margin-top: 0;
+    margin-bottom: 0;
+}
 
 .width-20percent{
     width: 20%;
@@ -310,6 +317,14 @@ label.bf-required:after {
 
 .width-10percent{
     width: 10%;
+}
+
+.width-5percent{
+    width: 5%;
+}
+
+.width-75percent{
+    width: 75%;
 }
 
 .width-70percent{

@@ -22,7 +22,7 @@ public class OfficeManager {
     @Inject
     private OfficeRepository officeRepository;
 
-    private boolean showDestroy;
+    private boolean showDestroy = false;
 
     private String condition;
 
@@ -44,6 +44,10 @@ public class OfficeManager {
 
     public List<Office.OfficeStatus> getAllOfficeStatusList(){
         return new ArrayList<Office.OfficeStatus>(EnumSet.of(Office.OfficeStatus.PREPARE,Office.OfficeStatus.OPEN, Office.OfficeStatus.CLOSE, Office.OfficeStatus.DESTROY));
+    }
+
+    public void refresh(){
+        resultList = null;
     }
 
     private List<Office> resultList;

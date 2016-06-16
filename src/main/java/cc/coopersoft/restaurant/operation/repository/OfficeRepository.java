@@ -23,7 +23,10 @@ public interface OfficeRepository extends EntityRepository<Office,String> {
     @Query("select office from Office office where office.name like ?1 order by office.botime")
     List<Office> findByConditionAll(String condition);
 
-    @Query("select office from Office office order by office.botime")
+    @Query("select office from Office office where office.status <> 'DESTROY' order by office.botime")
     List<Office> findAllVaild();
+
+    @Query("select office from Office office order by office.botime")
+    List<Office> findAll();
 
 }

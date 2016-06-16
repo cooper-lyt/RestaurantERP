@@ -42,10 +42,6 @@
                 <b:inputText id="name" value="#{officeHome.instance.name}"
                              label="名称" renderLabel="true" required="true"/>
 
-                #{enumHelper.getFullName(officeHome.instance.status)}
-
-                #{officeHome.instance.status.declaringClass.name}
-
                 <b:selectOneMenu label="状态" renderLabel="true" required="true" value="#{officeHome.instance.status}" converter="omnifaces.GenericEnumConverter">
                     <f:selectItems value="#{officeManager.allOfficeStatusList}" var="_status" itemLabel="#{enumHelper.getLabel(_status)}" itemValue="#{_status.name()}"/>
 
@@ -102,18 +98,27 @@
                                  oncomplete="$('.modalEdit').modal();">
                     <f:setPropertyActionListener value="" target="#{officeHome.id}"/>
                 </b:commandButton>
-                <h3>
-                    找到
-                    <h:outputText value="#{officeManager.resultList.size()}">
-                        <f:convertNumber type="number" groupingUsed="true"/>
-                    </h:outputText> 个符合条件的店面
-                    <b:switch value="#num;{officeManager.showDestroy}"
+
+                <div style="display: table">
+                    <div style="display: table-cell">
+                    <h3>
+                        找到
+                        <h:outputText value="#{officeManager.resultList.size()}">
+                            <f:convertNumber type="number" groupingUsed="true"/>
+                        </h:outputText> 个符合条件的店面
+                    </h3>
+                    </div>
+                <div style="display: table-cell">
+                    <b:switch value="#{officeManager.showDestroy}"
                               id="checkboxWithErrorMessage"
+                              onchange="ajax:officeManager.refresh();"
+                              switchsize="small"
                               on-text="所有"
                               off-text="可用"
-                              update="@form"
-                    />
-                </h3>
+                              update="@form"/>
+                </div>
+                </div>
+
 
             </f:facet>
 
@@ -133,7 +138,7 @@
                 <f:facet name="header">
                     状态
                 </f:facet>
-                <h:outputText value="#{_office.status}"/>
+                <h:outputText value="#{enumHelper.getLabel(_office.status)}"/>
             </h:column>
             <h:column>
                 <f:facet name="header">
