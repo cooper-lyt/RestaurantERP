@@ -22,6 +22,9 @@
         <class>org.picketlink.idm.jpa.model.sample.simple.PasswordCredentialTypeEntity</class>
         <class>org.picketlink.idm.jpa.model.sample.simple.AttributeTypeEntity</class>
 
+        <class>cc.coopersoft.system.model.Dictionary</class>
+        <class>cc.coopersoft.system.model.DictionaryCategaory</class>
+
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>

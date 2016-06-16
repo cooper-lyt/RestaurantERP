@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:composition template="/applayout/pageTemplate.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:ng="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <b:row style="margin-top: 20px;">
+        <b:column colMd="3">
+            <nav class="menu">
+                <h3 class="menu-heading">
+                    字典类型
+                </h3>
+
+                <ui:repeat value="" var="">
+
+                </ui:repeat>
+                <a href="/settings/profile" class="js-selected-navigation-item menu-item" data-selected-links="avatar_settings /settings/profile">Profile</a>
+                <a href="/settings/admin" aria-selected="true" class="js-selected-navigation-item selected menu-item" data-selected-links=" /settings/admin">Account</a>
+
+                <a href="/settings/emails" class="js-selected-navigation-item menu-item" data-selected-links=" /settings/emails">
+                    Emails
+                </a>
+                <a href="/settings/notifications" class="js-selected-navigation-item menu-item" data-selected-links=" /settings/notifications">Notifications</a>
+
+                <a href="/settings/billing" class="js-selected-navigation-item menu-item" data-selected-links="user_billing_settings /settings/billing">Billing</a>
+
+                <a href="/settings/keys" class="js-selected-navigation-item menu-item" data-selected-links=" /settings/keys">SSH and GPG keys</a>
+
+                <a href="/settings/security" class="js-selected-navigation-item menu-item" data-selected-links=" /settings/security">Security</a>
+
+                <a href="/settings/applications" class="js-selected-navigation-item menu-item" data-selected-links="applications_settings settings_user_authorized_apps settings_user_developer_applications /settings/applications">OAuth applications</a>
+                <a href="/settings/tokens" class="js-selected-navigation-item menu-item" data-selected-links="oauth_tokens /settings/tokens">Personal access tokens</a>
+                <a href="/settings/repositories" class="js-selected-navigation-item menu-item" data-selected-links=" /settings/repositories">Repositories</a>
+                <a href="/settings/organizations" class="js-selected-navigation-item menu-item" data-selected-links=" /settings/organizations">Organizations</a>
+                <a href="/settings/replies" class="js-selected-navigation-item menu-item" data-selected-links="edit_saved_reply /settings/replies">Saved replies</a>
+
+            </nav>
+        </b:column>
+        <b:column colMd="9">
+
+            <b:panel title="tttttt">
+
+
+            </b:panel>
+        </b:column>
+    </b:row>
+
+
+ </ui:composition>

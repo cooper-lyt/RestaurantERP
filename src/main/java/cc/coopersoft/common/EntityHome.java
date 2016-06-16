@@ -176,15 +176,11 @@ public abstract class EntityHome<E, PK extends Serializable> extends MutableCont
 
     }
 
-    @Inject
-    private EntityManager entityManager;
-
     @Transactional
     public boolean isManaged()
     {
-
         return getInstance()!=null &&
-                entityManager.contains( getInstance() );
+                getEntityManager().contains( getInstance() );
     }
 
 
@@ -203,6 +199,8 @@ public abstract class EntityHome<E, PK extends Serializable> extends MutableCont
 
 
     protected abstract EntityRepository<E,PK> getEntityRepository();
+
+    protected abstract EntityManager getEntityManager();
 
 
 

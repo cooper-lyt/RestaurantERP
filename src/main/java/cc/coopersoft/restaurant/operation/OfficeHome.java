@@ -11,11 +11,13 @@ import org.omnifaces.cdi.ViewScoped;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ConversationScoped;
+import javax.enterprise.inject.Default;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.EntityManager;
 import java.util.Date;
 import java.util.Map;
 
@@ -31,6 +33,10 @@ public class OfficeHome extends EntityHome<Office,String> {
 
     @Inject
     private JsfMessage<Messages> messages;
+
+    @Inject
+    @Default
+    private EntityManager entityManager;
 
     @Inject
     private FacesContext facesContext;
@@ -63,5 +69,9 @@ public class OfficeHome extends EntityHome<Office,String> {
 
     protected EntityRepository<Office, String> getEntityRepository() {
         return officeRepository;
+    }
+
+    protected EntityManager getEntityManager() {
+        return entityManager;
     }
 }
