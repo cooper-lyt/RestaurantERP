@@ -2,6 +2,7 @@ package cc.coopersoft.restaurant.operation;
 
 import cc.coopersoft.restaurant.operation.model.Office;
 import cc.coopersoft.restaurant.operation.repository.OfficeRepository;
+import org.omnifaces.cdi.Param;
 
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Model;
@@ -22,15 +23,17 @@ public class OfficeManager {
     @Inject
     private OfficeRepository officeRepository;
 
-    private boolean showDestroy = false;
+    @Inject @Param
+    private Boolean showDestroy;
 
+    @Inject @Param
     private String condition;
 
-    public boolean isShowDestroy() {
+    public Boolean getShowDestroy() {
         return showDestroy;
     }
 
-    public void setShowDestroy(boolean showDestroy) {
+    public void setShowDestroy(Boolean showDestroy) {
         this.showDestroy = showDestroy;
     }
 
@@ -58,18 +61,18 @@ public class OfficeManager {
 
             String sqlCondition = condition;
 
-            if (showDestroy){
+            if (showDestroy != null && showDestroy){
                 if (sqlCondition == null || sqlCondition.trim().equals("")){
                     resultList = officeRepository.findAll();
                 }else {
-                    sqlCondition = "*" + condition.trim() + "*";
+                    sqlCondition = "%" + condition.trim() + "%";
                     resultList = officeRepository.findByConditionAll(sqlCondition);
                 }
             }else{
                 if (sqlCondition == null || sqlCondition.trim().equals("")){
                     resultList = officeRepository.findAllVaild();
                 }else{
-                    sqlCondition = "*" + condition.trim() + "*";
+                    sqlCondition = "%" + condition.trim() + "%";
                     resultList = officeRepository.findByCondition(sqlCondition);
                 }
 

@@ -223,6 +223,10 @@ label.bf-required:after {
     margin-bottom: 0;
 }
 
+.flex-table-item .form-group .input-group{
+    width: 100%;
+}
+
 .blankslate {
     position: relative;
     padding: 30px;
@@ -283,7 +287,7 @@ label.bf-required:after {
 }
 
 .list-actions {
-    margin-left: 60px;
+    margin-left: 30px;
 }
 
 .list-action {
@@ -296,6 +300,10 @@ label.bf-required:after {
 .list-action.btn-link{
     padding-top: 0;
     padding-bottom: 0;
+}
+
+.list-action.btn-link:focus, .list-action.btn-link:hover{
+    text-decoration: none;
 }
 
 .table-tools-header h3{

@@ -6,22 +6,38 @@
                 xmlns:b="http://bootsfaces.net/ui"
                 xmlns:ng="http://xmlns.jcp.org/jsf/passthrough"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui" xmlns:butter="http://butterfaces.org/components"
+                xmlns:p="http://primefaces.org/ui"
                 xmlns:o="http://omnifaces.org/ui">
 
 
     <ui:param name="fun_title" value="店面管理"/>
     <ui:define name="search-condition">
         <b:inputText value="#{officeManager.condition}" styleClass="form-control input-block" aria-label="Search"
-                     placeholder="查询条件"/>
+                     placeholder="查询条件">
+            <f:facet name="prepend">
+                <h:selectBooleanCheckbox value="#{officeManager.showDestroy}" styleClass="js-tooltip" title="是否显示停止营业的店面" ng:data-container="body"
+                                         ng:data-placement="auto" ng:data-toggle="tooltip"/>
+            </f:facet>
+        </b:inputText>
     </ui:define>
     <ui:define name="search-action">
-        <b:commandButton look="default">查询</b:commandButton>
+        <b:commandButton action="#{officeManager.refresh}" look="default">查询</b:commandButton>
     </ui:define>
 
     <ui:define name="custom-header">
+        <h:outputScript>
+            $(document).ready(
+                    function () {
+                        $('.js-tooltip').tooltip();
+                    }
+            );
+            
+
+        </h:outputScript>
         <f:metadata>
             <o:viewParam name="officeId" value="#{officeHome.id}" />
+            <o:viewParam name="condition" value="#{officeManager.condition}"/>
+            <o:viewParam name="showDestroy" value="#{officeManager.showDestroy}"/>
         </f:metadata>
     </ui:define>
 
@@ -68,15 +84,16 @@
         </o:form>
 
 
-    <h:form id="resultData">
+    <o:form id="resultData" includeViewParams="true">
 
         <ui:fragment rendered="#{empty officeManager.resultList}">
             <div class="blankslate blankslate-spacious blankslate-large">
                 <b:iconAwesome name="search" size="4x" styleClass="blankslate-icon"/>
 
                 <h3>没找到店面.</h3>
-                <p>你可以 <a href="/settings/notifications">清空条件</a> 或
+                <p>你可以 <p:link rendered="#{not empty officeManager.condition}" includeViewParams="false">清空条件</p:link>
                     <b:commandButton value="新建店面" ajax="true" update="editForm"
+                                     rendered="#{empty officeManager.condition}"
                                      look="link" process="@this"
                                      oncomplete="$('.modalEdit').modal();">
                         <f:setPropertyActionListener value="" target="#{officeHome.id}"/>
@@ -99,25 +116,14 @@
                     <f:setPropertyActionListener value="" target="#{officeHome.id}"/>
                 </b:commandButton>
 
-                <div style="display: table">
-                    <div style="display: table-cell">
                     <h3>
                         找到
                         <h:outputText value="#{officeManager.resultList.size()}">
                             <f:convertNumber type="number" groupingUsed="true"/>
                         </h:outputText> 个符合条件的店面
                     </h3>
-                    </div>
-                <div style="display: table-cell">
-                    <b:switch value="#{officeManager.showDestroy}"
-                              id="checkboxWithErrorMessage"
-                              onchange="ajax:officeManager.refresh();"
-                              switchsize="small"
-                              on-text="所有"
-                              off-text="可用"
-                              update="@form"/>
-                </div>
-                </div>
+
+
 
 
             </f:facet>
@@ -126,26 +132,26 @@
                 <f:facet name="header">
                     编号
                 </f:facet>
-                <h:outputText value="#{_office.id}"/>
+                <h:outputText style="#{_office.status eq 'DESTROY' ? 'text-decoration:line-through;' : ''}" value="#{_office.id}"/>
             </h:column>
             <h:column>
                 <f:facet name="header">
                     名称
                 </f:facet>
-                <h:outputText value="#{_office.name}"/>
+                <h:outputText style="#{_office.status eq 'DESTROY' ? 'text-decoration:line-through;' : ''}" value="#{_office.name}"/>
             </h:column>
             <h:column>
                 <f:facet name="header">
                     状态
                 </f:facet>
-                <h:outputText value="#{enumHelper.getLabel(_office.status)}"/>
+                <h:outputText style="white-space:nowrap;" value="#{enumHelper.getLabel(_office.status)}"/>
             </h:column>
             <h:column>
                 <f:facet name="header">
 
                 </f:facet>
                 <div class="list-actions right">
-                    <b:commandButton styleClass="list-action" process="@this" ajax="true" icon="pencil" look="link" oncomplete="$('.modalEdit').modal();" update="editForm">
+                    <b:commandButton styleClass="list-action" value="编辑" process="@this" ajax="true" icon="pencil" look="link" oncomplete="$('.modalEdit').modal();" update="editForm">
                         <f:setPropertyActionListener value="#{_office.id}" target="#{officeHome.id}"/>
                     </b:commandButton>
                 </div>
@@ -154,7 +160,7 @@
 
         </h:dataTable>
 
-    </h:form>
+    </o:form>
 
 
     <h:outputScript library="floatThead" name="jquery.floatThead.min.js"/>
