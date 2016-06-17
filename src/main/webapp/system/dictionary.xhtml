@@ -120,10 +120,15 @@
 
                 <f:facet name="heading">
                     <h:outputText styleClass="heading-text" value="#{dictionaryCategoryHome.idDefined ? dictionaryCategoryHome.instance.name : '请选择要操作的字典类型'}" />
+                    <b:commandButton look="link" ajax="true" icon="pencil" tooltip="编辑字典种类"
+                                     oncomplete="" process="@this"
+                        rendered="#{dictionaryCategoryHome.idDefined}" update="categoryEdit">
+                        <f:setPropertyActionListener value="#{dictionaryCategoryHome.instance.id}" target="#{dictionaryCategoryHome.id}"/>
+                    </b:commandButton>
+
                     <div class="timeline-comment-actions">
                         <b:commandButton look="link" icon="plus" ajax="true" update="dictionaryEdit"
                                          tooltip="添加字典项" rendered="#{dictionaryCategoryHome.idDefined}"
-
                                          oncomplete="$('.editModal').modal();">
                             <f:setPropertyActionListener value="" target="#{dictionaryHome.id}"/>
                         </b:commandButton>
@@ -147,16 +152,12 @@
                              var="_dict" rendered="#{dictionaryCategoryHome.idDefined and (not empty dictionaryCategoryHome.instance.dictionaryList)}">
 
                     <h:column>
-                        <f:facet name="header">
-                            编号
-                        </f:facet>
+
                         <h:outputText style="#{(not _dict.enable) ? 'text-decoration:line-through;' : ''}" value="#{_dict.id}"/>
                     </h:column>
 
                     <h:column>
-                        <f:facet name="header">
-                            名称
-                        </f:facet>
+
                         <h:outputText style="#{(not _dict.enable) ? 'text-decoration:line-through;' : ''}" value="#{_dict.name}"/>
                     </h:column>
                     <h:column>

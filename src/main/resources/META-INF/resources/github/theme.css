@@ -485,6 +485,11 @@ table.floatThead-table {
     padding-bottom: 0;
 }
 
+.panel-heading .btn-link{
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
 .heading-text{
     font-size: 14px;
     font-weight: bold;
