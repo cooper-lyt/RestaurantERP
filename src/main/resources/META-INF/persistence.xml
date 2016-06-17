@@ -23,7 +23,7 @@
         <class>org.picketlink.idm.jpa.model.sample.simple.AttributeTypeEntity</class>
 
         <class>cc.coopersoft.system.model.Dictionary</class>
-        <class>cc.coopersoft.system.model.DictionaryCategaory</class>
+        <class>cc.coopersoft.system.model.DictionaryCategory</class>
 
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>

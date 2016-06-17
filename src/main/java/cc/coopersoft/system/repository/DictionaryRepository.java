@@ -18,6 +18,5 @@ import java.util.List;
 public interface DictionaryRepository extends EntityRepository<Dictionary,String> {
 
 
-    @Query("select category from DictionaryCategaory category order by category.botime")
-    List<Dictionary> findAll();
+
 }

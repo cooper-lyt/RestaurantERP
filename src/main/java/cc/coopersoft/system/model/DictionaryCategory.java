@@ -9,8 +9,8 @@ import java.util.*;
  * Created by cooper on 6/16/16.
  */
 @Entity
-@Table(name = "DICTIONARY_CATEGAORY",catalog = "PLAT_SYSTEM")
-public class DictionaryCategaory implements java.io.Serializable {
+@Table(name = "DICTIONARY_CATEGORY",catalog = "PLAT_SYSTEM")
+public class DictionaryCategory implements java.io.Serializable {
 
     private String id;
     private String managerRole;
@@ -20,11 +20,12 @@ public class DictionaryCategaory implements java.io.Serializable {
     private Date botime;
     private Set<Dictionary> dictionaries = new HashSet<Dictionary>(0);
 
-    public DictionaryCategaory() {
+    public DictionaryCategory() {
     }
 
 
-    public DictionaryCategaory(boolean enable, boolean system, Date botime) {
+    public DictionaryCategory(String id, boolean enable, boolean system, Date botime) {
+        this.id = id;
         this.enable = enable;
         this.system = system;
         this.botime = botime;

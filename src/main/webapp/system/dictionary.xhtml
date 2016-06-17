@@ -16,53 +16,113 @@
     </ui:define>
 
 
-    <h:form>
+    <o:form id="categoryEdit" includeViewParams="true">
+
+        <b:modal id="categoryEditModal" title="字典类型" styleClass="categoryEditModal"  >
+
+            <p:outputPanel id="categoryEditInputs">
+                <b:messages/>
+
+                <b:inputText value="#{dictionaryCategoryHome.instance.name}" label="名称" required="true" renderLabel="true"/>
+
+                <p:outputPanel id="fetchBeanInfo">
+                    <b:fetchBeanInfos />
+                    <h:outputScript>
+                        var noFailedMessages = #{facesContext.maximumSeverity==null || facesContext.maximumSeverity.ordinal lt 2};
+                    </h:outputScript>
+                </p:outputPanel>
+
+            </p:outputPanel>
 
 
-    </h:form>
+
+            <f:facet name="footer">
+                <b:button value="取消" dismiss="modal"  onclick="return false;"/>
+
+
+                <b:commandButton ajax="true" value="确定"
+                                 oncomplete="if(!validationFailed &amp;&amp; noFailedMessages) $('.categoryEditModal').modal('hide');"
+                                 action="#{dictionaryCategoryHome.saveOrUpdate}" look="success" update="categoryEditInputs,categories">
+                </b:commandButton>
+            </f:facet>
+        </b:modal>
+
+    </o:form>
+
+
+    <o:form includeViewParams="true" id="dictionaryEdit">
+        <b:modal id="editModal" title="字典" styleClass="editModal"  >
+
+            <p:outputPanel id="editInputs">
+                <b:messages/>
+
+                <b:inputText value="#{dictionaryHome.instance.id}" required="true"
+                             disabled="#{dictionaryHome.managed}"
+                             label="编号" renderLabel="true"/>
+
+                <b:inputText value="#{dictionaryHome.instance.name}" required="true"
+                             label="名称" renderLabel="true"/>
+
+            </p:outputPanel>
+
+
+
+            <f:facet name="footer">
+                <b:button value="取消" dismiss="modal"  onclick="return false;"/>
+
+
+                <b:commandButton ajax="true" value="确定"
+                                 oncomplete="if(!validationFailed &amp;&amp; noFailedMessages) $('.modalEdit').modal('hide');"
+                                 action="#{dictionaryHome.saveOrUpdate}" look="success" update="editInputs">
+                </b:commandButton>
+            </f:facet>
+        </b:modal>
+    </o:form>
 
 
     <b:row style="margin-top: 20px;">
         <b:column colMd="3">
-            <o:form includeViewParams="true">
+            <o:form id="categories" includeViewParams="true">
             <nav class="menu">
                 <div class="menu-heading">
                     <div class="timeline-comment-actions">
-                        <b:commandButton look="link" icon="plus"/>
+                        <b:commandButton look="link" icon="plus" ajax="true" update="categoryEdit"
+                            oncomplete="$('.categoryEditModal').modal();">
+                            <f:setPropertyActionListener value="" target="#{dictionaryCategoryHome.id}"/>
+                        </b:commandButton>
                     </div>
                     <div class="menu-heading-text">字典类型</div>
                 </div>
 
-
-                <a href="/settings/profile" class="js-selected-navigation-item menu-item" data-selected-links="avatar_settings /settings/profile">Profile</a>
-                <a href="/settings/admin" aria-selected="true" class="js-selected-navigation-item selected menu-item" data-selected-links=" /settings/admin">Account</a>
-
-                <a href="/settings/emails" class="js-selected-navigation-item menu-item" data-selected-links=" /settings/emails">
-                    Emails
-                </a>
-                <a href="/settings/notifications" class="js-selected-navigation-item menu-item" data-selected-links=" /settings/notifications">Notifications</a>
-
-                <a href="/settings/billing" class="js-selected-navigation-item menu-item" data-selected-links="user_billing_settings /settings/billing">Billing</a>
-
-                <a href="/settings/keys" class="js-selected-navigation-item menu-item" data-selected-links=" /settings/keys">SSH and GPG keys</a>
-
-                <a href="/settings/security" class="js-selected-navigation-item menu-item" data-selected-links=" /settings/security">Security</a>
-
-                <a href="/settings/applications" class="js-selected-navigation-item menu-item" data-selected-links="applications_settings settings_user_authorized_apps settings_user_developer_applications /settings/applications">OAuth applications</a>
-                <a href="/settings/tokens" class="js-selected-navigation-item menu-item" data-selected-links="oauth_tokens /settings/tokens">Personal access tokens</a>
-                <a href="/settings/repositories" class="js-selected-navigation-item menu-item" data-selected-links=" /settings/repositories">Repositories</a>
-                <a href="/settings/organizations" class="js-selected-navigation-item menu-item" data-selected-links=" /settings/organizations">Organizations</a>
-                <a href="/settings/replies" class="js-selected-navigation-item menu-item" data-selected-links="edit_saved_reply /settings/replies">Saved replies</a>
+                <ui:repeat value="#{dictionaryManager.categories}" var="_category">
+                    <p:commandLink ajax="true" immediate="true" styleClass="menu-item #{dictionaryCategoryHome.id eq _category.id ? 'selected' : ''}"
+                                   update="categories,dictionaries" process="@this"
+                                   value="#{_category.name}">
+                        <f:param value="#{_category.id}" name="dictionaryCategoryId"/>
+                    </p:commandLink>
+                </ui:repeat>
 
             </nav>
             </o:form>
         </b:column>
         <b:column colMd="9">
 
-            <b:panel title="tttttt">
+            <o:form id="dictionaries" includeViewParams="true" >
+            <b:panel collapsible="false">
+
+                <f:facet name="heading">
+                    <h:outputText value="#{dictionaryCategoryHome.idDefined ? dictionaryCategoryHome.instance.name : '请选择要操作的字典类型'}" />
+                    <div class="timeline-comment-actions">
+                        <b:commandButton look="link" icon="plus" ajax="true" update="dictionaryEdit"
+                                         oncomplete="$('.editModal').modal();">
+                            <f:setPropertyActionListener value="" target="#{dictionaryHome.id}"/>
+                        </b:commandButton>
+                    </div>
+                </f:facet>
 
 
             </b:panel>
+            </o:form>
         </b:column>
     </b:row>
 

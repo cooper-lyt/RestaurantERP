@@ -64,6 +64,8 @@ INSERT INTO `PasswordCredentialTypeEntity` (`id`, `effectiveDate`, `expiryDate`,
 /*!40000 ALTER TABLE `PasswordCredentialTypeEntity` ENABLE KEYS */;
 UNLOCK TABLES;
 
+INSERT INTO DICTIONARY_CATEGORY(ID, NAME, SYSTEM, ENABLE, BOTIME) VALUES('job','岗位',true,true,'2016-06-1');
+
 
 --
 -- Dumping data for table `hibernate_sequence`
