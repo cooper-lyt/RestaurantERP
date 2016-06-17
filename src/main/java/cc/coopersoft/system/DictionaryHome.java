@@ -1,10 +1,12 @@
 package cc.coopersoft.system;
 
 import cc.coopersoft.common.EntityHome;
+import cc.coopersoft.restaurant.Messages;
 import cc.coopersoft.system.model.Dictionary;
 import cc.coopersoft.system.repository.DictionaryCategoryRepository;
 import cc.coopersoft.system.repository.DictionaryRepository;
 import org.apache.deltaspike.data.api.EntityRepository;
+import org.apache.deltaspike.jsf.api.message.JsfMessage;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ConversationScoped;
@@ -28,6 +30,9 @@ public class DictionaryHome extends EntityHome<Dictionary,String>{
     private FacesContext facesContext;
 
     @Inject
+    private JsfMessage<Messages> messages;
+
+    @Inject
     private DictionaryRepository dictionaryRepository;
 
     protected Dictionary createInstance() {
@@ -40,6 +45,17 @@ public class DictionaryHome extends EntityHome<Dictionary,String>{
 
     protected EntityManager getEntityManager() {
         return entityManager;
+    }
+
+    public void saveOrUpdate(){
+        if (isIdDefined()){
+            save();
+        }else if(dictionaryRepository.findBy(getInstance().getId()) == null){
+            save();
+        }else{
+            messages.addError().primaryKeyConflict();
+        }
+
     }
 
     @PostConstruct

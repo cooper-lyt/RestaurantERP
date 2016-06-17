@@ -25,12 +25,12 @@
 
                 <b:inputText value="#{dictionaryCategoryHome.instance.name}" label="名称" required="true" renderLabel="true"/>
 
-                <p:outputPanel id="fetchBeanInfo">
+
                     <b:fetchBeanInfos />
                     <h:outputScript>
                         var noFailedMessages = #{facesContext.maximumSeverity==null || facesContext.maximumSeverity.ordinal lt 2};
                     </h:outputScript>
-                </p:outputPanel>
+
 
             </p:outputPanel>
 
@@ -63,6 +63,13 @@
                 <b:inputText value="#{dictionaryHome.instance.name}" required="true"
                              label="名称" renderLabel="true"/>
 
+
+                    <b:fetchBeanInfos />
+                    <h:outputScript>
+                        var noFailedMessages = #{facesContext.maximumSeverity==null || facesContext.maximumSeverity.ordinal lt 2};
+                    </h:outputScript>
+
+
             </p:outputPanel>
 
 
@@ -72,8 +79,8 @@
 
 
                 <b:commandButton ajax="true" value="确定"
-                                 oncomplete="if(!validationFailed &amp;&amp; noFailedMessages) $('.modalEdit').modal('hide');"
-                                 action="#{dictionaryHome.saveOrUpdate}" look="success" update="editInputs">
+                                 oncomplete="if(!validationFailed &amp;&amp; noFailedMessages) $('.editModal').modal('hide');"
+                                 action="#{dictionaryHome.saveOrUpdate}" look="success" update="editInputs,dictionaries">
                 </b:commandButton>
             </f:facet>
         </b:modal>
@@ -86,19 +93,20 @@
             <nav class="menu">
                 <div class="menu-heading">
                     <div class="timeline-comment-actions">
-                        <b:commandButton look="link" icon="plus" ajax="true" update="categoryEdit"
+                        <b:commandButton look="link" icon="plus" ajax="true"
+                                         update="categoryEdit" tooltip="添加自定义字典类型"
                             oncomplete="$('.categoryEditModal').modal();">
                             <f:setPropertyActionListener value="" target="#{dictionaryCategoryHome.id}"/>
                         </b:commandButton>
                     </div>
-                    <div class="menu-heading-text">字典类型</div>
+                    字典类型
                 </div>
 
                 <ui:repeat value="#{dictionaryManager.categories}" var="_category">
                     <p:commandLink ajax="true" immediate="true" styleClass="menu-item #{dictionaryCategoryHome.id eq _category.id ? 'selected' : ''}"
                                    update="categories,dictionaries" process="@this"
                                    value="#{_category.name}">
-                        <f:param value="#{_category.id}" name="dictionaryCategoryId"/>
+                        <f:setPropertyActionListener value="#{_category.id}" target="#{dictionaryCategoryHome.id}"/>
                     </p:commandLink>
                 </ui:repeat>
 
@@ -111,15 +119,57 @@
             <b:panel collapsible="false">
 
                 <f:facet name="heading">
-                    <h:outputText value="#{dictionaryCategoryHome.idDefined ? dictionaryCategoryHome.instance.name : '请选择要操作的字典类型'}" />
+                    <h:outputText styleClass="heading-text" value="#{dictionaryCategoryHome.idDefined ? dictionaryCategoryHome.instance.name : '请选择要操作的字典类型'}" />
                     <div class="timeline-comment-actions">
                         <b:commandButton look="link" icon="plus" ajax="true" update="dictionaryEdit"
+                                         tooltip="添加字典项" rendered="#{dictionaryCategoryHome.idDefined}"
+
                                          oncomplete="$('.editModal').modal();">
                             <f:setPropertyActionListener value="" target="#{dictionaryHome.id}"/>
                         </b:commandButton>
                     </div>
                 </f:facet>
 
+
+                <b:jumbotron rendered="#{not dictionaryCategoryHome.idDefined}">
+                    <h1>字典管理</h1>
+                    <p>要添加自定义字典类型请使用字典类型列表上方的添加按钮,要编辑字典请先选择字典类型.</p>
+                </b:jumbotron>
+
+                <b:well rendered="#{dictionaryCategoryHome.idDefined and (empty dictionaryCategoryHome.instance.dictionaryList)}">
+                    <h3>此类别下没有字典项</h3>
+                    使用上方的添加按钮添加字典.
+                </b:well>
+
+                <h:dataTable value="#{dictionaryCategoryHome.instance.dictionaryList}"
+                             styleClass="table table-striped table-hover table-floatThead"
+                             columnClasses="width-20percent,width-80percent,width-min"
+                             var="_dict" rendered="#{dictionaryCategoryHome.idDefined and (not empty dictionaryCategoryHome.instance.dictionaryList)}">
+
+                    <h:column>
+                        <f:facet name="header">
+                            编号
+                        </f:facet>
+                        <h:outputText style="#{(not _dict.enable) ? 'text-decoration:line-through;' : ''}" value="#{_dict.id}"/>
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">
+                            名称
+                        </f:facet>
+                        <h:outputText style="#{(not _dict.enable) ? 'text-decoration:line-through;' : ''}" value="#{_dict.name}"/>
+                    </h:column>
+                    <h:column>
+                        <div class="list-actions right">
+                            <b:commandButton styleClass="list-action"
+                                             value="编辑" process="@this" ajax="true" icon="pencil" look="link"
+                                             oncomplete="$('.editModal').modal();" update="dictionaryEdit">
+                                <f:setPropertyActionListener value="#{_dict.id}" target="#{dictionaryHome.id}"/>
+                            </b:commandButton>
+                        </div>
+                    </h:column>
+
+                </h:dataTable>
 
             </b:panel>
             </o:form>
