@@ -93,7 +93,7 @@ public class DictionaryCategory implements java.io.Serializable {
         this.botime = botime;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "categaory")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "category")
     public Set<Dictionary> getDictionaries() {
         return dictionaries;
     }

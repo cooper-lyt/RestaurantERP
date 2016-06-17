@@ -16,7 +16,7 @@ public class Dictionary implements java.io.Serializable, Comparable<Dictionary> 
     private boolean enable;
     private int pri;
 
-    private DictionaryCategory categaory;
+    private DictionaryCategory category;
 
     public Dictionary() {
     }
@@ -69,12 +69,12 @@ public class Dictionary implements java.io.Serializable, Comparable<Dictionary> 
     @ManyToOne(fetch = FetchType.LAZY,optional = false)
     @JoinColumn(name = "CATEGORY", nullable = false)
     @NotNull
-    public DictionaryCategory getCategaory() {
-        return categaory;
+    public DictionaryCategory getCategory() {
+        return category;
     }
 
-    public void setCategaory(DictionaryCategory categaory) {
-        this.categaory = categaory;
+    public void setCategory(DictionaryCategory categaory) {
+        this.category = categaory;
     }
 
     public int compareTo(Dictionary o) {

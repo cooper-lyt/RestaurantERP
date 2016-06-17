@@ -484,6 +484,11 @@ table.floatThead-table {
     padding-top: 0;
     padding-bottom: 0;
 }
+.panel-heading.header-sm{
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
 
 .panel-heading .btn-link{
     padding-top: 0;
@@ -491,6 +496,30 @@ table.floatThead-table {
 }
 
 .heading-text{
-    font-size: 14px;
+    font-size: 13px;
     font-weight: bold;
+}
+
+.input-group-append .input-group-addon{
+    padding: 0;
+    border: none;
+    background-color: transparent;
+}
+
+.input-group-addon .form-group{
+    margin: 0;
+    background-color: transparent;
+}
+
+.input-group-addon .form-group .checkbox{
+    margin: 0;
+}
+
+.input-group-append .input-group .form-control:first-child, .input-group-append .input-group-addon:first-child,
+.input-group-append .input-group-btn:first-child>.btn,.input-group-append .input-group-btn:first-child>.btn-group>.btn,
+.input-group-append .input-group-btn:first-child>.dropdown-toggle,
+.input-group-append .input-group-btn:last-child>.btn-group:not(:last-child)>.btn,
+.input-group-append .input-group-btn:last-child>.btn:not(:last-child):not(.dropdown-toggle) {
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
 }

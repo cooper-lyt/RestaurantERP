@@ -20,4 +20,7 @@ public interface DictionaryCategoryRepository extends EntityRepository<Dictionar
 
     @Query("select category from DictionaryCategory category order by category.botime")
     List<DictionaryCategory> findAll();
+
+
+
 }
