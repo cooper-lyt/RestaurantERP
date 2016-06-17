@@ -2,10 +2,7 @@ package cc.coopersoft.system.repository;
 
 import cc.coopersoft.system.SystemEntityManagerResolver;
 import cc.coopersoft.system.model.Dictionary;
-import org.apache.deltaspike.data.api.EntityManagerConfig;
-import org.apache.deltaspike.data.api.EntityRepository;
-import org.apache.deltaspike.data.api.Query;
-import org.apache.deltaspike.data.api.Repository;
+import org.apache.deltaspike.data.api.*;
 
 import javax.persistence.FlushModeType;
 import java.util.List;
@@ -21,9 +18,9 @@ public interface DictionaryRepository extends EntityRepository<Dictionary,String
     Integer getMaxPri(String id);
 
     @Query("select dic from Dictionary dic where dic.category.id=?1 and dic.pri < ?2 order by dic.pri desc")
-    List<Dictionary> getUp(String categoryId, int pri);
+    List<Dictionary> getUp(String categoryId, int pri, @MaxResults int pageSize);
 
     @Query("select dic from Dictionary dic where dic.category.id=?1 and dic.pri > ?2 order by dic.pri")
-    List<Dictionary> getDown(String categoryId,int pri);
+    List<Dictionary> getDown(String categoryId,int pri,@MaxResults int pageSize);
 
 }

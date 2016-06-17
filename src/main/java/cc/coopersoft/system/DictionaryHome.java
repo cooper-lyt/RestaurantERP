@@ -64,12 +64,12 @@ public class DictionaryHome extends EntityHome<Dictionary,String>{
 
     @Transactional
     public void up(){
-        switchPri(dictionaryRepository.getUp(dictionaryCategoryHome.getId(),getInstance().getPri()));
+        switchPri(dictionaryRepository.getUp(dictionaryCategoryHome.getId(),getInstance().getPri(),1));
     }
 
     @Transactional
     public void down(){
-        switchPri(dictionaryRepository.getDown(dictionaryCategoryHome.getId(),getInstance().getPri()));
+        switchPri(dictionaryRepository.getDown(dictionaryCategoryHome.getId(),getInstance().getPri(),1));
     }
 
     public void saveOrUpdate(){
@@ -78,7 +78,7 @@ public class DictionaryHome extends EntityHome<Dictionary,String>{
         }else if(dictionaryRepository.findBy(getInstance().getId()) == null){
             getInstance().setCategory(dictionaryCategoryHome.getInstance());
             Integer maxPri = dictionaryRepository.getMaxPri(dictionaryCategoryHome.getId());
-            getInstance().setPri(maxPri == null ? 1 : maxPri);
+            getInstance().setPri(maxPri == null ? 1 : maxPri + 1);
             save();
         }else{
             messages.addError().primaryKeyConflict();

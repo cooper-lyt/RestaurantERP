@@ -163,7 +163,7 @@
                              var="_dict" rendered="#{dictionaryCategoryHome.idDefined and (not empty dictionaryCategoryHome.instance.dictionaryList)}">
 
                     <h:column>
-
+#{_dict.pri}
                         <h:outputText style="#{(not _dict.enable) ? 'text-decoration:line-through;' : ''}" value="#{_dict.id}"/>
                     </h:column>
 
@@ -175,13 +175,13 @@
                         <div class="list-actions right" style="width: 110px">
 
                             <b:commandButton styleClass="list-action" tooltip="向上" immediate="true"
-                                             process="@this" ajax="true" iconAwesome="sort-amount-asc" look="link"
+                                             process="@this" ajax="true" iconAwesome="arrow-up" look="link"
                                              update="dictionaries" action="#{dictionaryHome.up}">
                                 <f:setPropertyActionListener value="#{_dict.id}" target="#{dictionaryHome.id}"/>
                             </b:commandButton>
 
                             <b:commandButton styleClass="list-action" tooltip="向下" immediate="true"
-                                             process="@this" ajax="true" iconAwesome="sort-amount-desc" look="link"
+                                             process="@this" ajax="true" iconAwesome="arrow-down" look="link"
                                              update="dictionaries" action="#{dictionaryHome.down}">
                                 <f:setPropertyActionListener value="#{_dict.id}" target="#{dictionaryHome.id}"/>
                             </b:commandButton>
