@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "DICTIONARY",catalog = "PLAT_SYSTEM")
-public class Dictionary implements java.io.Serializable {
+public class Dictionary implements java.io.Serializable, Comparable<Dictionary> {
 
     private String id;
     private String name;
@@ -19,6 +19,10 @@ public class Dictionary implements java.io.Serializable {
     private DictionaryCategaory categaory;
 
     public Dictionary() {
+    }
+
+    public Dictionary(boolean enable) {
+        this.enable = enable;
     }
 
     @Id
@@ -71,5 +75,9 @@ public class Dictionary implements java.io.Serializable {
 
     public void setCategaory(DictionaryCategaory categaory) {
         this.categaory = categaory;
+    }
+
+    public int compareTo(Dictionary o) {
+        return Integer.valueOf(getPri()).compareTo(o.getPri());
     }
 }

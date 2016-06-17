@@ -5,18 +5,35 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:b="http://bootsfaces.net/ui"
                 xmlns:ng="http://xmlns.jcp.org/jsf/passthrough"
-                xmlns:ui="http://java.sun.com/jsf/facelets">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="custom-header">
+        <f:metadata>
+            <o:viewParam name="dictionaryCategoryId" value="#{dictionaryCategoryHome.id}" />
+            <o:viewParam name="dictionaryId" value="#{dictionaryHome.id}"/>
+        </f:metadata>
+    </ui:define>
+
+
+    <h:form>
+
+
+    </h:form>
+
 
     <b:row style="margin-top: 20px;">
         <b:column colMd="3">
+            <o:form includeViewParams="true">
             <nav class="menu">
-                <h3 class="menu-heading">
-                    字典类型
-                </h3>
+                <div class="menu-heading">
+                    <div class="timeline-comment-actions">
+                        <b:commandButton look="link" icon="plus"/>
+                    </div>
+                    <div class="menu-heading-text">字典类型</div>
+                </div>
 
-                <ui:repeat value="" var="">
 
-                </ui:repeat>
                 <a href="/settings/profile" class="js-selected-navigation-item menu-item" data-selected-links="avatar_settings /settings/profile">Profile</a>
                 <a href="/settings/admin" aria-selected="true" class="js-selected-navigation-item selected menu-item" data-selected-links=" /settings/admin">Account</a>
 
@@ -38,6 +55,7 @@
                 <a href="/settings/replies" class="js-selected-navigation-item menu-item" data-selected-links="edit_saved_reply /settings/replies">Saved replies</a>
 
             </nav>
+            </o:form>
         </b:column>
         <b:column colMd="9">
 

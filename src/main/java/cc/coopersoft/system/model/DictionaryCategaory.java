@@ -3,9 +3,7 @@ package cc.coopersoft.system.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by cooper on 6/16/16.
@@ -101,5 +99,12 @@ public class DictionaryCategaory implements java.io.Serializable {
 
     public void setDictionaries(Set<Dictionary> dictionaries) {
         this.dictionaries = dictionaries;
+    }
+
+    @Transient
+    public List<Dictionary> getDictionaryList(){
+        List<Dictionary> result = new ArrayList<Dictionary>(getDictionaries());
+        Collections.sort(result);
+        return result;
     }
 }
