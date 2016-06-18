@@ -523,3 +523,23 @@ table.floatThead-table {
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
 }
+
+.page-form .subhead {
+    margin-bottom: 30px;
+}
+
+.subhead {
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.subhead-heading {
+    font-weight: normal;
+}
+
+.subhead-description {
+    margin-bottom: 0;
+    font-size: 14px;
+    color: #767676;
+}

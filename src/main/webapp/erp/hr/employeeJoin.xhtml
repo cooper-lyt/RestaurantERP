@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:composition template="/applayout/pageTemplate.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:ng="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:define name="custom-header">
+        <h:outputStylesheet library="bootstrap-datepicker" name="css/bootstrap-datetimepicker.min.css"/>
+        <h:outputScript library="bootstrap-datepicker" name="js/bootstrap-datetimepicker.min.js"/>
+        <h:outputScript library="bootstrap-datepicker" name="js/locales/bootstrap-datetimepicker.zh-CN.js"/>
+       <h:outputScript>
+
+           $(document).ready(function () {
+               $('.js-datepicker').datetimepicker({
+                   language: "zh-CN",
+                   format: 'yyyy-mm-dd',
+                   weekStart: 1,
+                   todayBtn:  1,
+                   autoclose: 1,
+                   todayHighlight: 1,
+                   startView: 2,
+                   minView: 2,
+                   forceParse: 0
+               });
+           });
+
+
+       </h:outputScript>
+    </ui:define>
+
+    <h:form styleClass="page-form">
+        <b:row>
+
+            <b:column offsetLg="2" offsetMd="2" offsetSm="1" offsetXs="0" colLg="8" colMd="8" colSm="10" colXs="12">
+                <div class="subhead">
+                    <h2 class="subhead-heading">员工入职</h2>
+                    <p class="subhead-description">
+                        A repository contains all the files for your project, including the revision history.
+                    </p>
+                </div>
+
+                <b:selectOneMenu label="办公地点" renderLabel="true" required="true" value="#{employeeHome.instance.office}" converter="omnifaces.SelectItemsConverter">
+
+                    <f:selectItems value="#{officeList}" var="_office" itemLabel="#{_office.name}" itemValue="#{_office}"/>
+                </b:selectOneMenu>
+
+                <b:inputText value="#{employeeHome.instance.joinDate}" styleClass="js-datepicker">
+                    <f:convertDateTime pattern="yyyy-mm-dd"/>
+                </b:inputText>
+
+            </b:column>
+        </b:row>
+
+    </h:form>
+
+</ui:composition>

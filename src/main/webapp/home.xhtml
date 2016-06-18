@@ -19,18 +19,6 @@
             </div>
 
 
-            <h:form id="aaabbb">
-                <h:outputLabel for="firstname" value="Firstname: *" />
-                <b:inputText id="firstname" required="" value="#{officeHome.instance.name}">
-                    <f:validateLength minimum="2" />
-                </b:inputText>
-                <b:fetchBeanInfos />
-
-                <b:commandButton value="Ajax Modal" ajax="true" update="aaabbb" id="ajaxmodal" look="inverse"
-
-                                 oncomplete="alert(validationFailed);" />
-
-            </h:form>
         </b:column>
         <b:column colMd="3" ng:role="main">
             <b:panel look="default" title="#{messages.application_title}" collapsible="false">
@@ -39,6 +27,10 @@
                     <b:navLink href="#" value="员工管理"
                                iconAwesome="users" />
 
+
+
+                    <b:navLink href="#{request.contextPath}/erp/hr/employeeJoin.xhtml" value="员工入职"
+                               iconAwesome="user-plus" />
                     <b:navLink href="#" value="薪酬结算"
                                iconAwesome="money" />
                     <b:navLink iconAwesome="gift" value="奖励发放" href="#"></b:navLink>

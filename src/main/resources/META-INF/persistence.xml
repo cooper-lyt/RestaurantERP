@@ -46,6 +46,7 @@
 
 
         <class>cc.coopersoft.restaurant.operation.model.Office</class>
+        <class>cc.coopersoft.restaurant.hr.model.Employee</class>
 
 
         <exclude-unlisted-classes>true</exclude-unlisted-classes>

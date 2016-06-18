@@ -29,6 +29,7 @@ public class OfficeManager {
     @Inject @Param
     private String condition;
 
+
     public Boolean getShowDestroy() {
         return showDestroy;
     }
