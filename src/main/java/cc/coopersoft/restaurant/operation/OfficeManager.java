@@ -1,13 +1,12 @@
 package cc.coopersoft.restaurant.operation;
 
-import cc.coopersoft.restaurant.operation.model.Office;
+import cc.coopersoft.restaurant.model.Office;
 import cc.coopersoft.restaurant.operation.repository.OfficeRepository;
 import org.omnifaces.cdi.Param;
 
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Model;
 import javax.inject.Inject;
-import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;

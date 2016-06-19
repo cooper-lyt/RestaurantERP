@@ -1,4 +1,4 @@
-package cc.coopersoft.restaurant.operation.model;
+package cc.coopersoft.restaurant.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

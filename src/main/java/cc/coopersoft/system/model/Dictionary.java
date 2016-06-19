@@ -73,8 +73,8 @@ public class Dictionary implements java.io.Serializable, Comparable<Dictionary> 
         return category;
     }
 
-    public void setCategory(DictionaryCategory categaory) {
-        this.category = categaory;
+    public void setCategory(DictionaryCategory category) {
+        this.category = category;
     }
 
     public int compareTo(Dictionary o) {

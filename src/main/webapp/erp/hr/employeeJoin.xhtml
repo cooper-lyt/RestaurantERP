@@ -52,6 +52,9 @@
                     </p>
                 </div>
 
+
+                <b:inputText label="员工编号" renderLabel="true" value="#{employeeHome.instance.id}" required="true"/>
+
                 <div class="form-group">
                     <h:outputLabel for="office" value="办公地点" styleClass="bf-required"/>
                     <h:selectOneMenu id="office" required="true"
@@ -71,6 +74,27 @@
                     <f:convertDateTime pattern="yyyy-mm-dd"/>
                 </b:inputText>
 
+                <b:row>
+                    <b:column colMd="6">
+                        <b:selectOneMenu value="#{employeeHome.instance.jobs}" label="岗位" renderLabel="true" required="true">
+                            <f:selectItems value="#{dictionaryProducer.getDictionaries('hr.job')}" var="_job"
+                                           itemValue="#{_job.id}" itemLabel="#{_job.name}"/>
+                        </b:selectOneMenu>
+
+                    </b:column>
+                    <b:column colMd="6">
+                        <b:selectOneMenu value="#{employeeHome.instance.level}" label="级别" renderLabel="true" required="true">
+                            <f:selectItems value="#{dictionaryProducer.getDictionaries('hr.level')}" var="_level"
+                                           itemValue="#{_level.id}" itemLabel="#{_level.name}"/>
+                        </b:selectOneMenu>
+                    </b:column>
+                </b:row>
+
+                <b:inputText value="#{employeeHome.instance.phone}" label="联系电话" renderLabel="true"/>
+
+                <hr/>
+
+                <b:commandButton action="#{employeeOperation.join}" look="success" value="员工入职"/>
 
             </b:column>
         </b:row>

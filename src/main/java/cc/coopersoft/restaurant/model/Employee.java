@@ -1,6 +1,4 @@
-package cc.coopersoft.restaurant.hr.model;
-
-import cc.coopersoft.restaurant.operation.model.Office;
+package cc.coopersoft.restaurant.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,7 +10,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "EMPLOYEE",catalog = "RESTAURANT")
-public class Employee {
+public class Employee implements java.io.Serializable{
 
     public enum Status{
         NORMAL,LEAVE

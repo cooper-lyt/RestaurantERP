@@ -1,7 +1,7 @@
 package cc.coopersoft.restaurant.operation.repository;
 
 import cc.coopersoft.restaurant.ErpEntityManagerResolver;
-import cc.coopersoft.restaurant.operation.model.Office;
+import cc.coopersoft.restaurant.model.Office;
 import org.apache.deltaspike.data.api.EntityManagerConfig;
 import org.apache.deltaspike.data.api.EntityRepository;
 import org.apache.deltaspike.data.api.Query;

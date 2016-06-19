@@ -17,8 +17,6 @@ public class DictionaryManager {
 
     private List<DictionaryCategory> categories;
 
-    private DictionaryCategory selectCategory;
-
     @Inject
     private DictionaryCategoryRepository dictionaryCategoryRepository;
 
@@ -28,4 +26,5 @@ public class DictionaryManager {
         }
         return categories;
     }
+
 }

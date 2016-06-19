@@ -2,19 +2,15 @@ package cc.coopersoft.restaurant.operation;
 
 import cc.coopersoft.common.EntityHome;
 import cc.coopersoft.restaurant.Messages;
-import cc.coopersoft.restaurant.operation.model.Office;
+import cc.coopersoft.restaurant.model.Office;
 import cc.coopersoft.restaurant.operation.repository.OfficeRepository;
 import org.apache.deltaspike.data.api.EntityRepository;
 import org.apache.deltaspike.jsf.api.message.JsfMessage;
-import org.omnifaces.cdi.Param;
-import org.omnifaces.cdi.ViewScoped;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ConversationScoped;
 import javax.enterprise.inject.Default;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.faces.validator.ValidatorException;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;

@@ -10,6 +10,7 @@ import org.apache.deltaspike.jsf.api.message.JsfMessage;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ConversationScoped;
+import javax.enterprise.event.Event;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -29,6 +30,10 @@ public class DictionaryHome extends EntityHome<Dictionary,String>{
 
     @Inject
     private FacesContext facesContext;
+
+
+    @Inject @UpdateDictionary
+    Event<String> updateEvent;
 
     @Inject
     private DictionaryCategoryHome dictionaryCategoryHome;
@@ -59,6 +64,7 @@ public class DictionaryHome extends EntityHome<Dictionary,String>{
             getInstance().setPri(up.getPri());
             up.setPri(curPri);
             dictionaryRepository.flush();
+            updateEvent.fire(getInstance().getCategory().getId());
         }
     }
 
@@ -75,14 +81,19 @@ public class DictionaryHome extends EntityHome<Dictionary,String>{
     public void saveOrUpdate(){
         if (isIdDefined()){
             save();
+            updateEvent.fire(getInstance().getCategory().getId());
         }else if(dictionaryRepository.findBy(getInstance().getId()) == null){
+            logger.config("category id:" + dictionaryCategoryHome.getInstance().getId());
             getInstance().setCategory(dictionaryCategoryHome.getInstance());
             Integer maxPri = dictionaryRepository.getMaxPri(dictionaryCategoryHome.getId());
             getInstance().setPri(maxPri == null ? 1 : maxPri + 1);
             save();
+            updateEvent.fire(dictionaryCategoryHome.getInstance().getId());
         }else{
             messages.addError().primaryKeyConflict();
         }
+
+
 
     }
 

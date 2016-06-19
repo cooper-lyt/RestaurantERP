@@ -1,6 +1,6 @@
 package cc.coopersoft.restaurant.operation;
 
-import cc.coopersoft.restaurant.operation.model.Office;
+import cc.coopersoft.restaurant.model.Office;
 import cc.coopersoft.restaurant.operation.repository.OfficeRepository;
 
 import javax.enterprise.context.RequestScoped;
