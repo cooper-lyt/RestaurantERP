@@ -4,13 +4,18 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:b="http://bootsfaces.net/ui"
-                xmlns:ng="http://xmlns.jcp.org/jsf/passthrough"
-                xmlns:ui="http://java.sun.com/jsf/facelets">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:c="http://java.sun.com/jsp/jstl/core">
 
     <ui:define name="custom-header">
         <h:outputStylesheet library="bootstrap-datepicker" name="css/bootstrap-datetimepicker.min.css"/>
         <h:outputScript library="bootstrap-datepicker" name="js/bootstrap-datetimepicker.min.js"/>
         <h:outputScript library="bootstrap-datepicker" name="js/locales/bootstrap-datetimepicker.zh-CN.js"/>
+
+        <h:outputStylesheet library="bootstrap-select" name="css/bootstrap-select.min.css"/>
+        <h:outputStylesheet library="bootstrap-select" name="css/bootstrap-select-plug.css"/>
+        <h:outputScript library="bootstrap-select" name="js/bootstrap-select.min.js"/>
        <h:outputScript>
 
            $(document).ready(function () {
@@ -25,6 +30,11 @@
                    minView: 2,
                    forceParse: 0
                });
+
+
+               $('.js-selectpicker').selectpicker();
+
+
            });
 
 
@@ -42,14 +52,25 @@
                     </p>
                 </div>
 
-                <b:selectOneMenu label="办公地点" renderLabel="true" required="true" value="#{employeeHome.instance.office}" converter="omnifaces.SelectItemsConverter">
+                <div class="form-group">
+                    <h:outputLabel for="office" value="办公地点" styleClass="bf-required"/>
+                    <h:selectOneMenu id="office" required="true"
+                                     pt:data-live-search="true"
+                                     pt:data-header="ttttt"
 
-                    <f:selectItems value="#{officeList}" var="_office" itemLabel="#{_office.name}" itemValue="#{_office}"/>
-                </b:selectOneMenu>
+                                     pt:data-size="auto"
+                                     styleClass="js-selectpicker form-control edit-select select-theme"  converter="omnifaces.SelectItemsConverter">
+                        <f:selectItems value="#{officeList}" pt:data-tokens="#{_office.name}" var="_office" itemLabel="#{_office.name}" itemValue="#{_office}"/>
+                    </h:selectOneMenu>
+                </div>
 
-                <b:inputText value="#{employeeHome.instance.joinDate}" styleClass="js-datepicker">
+
+
+
+                <b:inputText label="入职时间" renderLabel="true" required="true" value="#{employeeHome.instance.joinDate}" styleClass="js-datepicker">
                     <f:convertDateTime pattern="yyyy-mm-dd"/>
                 </b:inputText>
+
 
             </b:column>
         </b:row>
