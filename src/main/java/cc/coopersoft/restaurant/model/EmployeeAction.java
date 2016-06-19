@@ -50,7 +50,7 @@ public class EmployeeAction implements java.io.Serializable{
         this.validTime = validTime;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY,optional = false)
+    @ManyToOne(fetch = FetchType.LAZY,optional = false,cascade = CascadeType.ALL)
     @JoinColumn(name = "EMPLOYEE_ID",nullable = false)
     @NotNull
     public Employee getEmployee() {

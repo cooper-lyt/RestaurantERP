@@ -40,12 +40,4 @@ public class EmployeeHome extends EntityHome<Employee,String> {
     }
 
 
-    @Transactional
-    public void employeeJoin(){
-        getInstance().setStatus(Employee.Status.NORMAL);
-        getInstance().setMoneyBeginDay(getInstance().getJoinDate());
-
-        //businessInfo
-
-    }
 }

@@ -40,6 +40,7 @@
 
        </h:outputScript>
     </ui:define>
+    <b:messages globalOnly="false" styleClass="top-messages"/>
 
     <h:form styleClass="page-form">
         <b:row>
@@ -53,16 +54,17 @@
                 </div>
 
 
+
                 <b:inputText label="员工编号" renderLabel="true" value="#{employeeHome.instance.id}" required="true"/>
+                <b:message/>
 
                 <div class="form-group">
-                    <h:outputLabel for="office" value="办公地点" styleClass="bf-required"/>
-                    <h:selectOneMenu id="office" required="true"
+                    <h:outputLabel for="office" value="工作地点" styleClass="bf-required"/>
+                    <h:selectOneMenu id="office" required="true" value="#{employeeHome.instance.office}"
                                      pt:data-live-search="true"
-                                     pt:data-header="ttttt"
-
-                                     pt:data-size="auto"
-                                     styleClass="js-selectpicker form-control edit-select select-theme"  converter="omnifaces.SelectItemsConverter">
+                                     pt:data-header="请选择工作地点"
+                                     pt:data-size="auto" converter="erpEntityConvert"
+                                     styleClass="js-selectpicker form-control edit-select select-theme"  >
                         <f:selectItems value="#{officeList}" pt:data-tokens="#{_office.name}" var="_office" itemLabel="#{_office.name}" itemValue="#{_office}"/>
                     </h:selectOneMenu>
                 </div>
@@ -90,7 +92,17 @@
                     </b:column>
                 </b:row>
 
-                <b:inputText value="#{employeeHome.instance.phone}" label="联系电话" renderLabel="true"/>
+                <b:row>
+                    <b:column colMd="6">
+                        <b:inputText value="#{employeeHome.instance.name}" required="true" label="姓名" renderLabel="true"/>
+                        <b:message/>
+                    </b:column>
+                    <b:column colMd="6">
+                        <b:inputText value="#{employeeHome.instance.phone}" label="联系电话" renderLabel="true"/>
+                    </b:column>
+                </b:row>
+
+
 
                 <hr/>
 
