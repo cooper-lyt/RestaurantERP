@@ -36,17 +36,6 @@ public class DictionaryCategoryHome extends EntityHome<DictionaryCategory,String
     @Inject
     private DictionaryCategoryRepository dictionaryCategoryRepository;
 
-    public void saveOrUpdate(){
-        if (isIdDefined()){
-            save();
-        }else if(dictionaryCategoryRepository.findBy(getInstance().getId()) == null){
-            save();
-        }else{
-            messages.addError().primaryKeyConflict();
-        }
-
-    }
-
     protected DictionaryCategory createInstance() {
         return new DictionaryCategory(UUID.randomUUID().toString().replace("-",""),true,false,new Date());
     }

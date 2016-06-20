@@ -24,9 +24,10 @@
 
     <application>
 
+        <!--
         <resource-handler>org.omnifaces.resourcehandler.CombinedResourceHandler</resource-handler>
 
-
+-->
         <resource-bundle>
             <base-name>cc.coopersoft.restaurant.Messages</base-name>
             <var>messages</var>

@@ -29,4 +29,7 @@ public interface OfficeRepository extends EntityRepository<Office,String> {
     @Query("select office from Office office order by office.botime")
     List<Office> findAll();
 
+    @Query("select office from Office office where office.type = ?1 and office.status <> 'DESTROY' order by office.botime")
+    List<Office> findByCategoryVaild(Office.Type type);
+
 }

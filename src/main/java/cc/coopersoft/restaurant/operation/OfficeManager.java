@@ -49,6 +49,10 @@ public class OfficeManager {
         return new ArrayList<Office.OfficeStatus>(EnumSet.of(Office.OfficeStatus.PREPARE,Office.OfficeStatus.OPEN, Office.OfficeStatus.CLOSE, Office.OfficeStatus.DESTROY));
     }
 
+    public List<Office.Type> getAllOfficeTypeList(){
+        return new ArrayList<Office.Type>(EnumSet.allOf(Office.Type.class));
+    }
+
     public void refresh(){
         resultList = null;
     }

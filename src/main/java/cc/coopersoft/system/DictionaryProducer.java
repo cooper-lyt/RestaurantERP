@@ -1,6 +1,7 @@
 package cc.coopersoft.system;
 
 import cc.coopersoft.system.model.Dictionary;
+import cc.coopersoft.system.repository.DictionaryRepository;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -26,22 +27,14 @@ public class DictionaryProducer {
     private Map<String,List<Dictionary>> cache = new HashMap<String, List<Dictionary>>();
 
 
-    @Inject @SystemEM
-    EntityManager entityManager;
+    @Inject
+    private DictionaryRepository dictionaryRepository;
 
     @Transactional
-    private List<Dictionary> queryDictionaries(String categoryId){
-
-        List<Dictionary> result = entityManager.createQuery("select dic from Dictionary dic where dic.category.id =:categoryId and dic.enable = true order by dic.pri")
-                .setParameter("categoryId",categoryId).getResultList();
-
-        return result;
-    }
-
     public List<Dictionary> getDictionaries(String categoryId){
         List<Dictionary> result = cache.get(categoryId);
         if (result == null){
-            result = queryDictionaries(categoryId);
+            result = dictionaryRepository.getValidDictionaries(categoryId);
             cache.put(categoryId,result);
         }
 

@@ -19,20 +19,9 @@
     <b:row style="margin-top: 20px;">
         <b:column colMd="3">
             <o:form id="offices" includeViewParams="true">
-                <nav class="menu">
-                    <div class="menu-heading">
-                        店面
-                    </div>
-
-                    <ui:repeat value="#{dictionaryManager.categories}" var="_category">
-                        <p:commandLink ajax="true" immediate="true" styleClass="menu-item #{dictionaryCategoryHome.id eq _category.id ? 'selected' : ''}"
-                                       update="categories,dictionaries" process="@this" style="#{(not _category.enable) ? 'text-decoration:line-through;' : ''}"
-                                       value="#{_category.name}">
-                            <f:setPropertyActionListener value="#{_category.id}" target="#{dictionaryCategoryHome.id}"/>
-                        </p:commandLink>
-                    </ui:repeat>
-
-                </nav>
+               <b:tree value="#{officeTree}" renderRoot="false" showCheckbox="false"
+                       enableLinks="true"
+                       showBorder="true"/>
             </o:form>
 
         </b:column>

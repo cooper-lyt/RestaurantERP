@@ -36,17 +36,7 @@ public class OfficeHome extends EntityHome<Office,String> {
 
     @Inject
     private FacesContext facesContext;
-
-    public void saveOrUpdate(){
-        if (isIdDefined()){
-            save();
-        }else if(officeRepository.findBy(getInstance().getId()) == null){
-                save();
-        }else{
-            messages.addError().primaryKeyConflict();
-        }
-
-    }
+    
 
     @PostConstruct
     public void initParam(){

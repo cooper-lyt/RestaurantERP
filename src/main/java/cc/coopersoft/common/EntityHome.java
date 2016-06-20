@@ -1,7 +1,10 @@
 package cc.coopersoft.common;
 
+import cc.coopersoft.common.util.EntityHelper;
+import cc.coopersoft.restaurant.Messages;
 import org.apache.deltaspike.data.api.EntityRepository;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
+import org.apache.deltaspike.jsf.api.message.JsfMessage;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -16,6 +19,9 @@ public abstract class EntityHome<E, PK extends Serializable> extends MutableCont
 
     @Inject
     protected Logger logger;
+
+    @Inject
+    private JsfMessage<Messages> messages;
 
     private static final long serialVersionUID = -5462396456614090423L;
 
@@ -143,6 +149,21 @@ public abstract class EntityHome<E, PK extends Serializable> extends MutableCont
         logger.config("save entity");
     }
 
+    @Transactional
+    public void saveOrUpdate(){
+        if (isIdDefined()){
+            save();
+        }else if(getEntityRepository().findBy(getInstaceId()) == null){
+            save();
+        }else{
+            messages.addError().primaryKeyConflict();
+        }
+
+    }
+
+    protected PK getInstaceId(){
+        return (PK) EntityHelper.getEntityId(getInstance());
+    }
 
 
     /**

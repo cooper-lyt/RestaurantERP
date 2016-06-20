@@ -135,7 +135,7 @@
 			</connections>
 			<display>false</display>
 			<creation_date>2016-06-04 13:29:34</creation_date>
-			<updated_date>2016-06-17 09:23:28</updated_date>
+			<updated_date>2016-06-20 01:53:10</updated_date>
 			<model_property>
 				<name>Project Name</name>
 				<value></value>
@@ -356,7 +356,7 @@
 			<option></option>
 			<columns>
 				<normal_column>
-					<word_id>2</word_id>
+					<word_id>3</word_id>
 					<id>0</id>
 					<description></description>
 					<unique_key_name></unique_key_name>
@@ -557,7 +557,7 @@
 			<option></option>
 			<columns>
 				<normal_column>
-					<word_id>3</word_id>
+					<word_id>2</word_id>
 					<id>5</id>
 					<description></description>
 					<unique_key_name></unique_key_name>

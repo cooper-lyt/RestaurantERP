@@ -17,10 +17,25 @@ public class Office implements java.io.Serializable {
         PREPARE,OPEN,CLOSE,DESTROY
     }
 
+    public enum Type{
+        JOIN_SHOP("cutlery"),SELF_SHOP("beer"),ONLY_KITCHEN("fire"),STORE("sitemap"),OFFICE("building");
+        private String icon;
+
+        Type(String icon) {
+            this.icon = icon;
+        }
+
+        public String getIcon() {
+            return icon;
+        }
+
+    }
+
     private String id;
     private String name;
     private Date botime;
     private OfficeStatus status;
+    private Type type;
 
     public Office() {
     }
@@ -77,6 +92,17 @@ public class Office implements java.io.Serializable {
 
     public void setStatus(OfficeStatus status) {
         this.status = status;
+    }
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="TYPE",nullable = false, length = 12)
+    @NotNull
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
     }
 
     @Override

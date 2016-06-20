@@ -58,6 +58,10 @@
                 <b:inputText id="name" value="#{officeHome.instance.name}"
                              label="名称" renderLabel="true" required="true"/>
 
+                <b:selectOneMenu label="种类" value="#{officeHome.instance.type}" renderLabel="true" required="true" converter="omnifaces.GenericEnumConverter">
+                    <f:selectItems value="#{officeManager.allOfficeTypeList}" var="_type" itemLabel="#{enumHelper.getLabel(_type)}" itemValue="#{_type.name()}"/>
+                </b:selectOneMenu>
+
                 <b:selectOneMenu label="状态" renderLabel="true" required="true" value="#{officeHome.instance.status}" converter="omnifaces.GenericEnumConverter">
                     <f:selectItems value="#{officeManager.allOfficeStatusList}" var="_status" itemLabel="#{enumHelper.getLabel(_status)}" itemValue="#{_status.name()}"/>
 
@@ -106,7 +110,7 @@
         <h:dataTable value="#{officeManager.resultList}"
                      styleClass="table table-striped table-hover table-floatThead"
                      headerClass="table-tools-header"
-                     columnClasses="width-20percent,width-70percent,width-10percent,width-min"
+                     columnClasses="width-20percent,width-10percent,width-60percent,width-10percent,width-min"
                      var="_office" rendered="#{not empty officeManager.resultList}">
 
             <f:facet name="header">
@@ -131,6 +135,12 @@
                     编号
                 </f:facet>
                 <h:outputText style="#{_office.status eq 'DESTROY' ? 'text-decoration:line-through;' : ''}" value="#{_office.id}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    种类
+                </f:facet>
+                <h:outputText value="#{enumHelper.getLabel(_office.type)}" style="white-space:nowrap; #{_office.status eq 'DESTROY' ? 'text-decoration:line-through;' : ''}"/>
             </h:column>
             <h:column>
                 <f:facet name="header">
