@@ -2,6 +2,7 @@ package cc.coopersoft.restaurant.hr;
 
 import cc.coopersoft.restaurant.model.Business;
 import cc.coopersoft.restaurant.model.EmployeeAction;
+import cc.coopersoft.restaurant.model.JobInfo;
 import cc.coopersoft.restaurant.model.Operation;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.picketlink.Identity;
@@ -42,9 +43,11 @@ public class EmployeeOperation {
         Business business = new Business(id,Business.Type.EMP_JOIN, Business.Status.COMPLETE,new Date());
 
 
-        employeeHome.getInstance().setMoneyBeginDay(employeeHome.getInstance().getJoinDate());
         EmployeeAction employeeAction = new EmployeeAction(id,employeeHome.getInstance().getJoinDate(),employeeHome.getInstance(),business);
+
+        employeeAction.setJobInfo(new JobInfo(employeeHome.getInstance().getJobs(),employeeHome.getInstance().getLevel(),employeeHome.getInstance().getWorkCode(),employeeHome.getInstance().getOffice(),employeeAction));
         business.getEmployeeActions().add(employeeAction);
+
         User user = (User)identity.getAccount();
 
         logger.config("new id is:" + user.getLoginName());

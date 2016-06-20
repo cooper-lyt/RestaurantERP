@@ -70,11 +70,20 @@
                 </div>
 
 
+                <b:row>
+                    <b:column colMd="6">
+                        <b:inputText label="入职时间" renderLabel="true" required="true" value="#{employeeHome.instance.joinDate}" styleClass="js-datepicker">
+                            <f:convertDateTime pattern="yyyy-mm-dd"/>
+                        </b:inputText>
+                        <b:message/>
+                    </b:column>
+                    <b:column colMd="6">
+                        <b:inputText label="工作编号" renderLabel="true" value="#{employeeHome.instance.workCode}"/>
+                        <b:message/>
+                    </b:column>
+                </b:row>
 
 
-                <b:inputText label="入职时间" renderLabel="true" required="true" value="#{employeeHome.instance.joinDate}" styleClass="js-datepicker">
-                    <f:convertDateTime pattern="yyyy-mm-dd"/>
-                </b:inputText>
 
                 <b:row>
                     <b:column colMd="6">
@@ -99,6 +108,7 @@
                     </b:column>
                     <b:column colMd="6">
                         <b:inputText value="#{employeeHome.instance.phone}" label="联系电话" renderLabel="true"/>
+                        <b:message/>
                     </b:column>
                 </b:row>
 

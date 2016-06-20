@@ -84,7 +84,7 @@ public class Business {
         this.startTime = startTime;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "business", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "business", orphanRemoval = true, cascade = CascadeType.ALL)
     public Set<EmployeeAction> getEmployeeActions() {
         return employeeActions;
     }
@@ -93,7 +93,7 @@ public class Business {
         this.employeeActions = employeeActions;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "business", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "business", orphanRemoval = true, cascade = CascadeType.ALL)
     public Set<Operation> getOperations() {
         return operations;
     }

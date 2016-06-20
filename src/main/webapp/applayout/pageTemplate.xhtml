@@ -26,9 +26,17 @@
 
                     <b:navLink href="#{request.contextPath}/erp/hr/employeeJoin.xhtml" value="员工入职"
                                iconAwesome="user-plus" />
+                    <b:navLink href="#{request.contextPath}/erp/hr/jobChange.xhtml" value="工作调动"
+                               iconAwesome="street-view" />
+
+
+                    <b:navLink href="#{request.contextPath}/erp/hr/employeeLeave.xhtml" value="员工离职"
+                               iconAwesome="user-times" />
+
+                    <b:navLink iconAwesome="gift" value="奖惩" href="#"></b:navLink>
+
                     <b:navLink iconAwesome="money" value="薪酬结算" href="#"></b:navLink>
 
-                    <b:navLink iconAwesome="gift" value="奖励发放" href="#"></b:navLink>
                     <b:navLink iconAwesome="sliders" value="薪酬方案" href="#"></b:navLink>
                     <b:navLink></b:navLink>
                     <b:navLink header="统计报表"></b:navLink>
@@ -40,7 +48,7 @@
                                iconAwesome="beer" />
                 </b:dropMenu>
 
-                <b:dropMenu iconAwesome="cogs" value="系统设置">
+                <b:dropMenu iconAwesome="cogs" value="系统管理">
                     <b:navLink href="#{request.contextPath}/system/dictionary.xhtml" value="字典管理"
                                iconAwesome="book" />
 

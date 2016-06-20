@@ -24,6 +24,7 @@ public class Employee implements java.io.Serializable{
     private Status status;
     private Date moneyBeginDay;
     private Date joinDate;
+    private String workCode;
 
     private Office office;
 
@@ -102,17 +103,6 @@ public class Employee implements java.io.Serializable{
 
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "MONEY_BEGIN_DAY", nullable = false, length = 19, columnDefinition = "DATETIME")
-    @NotNull
-    public Date getMoneyBeginDay() {
-        return moneyBeginDay;
-    }
-
-    public void setMoneyBeginDay(Date moneyBeginDay) {
-        this.moneyBeginDay = moneyBeginDay;
-    }
-
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "JOIN_DATE", nullable = false, length = 19, columnDefinition = "DATETIME")
     @NotNull
     public Date getJoinDate() {
@@ -132,5 +122,15 @@ public class Employee implements java.io.Serializable{
 
     public void setOffice(Office office) {
         this.office = office;
+    }
+
+    @Column(name = "WORK_CODE",length = 32)
+    @Size(max = 32)
+    public String getWorkCode() {
+        return workCode;
+    }
+
+    public void setWorkCode(String workCode) {
+        this.workCode = workCode;
     }
 }

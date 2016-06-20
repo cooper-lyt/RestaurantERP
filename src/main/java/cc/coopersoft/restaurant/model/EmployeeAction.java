@@ -17,6 +17,7 @@ public class EmployeeAction implements java.io.Serializable{
 
     private Employee employee;
     private Business business;
+    private JobInfo jobInfo;
 
     public EmployeeAction() {
     }
@@ -71,4 +72,15 @@ public class EmployeeAction implements java.io.Serializable{
     public void setBusiness(Business business) {
         this.business = business;
     }
+
+    @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    public JobInfo getJobInfo() {
+        return jobInfo;
+    }
+
+    public void setJobInfo(JobInfo jobInfo) {
+        this.jobInfo = jobInfo;
+    }
+
 }
