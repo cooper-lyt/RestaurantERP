@@ -19,8 +19,8 @@
     <b:row style="margin-top: 20px;">
         <b:column colMd="3">
             <o:form id="offices" includeViewParams="true">
-               <b:tree value="#{officeTree}" renderRoot="false" showCheckbox="false"
-                       enableLinks="true"
+               <b:tree value="#{officeTree}" renderRoot="false" showCheckbox="false" showTags="true"
+                       enableLinks="false" nodeSelectionListener="#{employeeList}"
                        showBorder="true"/>
             </o:form>
 
