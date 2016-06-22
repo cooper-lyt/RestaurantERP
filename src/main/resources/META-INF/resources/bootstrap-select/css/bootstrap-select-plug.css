@@ -1,8 +1,6 @@
-.edit-select{
-    z-index: inherit !important;
-}
 
-.edit-select button{
+
+.edit-select .btn.dropdown-toggle{
     background-image: none;
 }
 
@@ -12,7 +10,7 @@
 }
 
 
-.bootstrap-select.edit-select button:focus{
+.bootstrap-select.edit-select .btn.dropdown-toggle:focus{
 
     background-color: inherit;
     background-image:inherit;
@@ -23,14 +21,19 @@
     box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
 }
 
+.input-group-btn .bootstrap-select .btn.dropdown-toggle:focus{
 
-.edit-select button:hover{
+    outline: none !important;
+}
+
+
+.edit-select .btn.dropdown-toggle:hover{
     background-color: inherit;
     background-image:inherit;
 
 }
 
-.edit-select button:active{
+.edit-select .btn.dropdown-toggle:active{
 background-color: inherit;
 }
 

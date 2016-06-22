@@ -659,3 +659,7 @@ table.floatThead-table {
 .bootstrap-select.btn-group .dropdown-menu{
     z-index: 1011;
 }
+
+.input-group .bootstrap-select.form-control{
+    z-index: inherit !important;
+}

@@ -38,7 +38,8 @@
                 <h:selectOneMenu id="jobCondition" value="#{employeeList.job}"
                                  pt:data-header="按岗位查询"
                                  pt:data-size="auto"
-                                 styleClass="js-selectpicker form-control edit-select select-theme"  >
+                                 pt:data-width="150px"
+                                 styleClass="js-selectpicker form-control select-theme"  >
                     <f:selectItem noSelectionOption="true" itemLabel="所有岗位"/>
                     <f:selectItems value="#{dictionaryProducer.getDictionaries('hr.job')}" var="_job"
                                    itemValue="#{_job.id}" itemLabel="#{_job.name}"/>
@@ -157,6 +158,17 @@
     </o:form>
 
     <b:row id="offices">
+
+        <b:column rendered="#{empty employeeList.offices}">
+            <div class="blankslate blankslate-spacious blankslate-large">
+                <b:iconAwesome name="search" size="4x" styleClass="blankslate-icon"/>
+
+                <h3>没有找到员工.</h3>
+                <p>你可以尝试 <p:link includeViewParams="false">清空条件</p:link>
+                   </p>
+            </div>
+        </b:column>
+
         <b:column colMd="3" rendered="#{not empty employeeList.offices}">
 
             <o:form  includeViewParams="true">
