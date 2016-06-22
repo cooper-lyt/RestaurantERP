@@ -116,7 +116,6 @@ background-color: inherit;
 .bootstrap-select.select-theme.btn-group .dropdown-menu .selected a:focus{
     outline: none;
     font-weight: bold;
-    background: #fff;
 }
 
 .bootstrap-select.select-theme.btn-group .dropdown-menu .selected a span.check-mark{

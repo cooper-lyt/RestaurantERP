@@ -15,7 +15,7 @@ import java.util.Set;
 public class Business {
 
     public enum Type{
-        EMP_JOIN
+        EMP_JOIN,EMP_JOB_CHANGE
     }
 
     public enum Status{
@@ -53,7 +53,7 @@ public class Business {
     }
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "TYPE",nullable = false,length = 12)
+    @Column(name = "TYPE",nullable = false,length = 16)
     @NotNull
     public Type getType() {
         return type;

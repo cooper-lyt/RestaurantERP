@@ -18,7 +18,7 @@ public class Office implements java.io.Serializable {
     }
 
     public enum Type{
-        JOIN_SHOP("cutlery"),SELF_SHOP("beer"),ONLY_KITCHEN("fire"),STORE("sitemap"),OFFICE("building");
+        JOIN_SHOP("cutlery"),SELF_SHOP("beer"),ONLY_KITCHEN("industry"),STORE("cubes"),OFFICE("building");
         private String icon;
 
         Type(String icon) {
@@ -36,8 +36,6 @@ public class Office implements java.io.Serializable {
     private Date botime;
     private OfficeStatus status;
     private Type type;
-
-    private Set<Employee> employees = new HashSet<Employee>(0);
 
     public Office() {
     }
@@ -105,22 +103,6 @@ public class Office implements java.io.Serializable {
 
     public void setType(Type type) {
         this.type = type;
-    }
-
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "office")
-    public Set<Employee> getEmployees() {
-        return employees;
-    }
-
-    public void setEmployees(Set<Employee> employees) {
-        this.employees = employees;
-    }
-
-    @Transient
-    public List<Employee> getEmployeeList(){
-        List<Employee> result = new ArrayList<Employee>(getEmployees());
-        Collections.sort(result);
-        return result;
     }
 
     @Override

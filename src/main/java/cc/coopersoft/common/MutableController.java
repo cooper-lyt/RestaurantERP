@@ -1,5 +1,7 @@
 package cc.coopersoft.common;
 
+import cc.coopersoft.common.util.DataHelper;
+
 /**
  * Created by cooper on 6/10/16.
  */
@@ -24,10 +26,7 @@ public abstract class MutableController implements java.io.Serializable{
      */
     protected <U> boolean setDirty(U oldValue, U newValue)
     {
-        boolean attributeDirty = oldValue!=newValue && (
-                oldValue==null ||
-                        !oldValue.equals(newValue)
-        );
+        boolean attributeDirty = DataHelper.isDirty(oldValue,newValue);
         dirty = dirty || attributeDirty;
         return attributeDirty;
     }

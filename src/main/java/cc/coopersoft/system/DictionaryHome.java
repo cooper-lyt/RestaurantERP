@@ -56,13 +56,12 @@ public class DictionaryHome extends EntityHome<Dictionary,String>{
         return entityManager;
     }
 
-    private void switchPri(List<Dictionary> others){
+    private void switchPri(Dictionary other){
         int curPri = getInstance().getPri();
         //List<Dictionary> ups = dictionaryRepository.getUp(dictionaryCategoryHome.getId(),curPri);
-        if (!others.isEmpty()){
-            Dictionary up = others.get(0);
-            getInstance().setPri(up.getPri());
-            up.setPri(curPri);
+        if (other != null){
+            getInstance().setPri(other.getPri());
+            other.setPri(curPri);
             dictionaryRepository.flush();
             updateEvent.fire(getInstance().getCategory().getId());
         }
@@ -70,12 +69,12 @@ public class DictionaryHome extends EntityHome<Dictionary,String>{
 
     @Transactional
     public void up(){
-        switchPri(dictionaryRepository.getUp(dictionaryCategoryHome.getId(),getInstance().getPri(),1));
+        switchPri(dictionaryRepository.getUp(dictionaryCategoryHome.getId(),getInstance().getPri()));
     }
 
     @Transactional
     public void down(){
-        switchPri(dictionaryRepository.getDown(dictionaryCategoryHome.getId(),getInstance().getPri(),1));
+        switchPri(dictionaryRepository.getDown(dictionaryCategoryHome.getId(),getInstance().getPri()));
     }
 
     public void saveOrUpdate(){

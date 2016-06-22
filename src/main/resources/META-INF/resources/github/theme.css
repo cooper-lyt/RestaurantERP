@@ -221,7 +221,6 @@ label.bf-error {
 
 .datasearch-head.pagehead h1 {
     float: left;
-    width: 250px;
     line-height: 33px;
 }
 
@@ -401,6 +400,17 @@ table.floatThead-table {
     border-top: none;
     border-bottom: none;
     background-color: #FFF;
+}
+
+.counter {
+    display: inline-block;
+    padding: 2px 5px;
+    font-size: 11px;
+    font-weight: bold;
+    line-height: 1;
+    color: #666;
+    background-color: #eee;
+    border-radius: 20px;
 }
 
 .menu {
@@ -633,4 +643,19 @@ table.floatThead-table {
 
 .treeview li:not(.node-disabled):hover {
     background-color: #F5F5F5;
+}
+
+
+
+
+
+
+
+
+
+
+/* z-index  */
+
+.bootstrap-select.btn-group .dropdown-menu{
+    z-index: 1011;
 }

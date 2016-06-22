@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html>
-<ui:composition template="/applayout/pageTemplate.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition template="/applayout/dataTemplate.xhtml" xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:b="http://bootsfaces.net/ui"
@@ -9,30 +9,57 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:o="http://omnifaces.org/ui">
 
     <ui:define name="custom-header">
+        <h:outputStylesheet library="bootstrap-datepicker" name="css/bootstrap-datetimepicker.min.css"/>
+        <h:outputScript library="bootstrap-datepicker" name="js/bootstrap-datetimepicker.min.js"/>
+        <h:outputScript library="bootstrap-datepicker" name="js/locales/bootstrap-datetimepicker.zh-CN.js"/>
+
 
         <h:outputStylesheet library="bootstrap-select" name="css/bootstrap-select.min.css"/>
         <h:outputStylesheet library="bootstrap-select" name="css/bootstrap-select-plug.css"/>
         <h:outputScript library="bootstrap-select" name="js/bootstrap-select.min.js"/>
 
         <h:outputScript library="floatThead" name="jquery.floatThead.min.js"/>
-        <h:outputScript>
-
-
-
-
-        </h:outputScript>
 
         <f:metadata>
-            <o:viewParam name="officeId" value="#{officeHome.id}"/>
+            <o:viewParam name="employeeOfficeId" value="#{employeeList.officeId}"/>
             <o:viewParam name="employeeId" value="#{employeeHome.id}"/>
+
+            <o:viewParam name="condition" value="#{employeeList.condition}"/>
+            <o:viewParam name="job" value="#{employeeList.job}"/>
         </f:metadata>
     </ui:define>
 
+
+    <ui:param name="fun_title" value="员工管理"/>
+    <ui:define name="search-condition">
+        <b:inputText value="#{employeeList.condition}" styleClass="form-control input-block" aria-label="Search"
+                     placeholder="查询条件">
+            <f:facet name="prepend">
+                <h:selectOneMenu id="jobCondition" value="#{employeeList.job}"
+                                 pt:data-header="按岗位查询"
+                                 pt:data-size="auto"
+                                 styleClass="js-selectpicker form-control edit-select select-theme"  >
+                    <f:selectItem noSelectionOption="true" itemLabel="所有岗位"/>
+                    <f:selectItems value="#{dictionaryProducer.getDictionaries('hr.job')}" var="_job"
+                                   itemValue="#{_job.id}" itemLabel="#{_job.name}"/>
+                </h:selectOneMenu>
+            </f:facet>
+        </b:inputText>
+    </ui:define>
+    <ui:define name="search-action">
+        <b:commandButton action="#{employeeList.refresh}" look="default">查询</b:commandButton>
+    </ui:define>
+
     <o:form id="jobChange" includeViewParams="true">
-        <b:modal id="jobChangeModal" title="#{employeeHome.instance.name}(#{employeeHome.id})" styleClass="jobChangeModal">
+        <b:modal id="jobChangeModal" title="工作调动 - #{employeeHome.instance.name}(#{employeeHome.id})" styleClass="jobChangeModal">
 
          <p:outputPanel id="jobChangeInputs">
             <b:messages/>
+
+             <b:inputText label="调动时间" renderLabel="true" required="true" value="#{employeeOperation.validTime}" styleClass="js-datepicker">
+                 <f:convertDateTime pattern="yyyy-mm-dd"/>
+             </b:inputText>
+             <b:message/>
 
 
              <div class="form-group">
@@ -57,12 +84,30 @@
             </b:selectOneMenu>
 
             <b:inputText label="工作编号" renderLabel="true" value="#{employeeHome.instance.workCode}"/>
+            <b:message/>
+
 
 
             <b:fetchBeanInfos />
             <h:outputScript>
                 var noFailedMessages = #{facesContext.maximumSeverity==null || facesContext.maximumSeverity.ordinal lt 2};
             </h:outputScript>
+
+             <h:outputScript>
+                 $('.js-selectpicker').selectpicker();
+
+                 $('.js-datepicker').datetimepicker({
+                 language: "zh-CN",
+                 format: 'yyyy-mm-dd',
+                 weekStart: 1,
+                 todayBtn:  1,
+                 autoclose: 1,
+                 todayHighlight: 1,
+                 startView: 2,
+                 minView: 2,
+                 forceParse: 0
+                 });
+             </h:outputScript>
 
          </p:outputPanel>
             <f:facet name="footer">
@@ -71,14 +116,12 @@
 
                 <b:commandButton ajax="true" value="确定"
                                  oncomplete="if(!validationFailed &amp;&amp; noFailedMessages) $('.jobChangeModal').modal('hide');"
-                                 action="#{employeeHome.saveOrUpdate}" look="success" update="jobChangeInputs,employees">
+                                 action="#{employeeOperation.jobChange}" look="success" update="jobChangeInputs,employees">
                 </b:commandButton>
             </f:facet>
 
         </b:modal>
-        <h:outputScript>
-            $('.js-selectpicker').selectpicker();
-        </h:outputScript>
+
     </o:form>
 
     <o:form id="edit" includeViewParams="true">
@@ -113,10 +156,10 @@
     </b:modal>
     </o:form>
 
-    <b:row style="margin-top: 20px;">
-        <b:column colMd="3">
+    <b:row id="offices">
+        <b:column colMd="3" rendered="#{not empty employeeList.offices}">
 
-            <o:form id="offices" includeViewParams="true">
+            <o:form  includeViewParams="true">
                 <ui:remove>
                <b:tree value="#{officeTree}" renderRoot="false" showCheckbox="false" showTags="true"
                        enableLinks="false" nodeSelectionListener="#{employeeList}"
@@ -126,11 +169,15 @@
 
                 <nav class="menu">
 
-                    <ui:repeat value="#{officeList}" var="_office">
-                        <p:commandLink ajax="true" immediate="true" styleClass="menu-item #{officeHome.id eq _office.id ? 'selected' : ''}"
-                                       update="offices,employees" process="@this"
-                                       value="#{_office.name}">
-                            <f:setPropertyActionListener value="#{_office.id}" target="#{officeHome.id}"/>
+                    <ui:repeat value="#{employeeList.offices}" var="_office">
+                        <p:commandLink ajax="true" immediate="true" styleClass="menu-item #{employeeList.officeId eq _office.id ? 'selected' : ''}"
+                                       update="offices,employees" process="@this">
+                            #{_office.name}
+                            <h:outputText styleClass="counter" value="#{_office.count}" >
+                                <f:convertNumber groupingUsed="true"/>
+                            </h:outputText>
+                            <f:setPropertyActionListener value="#{_office.id}" target="#{employeeList.officeId}"/>
+
                         </p:commandLink>
                     </ui:repeat>
 
@@ -139,23 +186,23 @@
 
         </b:column>
 
-        <b:column colMd="9">
+        <b:column colMd="9" rendered="#{not empty employeeList.offices}">
             <o:form id="employees" includeViewParams="true">
-            <h:dataTable value="#{employeeList.employeeList}"
+            <h:dataTable value="#{employeeList.employees}"
                          styleClass="table table-striped table-hover table-floatThead"
                          columnClasses="width-20percent,width-35percent,width-15percent,width-15percent,width-15percent,width-min"
-                         var="_emp" rendered="#{officeHome.idDefined and (not empty employeeList.employeeList)}">
+                         var="_emp">
 
                 <h:column>
                     <f:facet name="header">
-                        员工编号
+                        编号
                     </f:facet>
                     #{_emp.data.id}
                 </h:column>
 
                 <h:column>
                     <f:facet name="header">
-                        员工姓名
+                        姓名
                     </f:facet>
                     #{_emp.data.name}
                 </h:column>
@@ -195,14 +242,14 @@
                         </b:commandButton>
 
                         <b:commandButton styleClass="list-action" tooltip="工作调动" immediate="true"
-                                         process="@this" ajax="true" icon="pencil" look="link"
+                                         process="@this" ajax="true" iconAwesome="exchange" look="link"
                                          oncomplete="$('.jobChangeModal').modal();" update="jobChange">
                             <f:setPropertyActionListener value="#{_emp.data.id}" target="#{employeeHome.id}"/>
                         </b:commandButton>
 
 
                         <b:commandButton styleClass="list-action" tooltip="查看" immediate="true"
-                                         icon="pencil" look="link" action="/erp/hr/employeeInfo.xhtml">
+                                         iconAwesome="eye" look="link" action="/erp/hr/employeeInfo.xhtml">
                             <f:setPropertyActionListener value="#{_emp.data.id}" target="#{employeeHome.id}"/>
                         </b:commandButton>
                     </div>
