@@ -64,16 +64,6 @@ INSERT INTO `PasswordCredentialTypeEntity` (`id`, `effectiveDate`, `expiryDate`,
 /*!40000 ALTER TABLE `PasswordCredentialTypeEntity` ENABLE KEYS */;
 UNLOCK TABLES;
 
-INSERT INTO DICTIONARY_CATEGORY(ID, NAME, SYSTEM, ENABLE, BOTIME) VALUES('hr.job','岗位',true,true,'2016-06-1');
-
-INSERT INTO DICTIONARY(ID, CATEGORY, NAME, PRI, ENABLE) VALUES('hr.job.hczz','hr.job','后厨组长',1,true);
-INSERT INTO DICTIONARY(ID, CATEGORY, NAME, PRI, ENABLE) VALUES('hr.job.qtzz','hr.job','前台组长',2,true);
-INSERT INTO DICTIONARY(ID, CATEGORY, NAME, PRI, ENABLE) VALUES('hr.job.ma','hr.job','面案',3,true);
-INSERT INTO DICTIONARY(ID, CATEGORY, NAME, PRI, ENABLE) VALUES('hr.job.fwy','hr.job','服务员',4,true);
-
-
-INSERT INTO DICTIONARY_CATEGORY(ID, NAME, SYSTEM, ENABLE, BOTIME) VALUES('hr.level','员工级别',true,true,'2016-06-1');
-INSERT INTO DICTIONARY(ID, CATEGORY, NAME, PRI, ENABLE) VALUES('hr.level1','hr.level','初级',4,true);
 
 --
 -- Dumping data for table `hibernate_sequence`

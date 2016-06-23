@@ -18,13 +18,12 @@ public class Employee implements java.io.Serializable , Comparable<Employee>{
 
     private String id;
     private String name;
-    private String jobs;
-    private String level;
     private String phone;
     private Status status;
     private Date joinDate;
     private String workCode;
 
+    private JobLevel jobLevel;
     private Office office;
 
     public Employee() {
@@ -56,28 +55,6 @@ public class Employee implements java.io.Serializable , Comparable<Employee>{
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Column(name = "JOBS",nullable = false,length = 32)
-    @NotNull
-    @Size(max = 32)
-    public String getJobs() {
-        return jobs;
-    }
-
-    public void setJobs(String jobs) {
-        this.jobs = jobs;
-    }
-
-    @Column(name = "LEVEL",nullable = false,length = 32)
-    @NotNull
-    @Size(max = 32)
-    public String getLevel() {
-        return level;
-    }
-
-    public void setLevel(String level) {
-        this.level = level;
     }
 
     @Column(name = "PHONE",length = 32)
@@ -133,7 +110,20 @@ public class Employee implements java.io.Serializable , Comparable<Employee>{
         this.workCode = workCode;
     }
 
+    @ManyToOne(fetch = FetchType.LAZY,optional = false)
+    @JoinColumn(name="JOB_LEVEL",nullable = false)
+    @NotNull
+    public JobLevel getJobLevel() {
+        return jobLevel;
+    }
+
+    public void setJobLevel(JobLevel jobLevel) {
+        this.jobLevel = jobLevel;
+    }
+
     public int compareTo(Employee o) {
         return getJoinDate().compareTo(o.getJoinDate());
     }
+
+
 }

@@ -74,7 +74,7 @@
             </h:selectOneMenu>
              </div>
 
-            <b:selectOneMenu value="#{employeeHome.instance.jobs}" label="岗位" renderLabel="true" required="true">
+            <b:selectOneMenu value="#{employeeHome.instance.job}" label="岗位" renderLabel="true" required="true">
                 <f:selectItems value="#{dictionaryProducer.getDictionaries('hr.job')}" var="_job"
                                itemValue="#{_job.id}" itemLabel="#{_job.name}"/>
             </b:selectOneMenu>
@@ -224,7 +224,7 @@
                         岗位
                     </f:facet>
 
-                    <h:outputText style="white-space:nowrap;" value="#{dictionaryProducer.getDictionaryValue(_emp.data.jobs)}"/>
+                    <h:outputText style="white-space:nowrap;" value="#{dictionaryProducer.getDictionaryValue(_emp.data.job)}"/>
 
                 </h:column>
                 <h:column>
@@ -259,11 +259,12 @@
                             <f:setPropertyActionListener value="#{_emp.data.id}" target="#{employeeHome.id}"/>
                         </b:commandButton>
 
+                        <h:outputLink styleClass="list-action" value="#{request.contextPath}/erp/hr/employeeInfo.xhtml">
+                            <f:param value="#{_emp.data.id}" name="employeeId"/>
+                            <b:iconAwesome name="eye"/>
+                        </h:outputLink>
 
-                        <b:commandButton styleClass="list-action" tooltip="查看" immediate="true"
-                                         iconAwesome="eye" look="link" action="/erp/hr/employeeInfo.xhtml">
-                            <f:setPropertyActionListener value="#{_emp.data.id}" target="#{employeeHome.id}"/>
-                        </b:commandButton>
+
                     </div>
 
 

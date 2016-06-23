@@ -10,6 +10,7 @@ import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import java.util.*;
 
 import static javax.enterprise.event.Reception.IF_EXISTS;
@@ -45,9 +46,13 @@ public class DictionaryProducer {
     public Dictionary getDictionary(String dictionaryId){
         Dictionary result = dictionaryMap.get(dictionaryId);
         if (result == null){
-            result = dictionaryRepository.getDictionary(dictionaryId);
-            if (result != null){
-                dictionaryMap.put(result.getId(),result);
+            try {
+                result = dictionaryRepository.getDictionary(dictionaryId);
+                if (result != null) {
+                    dictionaryMap.put(result.getId(), result);
+                }
+            }catch (NoResultException e){
+                return null;
             }
 
         }

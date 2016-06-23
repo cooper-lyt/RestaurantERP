@@ -87,7 +87,7 @@
 
                 <b:row>
                     <b:column colMd="6">
-                        <b:selectOneMenu value="#{employeeHome.instance.jobs}" label="岗位" renderLabel="true" required="true">
+                        <b:selectOneMenu value="#{employeeHome.instance.job}" label="岗位" renderLabel="true" required="true">
                             <f:selectItems value="#{dictionaryProducer.getDictionaries('hr.job')}" var="_job"
                                            itemValue="#{_job.id}" itemLabel="#{_job.name}"/>
                         </b:selectOneMenu>

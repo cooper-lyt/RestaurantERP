@@ -52,6 +52,11 @@
         <class>cc.coopersoft.restaurant.model.EmployeeAction</class>
         <class>cc.coopersoft.restaurant.model.Operation</class>
         <class>cc.coopersoft.restaurant.model.JobInfo</class>
+        <class>cc.coopersoft.restaurant.model.PaidProject</class>
+        <class>cc.coopersoft.restaurant.model.PaidItem</class>
+        <class>cc.coopersoft.restaurant.model.OfficeType</class>
+        <class>cc.coopersoft.restaurant.model.Job</class>
+        <class>cc.coopersoft.restaurant.model.JobLevel</class>
 
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>

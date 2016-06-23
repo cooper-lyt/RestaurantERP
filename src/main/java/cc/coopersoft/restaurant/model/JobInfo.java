@@ -12,19 +12,17 @@ import javax.validation.constraints.Size;
 public class JobInfo {
 
     private String id;
-    private String jobs;
-    private String level;
     private String workCode;
 
     private Office office;
     private EmployeeAction employeeAction;
+    private JobLevel jobLevel;
 
     public JobInfo() {
     }
 
-    public JobInfo(String jobs, String level, String workCode, Office office, EmployeeAction employeeAction) {
-        this.jobs = jobs;
-        this.level = level;
+    public JobInfo(JobLevel jobLevel, String workCode, Office office, EmployeeAction employeeAction) {
+        this.jobLevel = jobLevel;
         this.workCode = workCode;
         this.office = office;
         this.employeeAction = employeeAction;
@@ -42,27 +40,6 @@ public class JobInfo {
         this.id = id;
     }
 
-    @Column(name = "JOBS",nullable = false,length = 32)
-    @NotNull
-    @Size(max = 32)
-    public String getJobs() {
-        return jobs;
-    }
-
-    public void setJobs(String jobs) {
-        this.jobs = jobs;
-    }
-
-    @Column(name = "LEVEL",nullable = false,length = 32)
-    @NotNull
-    @Size(max = 32)
-    public String getLevel() {
-        return level;
-    }
-
-    public void setLevel(String level) {
-        this.level = level;
-    }
 
     @Column(name = "WORK_CODE",length = 32)
     @Size(max = 32)
@@ -83,6 +60,17 @@ public class JobInfo {
 
     public void setOffice(Office office) {
         this.office = office;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY,optional = false)
+    @JoinColumn(name = "JOB_LEVEL", nullable = false)
+    @NotNull
+    public JobLevel getJobLevel() {
+        return jobLevel;
+    }
+
+    public void setJobLevel(JobLevel jobLevel) {
+        this.jobLevel = jobLevel;
     }
 
     @OneToOne(fetch = FetchType.LAZY,mappedBy = "jobInfo",optional = false)

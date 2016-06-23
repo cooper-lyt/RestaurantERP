@@ -1,6 +1,5 @@
 package cc.coopersoft.restaurant.hr;
 
-import cc.coopersoft.restaurant.ErpEM;
 import cc.coopersoft.restaurant.model.Business;
 import cc.coopersoft.restaurant.model.EmployeeAction;
 import cc.coopersoft.restaurant.model.JobInfo;
@@ -57,7 +56,7 @@ public class EmployeeOperation {
 
         EmployeeAction employeeAction = new EmployeeAction(id,employeeHome.getInstance().getJoinDate(),employeeHome.getInstance(),business);
 
-        employeeAction.setJobInfo(new JobInfo(employeeHome.getInstance().getJobs(),employeeHome.getInstance().getLevel(),employeeHome.getInstance().getWorkCode(),employeeHome.getInstance().getOffice(),employeeAction));
+        employeeAction.setJobInfo(new JobInfo(employeeHome.getInstance().getJobLevel(),employeeHome.getInstance().getWorkCode(),employeeHome.getInstance().getOffice(),employeeAction));
         business.getEmployeeActions().add(employeeAction);
 
         User user = (User)identity.getAccount();
@@ -75,7 +74,7 @@ public class EmployeeOperation {
         String id = UUID.randomUUID().toString().replace("-","");
         Business business = new Business(id,Business.Type.EMP_JOB_CHANGE,Business.Status.COMPLETE,new Date());
         EmployeeAction employeeAction = new EmployeeAction(id,validTime,employeeHome.getInstance(),business);
-        employeeAction.setJobInfo(new JobInfo(employeeHome.getInstance().getJobs(),employeeHome.getInstance().getLevel(),employeeHome.getInstance().getWorkCode(),employeeHome.getInstance().getOffice(),employeeAction));
+        employeeAction.setJobInfo(new JobInfo(employeeHome.getInstance().getJobLevel(),employeeHome.getInstance().getWorkCode(),employeeHome.getInstance().getOffice(),employeeAction));
         business.getEmployeeActions().add(employeeAction);
         User user = (User)identity.getAccount();
         business.getOperations().add(new Operation(id,user.getLoginName(),user.getFirstName() + user.getLastName(),"入职操作",new Date(), Operation.Type.APPLY,business));
