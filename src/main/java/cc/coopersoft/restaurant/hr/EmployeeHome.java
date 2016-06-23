@@ -1,14 +1,13 @@
 package cc.coopersoft.restaurant.hr;
 
 import cc.coopersoft.common.EntityHome;
-import cc.coopersoft.restaurant.ErpEM;
 import cc.coopersoft.restaurant.model.Employee;
 import cc.coopersoft.restaurant.hr.repository.EmployeeRepository;
 import org.apache.deltaspike.data.api.EntityRepository;
-import org.apache.deltaspike.jpa.api.transaction.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ConversationScoped;
+import javax.enterprise.inject.Default;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -26,7 +25,7 @@ public class EmployeeHome extends EntityHome<Employee,String> {
     private EmployeeRepository employeeRepository;
 
     @Inject
-    @ErpEM
+    @Default
     private EntityManager entityManager;
 
     @Inject

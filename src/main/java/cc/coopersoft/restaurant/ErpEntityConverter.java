@@ -2,6 +2,7 @@ package cc.coopersoft.restaurant;
 
 import cc.coopersoft.common.EntityConverter;
 
+import javax.enterprise.inject.Default;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -13,7 +14,7 @@ import javax.persistence.EntityManager;
 public class ErpEntityConverter extends EntityConverter {
 
     @Inject
-    @ErpEM
+    @Default
     private EntityManager entityManager;
 
     protected EntityManager getEntityManager() {

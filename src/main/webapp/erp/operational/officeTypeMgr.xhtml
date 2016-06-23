@@ -11,100 +11,61 @@
 
     <b:row style="margin-top: 20px;">
         <b:column colMd="3">
-            <o:form id="categories" includeViewParams="true">
+            <o:form id="officeTypes" includeViewParams="true">
                 <nav class="menu">
+
                     <div class="menu-heading">
-                        <div class="timeline-comment-actions">
-                            <b:commandButton look="link" icon="plus" ajax="true"
-                                             update="categoryEdit" tooltip="添加自定义字典类型"
-                                             oncomplete="$('.categoryEditModal').modal();">
-                                <f:setPropertyActionListener value="" target="#{dictionaryCategoryHome.id}"/>
-                            </b:commandButton>
-                        </div>
-                        字典类型
+                        营业类型
                     </div>
 
-                    <ui:repeat value="#{dictionaryManager.categories}" var="_category">
-                        <p:commandLink ajax="true" immediate="true" styleClass="menu-item #{dictionaryCategoryHome.id eq _category.id ? 'selected' : ''}"
-                                       update="categories,dictionaries" process="@this" style="#{(not _category.enable) ? 'text-decoration:line-through;' : ''}"
-                                       value="#{_category.name}">
-                            <f:setPropertyActionListener value="#{_category.id}" target="#{dictionaryCategoryHome.id}"/>
+                    <ui:repeat value="#{officeTypeManager.officeTypes}" var="_type">
+                        <p:commandLink ajax="true" immediate="true" styleClass="menu-item #{officeTypeHome.id eq _type.id ? 'selected' : ''}"
+                                       update="officeTypes,officeTypeDetails" process="@this" style="#{_type.enable ? 'text-decoration:line-through;' : ''}"
+                                       value="#{_type.name}">
+                            <f:setPropertyActionListener value="#{_type.id}" target="#{officeTypeHome.id}"/>
                         </p:commandLink>
                     </ui:repeat>
 
+                    <p:commandLink ajax="true" immediate="true" styleClass="menu-item #{empty officeTypeHome.id}"
+                                   update="officeTypes,officeTypeDetails" process="@this" style="#{_type.enable ? 'text-decoration:line-through;' : ''}"
+                                   value="新增一个类型">
+                        <f:setPropertyActionListener value="" target="#{officeTypeHome.id}"/>
+                    </p:commandLink>
                 </nav>
             </o:form>
         </b:column>
         <b:column colMd="9">
 
-            <o:form id="dictionaries" includeViewParams="true" >
-                <b:panel collapsible="false" titleClass="header-sm">
-
-                    <f:facet name="heading">
-                        <h:outputText styleClass="heading-text" value="#{dictionaryCategoryHome.idDefined ? dictionaryCategoryHome.instance.name : '请选择要操作的字典类型'}" />
-                        <b:commandButton look="link" ajax="true" icon="pencil" tooltip="编辑字典种类"
-                                         oncomplete="$('.categoryEditModal').modal();" process="@this"
-                                         rendered="#{dictionaryCategoryHome.idDefined}" update="categoryEdit">
-                            <f:setPropertyActionListener value="#{dictionaryCategoryHome.instance.id}" target="#{dictionaryCategoryHome.id}"/>
-                        </b:commandButton>
-
-                        <div class="timeline-comment-actions">
-                            <b:commandButton look="link" icon="plus" ajax="true" update="dictionaryEdit"
-                                             tooltip="添加字典项" rendered="#{dictionaryCategoryHome.idDefined}"
-                                             oncomplete="$('.editModal').modal();">
-                                <f:setPropertyActionListener value="" target="#{dictionaryHome.id}"/>
-                            </b:commandButton>
-                        </div>
-                    </f:facet>
+            <o:form id="officeTypeDetails" includeViewParams="true" >
+                <b:panel collapsible="false" title="操作" titleClass="header-sm">
 
 
-                    <b:jumbotron rendered="#{not dictionaryCategoryHome.idDefined}">
-                        <h1>字典管理</h1>
-                        <p>要添加自定义字典类型请使用字典类型列表上方的添加按钮,要编辑字典请先选择字典类型.</p>
-                    </b:jumbotron>
+                    <span class="input-group-append">
 
-                    <b:well rendered="#{dictionaryCategoryHome.idDefined and (empty dictionaryCategoryHome.instance.dictionaryList)}">
-                        <h3>此类别下没有字典项</h3>
-                        使用上方的添加按钮添加字典.
-                    </b:well>
+<b:inputText value="#{officeTypeHome.instance.name}" label="名称" renderLabel="true">
+    <f:facet name="append">
+        <b:switch value="#{officeTypeHome.instance.enable}"
+                  off-text="禁用" on-text="启用" />
+    </f:facet>
+</b:inputText>
+</span>
+<b:row>
+    <b:column colSm="4" colMd="4">
+        <b:switch value="##{officeTypeHome.instance.store}" label="仓库" renderLabel="false" on-text="可仓储" off-text="无仓库"/>
+    </b:column>
 
-                    <h:dataTable value="#{dictionaryCategoryHome.instance.dictionaryList}"
-                                 styleClass="table table-striped table-hover table-floatThead"
-                                 columnClasses="width-20percent,width-80percent,width-min"
-                                 var="_dict" rendered="#{dictionaryCategoryHome.idDefined and (not empty dictionaryCategoryHome.instance.dictionaryList)}">
+    <b:column colSm="4" colMd="4">
+        <b:switch value="##{officeTypeHome.instance.sale}" label="销售" renderLabel="false" on-text="可销售" off-text="无销售"/>
+    </b:column>
 
-                        <h:column>
-                            <h:outputText style="#{(not _dict.enable) ? 'text-decoration:line-through;' : ''}" value="#{_dict.id}"/>
-                        </h:column>
+    <b:column colSm="4" colMd="4">
+        <b:switch value="##{officeTypeHome.instance.produce}" label="生产" renderLabel="false" on-text="可生产" off-text="无生产"/>
+    </b:column>
 
-                        <h:column>
+</b:row>
 
-                            <h:outputText style="#{(not _dict.enable) ? 'text-decoration:line-through;' : ''}" value="#{_dict.name}"/>
-                        </h:column>
-                        <h:column>
-                            <div class="list-actions right" style="width: 110px">
 
-                                <b:commandButton styleClass="list-action" tooltip="向上" immediate="true"
-                                                 process="@this" ajax="true" iconAwesome="arrow-up" look="link"
-                                                 update="dictionaries" action="#{dictionaryHome.up}">
-                                    <f:setPropertyActionListener value="#{_dict.id}" target="#{dictionaryHome.id}"/>
-                                </b:commandButton>
 
-                                <b:commandButton styleClass="list-action" tooltip="向下" immediate="true"
-                                                 process="@this" ajax="true" iconAwesome="arrow-down" look="link"
-                                                 update="dictionaries" action="#{dictionaryHome.down}">
-                                    <f:setPropertyActionListener value="#{_dict.id}" target="#{dictionaryHome.id}"/>
-                                </b:commandButton>
-
-                                <b:commandButton styleClass="list-action" tooltip="编辑" immediate="true"
-                                                 process="@this" ajax="true" icon="pencil" look="link"
-                                                 oncomplete="$('.editModal').modal();" update="dictionaryEdit">
-                                    <f:setPropertyActionListener value="#{_dict.id}" target="#{dictionaryHome.id}"/>
-                                </b:commandButton>
-                            </div>
-                        </h:column>
-
-                    </h:dataTable>
 
                 </b:panel>
             </o:form>

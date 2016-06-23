@@ -19,8 +19,13 @@ public class OfficeType {
     private boolean produce;
     private boolean sale;
     private Date botime;
-    private boolean disable;
+    private boolean enable;
 
+    public OfficeType(String id, Date botime, boolean enable) {
+        this.id = id;
+        this.botime = botime;
+        this.enable = enable;
+    }
 
     public OfficeType() {
     }
@@ -86,12 +91,12 @@ public class OfficeType {
         this.botime = botime;
     }
 
-    @Column(name = "DISABLE",nullable = false)
-    public boolean isDisable() {
-        return disable;
+    @Column(name = "ENABLE",nullable = false)
+    public boolean isEnable() {
+        return enable;
     }
 
-    public void setDisable(boolean disable) {
-        this.disable = disable;
+    public void setEnable(boolean disable) {
+        this.enable = disable;
     }
 }

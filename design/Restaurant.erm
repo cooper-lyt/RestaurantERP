@@ -12,7 +12,7 @@
 	<category_index>0</category_index>
 	<zoom>1.0</zoom>
 	<x>-152</x>
-	<y>-136</y>
+	<y>-185</y>
 	<default_color>
 		<r>128</r>
 		<g>128</g>
@@ -135,7 +135,7 @@
 			</connections>
 			<display>false</display>
 			<creation_date>2016-06-05 23:29:37</creation_date>
-			<updated_date>2016-06-24 00:08:07</updated_date>
+			<updated_date>2016-06-24 01:47:30</updated_date>
 			<model_property>
 				<name>Project Name</name>
 				<value></value>
@@ -228,8 +228,8 @@
 			<binary>false</binary>
 			<args></args>
 			<description></description>
-			<logical_name>DISABLE</logical_name>
-			<physical_name>DISABLE</physical_name>
+			<logical_name>ENABLE</logical_name>
+			<physical_name>ENABLE</physical_name>
 			<type>boolean</type>
 		</word>
 		<word>

@@ -14,7 +14,7 @@ public class JobLevel {
     private String id;
     private String name;
     private int level;
-    private boolean disable;
+    private boolean enable;
 
     private Job job;
 
@@ -53,13 +53,13 @@ public class JobLevel {
         this.level = level;
     }
 
-    @Column(name="DISABLE",nullable = false)
-    public boolean isDisable() {
-        return disable;
+    @Column(name="ENABLE",nullable = false)
+    public boolean isEnable() {
+        return enable;
     }
 
-    public void setDisable(boolean disable) {
-        this.disable = disable;
+    public void setEnable(boolean disable) {
+        this.enable = disable;
     }
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

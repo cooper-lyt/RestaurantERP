@@ -24,22 +24,6 @@ public class EntityManagerProducer implements java.io.Serializable{
     @PersistenceUnit(unitName = "restaurantEntityManagerFactory")
     private EntityManagerFactory entityManagerFactory;
 
-    @Produces
-    @ErpEM
-    public EntityManager create()
-    {
-        logger.log(Level.CONFIG,"create Erp EntityManager");
-        return this.entityManagerFactory.createEntityManager();
-    }
-
-    public void dispose(@Disposes @ErpEM EntityManager entityManager)
-    {
-        logger.log(Level.CONFIG,"Disposes Erp EntityManager");
-        if (entityManager.isOpen())
-        {
-            entityManager.close();
-        }
-    }
 
     @Produces
     @Default

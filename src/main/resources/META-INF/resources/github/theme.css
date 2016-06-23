@@ -551,10 +551,14 @@ table.floatThead-table {
     padding-bottom: 0;
 }
 
-.heading-text {
+.panel-heading .header-sm{
     font-size: 13px;
     font-weight: bold;
+    margin-bottom: 0;
+    margin-top: 0;
+    line-height: 16px;
 }
+
 
 .input-group-append .input-group-addon {
     padding: 0;

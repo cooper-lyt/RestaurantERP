@@ -15,7 +15,7 @@ public class Job {
     private String id;
     private String name;
     private int pri;
-    private boolean disable;
+    private boolean enable;
 
     private OfficeType officeType;
 
@@ -54,13 +54,13 @@ public class Job {
         this.pri = pri;
     }
 
-    @Column(name = "DISABLE",nullable = false)
-    public boolean isDisable() {
-        return disable;
+    @Column(name = "ENABLE",nullable = false)
+    public boolean isEnable() {
+        return enable;
     }
 
-    public void setDisable(boolean disable) {
-        this.disable = disable;
+    public void setEnable(boolean disable) {
+        this.enable = disable;
     }
 
     @ManyToOne(fetch = FetchType.LAZY,optional = false)
