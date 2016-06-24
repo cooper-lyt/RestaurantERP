@@ -16,13 +16,15 @@ public class JobInfo {
 
     private Office office;
     private EmployeeAction employeeAction;
-    private JobLevel jobLevel;
+    private Job job;
+    private String level;
 
     public JobInfo() {
     }
 
-    public JobInfo(JobLevel jobLevel, String workCode, Office office, EmployeeAction employeeAction) {
-        this.jobLevel = jobLevel;
+    public JobInfo(Job job, String level, String workCode, Office office, EmployeeAction employeeAction) {
+        this.job = job;
+        this.level = level;
         this.workCode = workCode;
         this.office = office;
         this.employeeAction = employeeAction;
@@ -51,6 +53,28 @@ public class JobInfo {
         this.workCode = workCode;
     }
 
+    @Column(name = "LEVEL",length = 32,nullable = false)
+    @Size(max = 32)
+    @NotNull
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY,optional = false)
+    @JoinColumn(name = "JOB", nullable = false)
+    @NotNull
+    public Job getJob() {
+        return job;
+    }
+
+    public void setJob(Job job) {
+        this.job = job;
+    }
+
     @ManyToOne(fetch = FetchType.LAZY,optional = false)
     @JoinColumn(name = "OFFICE", nullable = false)
     @NotNull
@@ -62,16 +86,6 @@ public class JobInfo {
         this.office = office;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY,optional = false)
-    @JoinColumn(name = "JOB_LEVEL", nullable = false)
-    @NotNull
-    public JobLevel getJobLevel() {
-        return jobLevel;
-    }
-
-    public void setJobLevel(JobLevel jobLevel) {
-        this.jobLevel = jobLevel;
-    }
 
     @OneToOne(fetch = FetchType.LAZY,mappedBy = "jobInfo",optional = false)
     @PrimaryKeyJoinColumn

@@ -15,8 +15,9 @@ public class PaidItem implements java.io.Serializable{
 
     private String id;
     private String category;
+    private String level;
 
-    private JobLevel jobLevel;
+    private Job job;
     private PaidProject paidProject;
 
     public PaidItem() {
@@ -46,15 +47,25 @@ public class PaidItem implements java.io.Serializable{
         this.category = category;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY,optional = false)
-    @JoinColumn(name = "JOB_LEVEL",nullable = false)
-    @NotNull
-    public JobLevel getJobLevel() {
-        return jobLevel;
+    @Column(name = "LEVEL",length = 32)
+    @Size(max = 32)
+    public String getLevel() {
+        return level;
     }
 
-    public void setJobLevel(JobLevel jobLevel) {
-        this.jobLevel = jobLevel;
+    public void setLevel(String level) {
+        this.level = level;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY,optional = false)
+    @JoinColumn(name = "JOB", nullable = false)
+    @NotNull
+    public Job getJob() {
+        return job;
+    }
+
+    public void setJob(Job job) {
+        this.job = job;
     }
 
     @ManyToOne(fetch = FetchType.LAZY,optional = false)

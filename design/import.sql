@@ -65,6 +65,9 @@ INSERT INTO `PasswordCredentialTypeEntity` (`id`, `effectiveDate`, `expiryDate`,
 UNLOCK TABLES;
 
 
+INSERT INTO DICTIONARY_CATEGORY(ID, NAME, SYSTEM, ENABLE, BOTIME) VALUES('hr.level','员工级别',true,true,'2016-06-1');
+INSERT INTO DICTIONARY(ID, CATEGORY, NAME, PRI, ENABLE) VALUES('hr.level1','hr.level','初级',4,true);
+
 --
 -- Dumping data for table `hibernate_sequence`
 --
