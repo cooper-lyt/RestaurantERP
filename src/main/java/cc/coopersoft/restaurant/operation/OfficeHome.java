@@ -43,11 +43,6 @@ public class OfficeHome extends EntityHome<Office,String> {
         setId(facesContext.getExternalContext().getRequestParameterMap().get("officeId"));
     }
 
-    public void printParam(){
-
-        for (Map.Entry<String,String> m: facesContext.getExternalContext().getRequestParameterMap().entrySet())
-        logger.config("key:" + m.getKey() + ":" + m.getValue());
-    }
 
     protected Office createInstance() {
         return new Office(new Date(), Office.OfficeStatus.OPEN);

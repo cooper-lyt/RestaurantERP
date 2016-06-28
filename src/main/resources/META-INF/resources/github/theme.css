@@ -604,23 +604,24 @@ table.floatThead-table {
     color: #767676;
 }
 
+.alert.bf-message.alert-danger{
+    color: #911;
+    background-color: #fcdede;
+    border-color: #d2b2b2;
+}
+
 .alert.bf-message {
-    display: block;
-    padding: 5px;
-    font-size: 11px;
-    color: #494620;
-    background: #f7ea57;
-    border: 1px solid #c0b536;
-    border-top-color: #fff;
-    border-bottom-right-radius: 3px;
-    border-bottom-left-radius: 3px;
-    font-weight: bold;
-    position: relative;
-    margin-left: 0;
-    margin-top: -15px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-    margin-bottom: 5px;
+    position: absolute;
+    z-index: 10;
+    display: inline-block;
+    max-width: 450px;
+    padding: 5px 8px;
+    margin: 3px 0 0;
+    font-size: 13px;
+    font-weight: normal;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 3px;
 }
 
 .treeview .list-group-item {

@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "JOB",catalog = "RESTAURANT")
-public class Job {
+public class Job implements java.io.Serializable, Comparable<Job> {
 
     private String id;
     private String name;
@@ -20,6 +20,14 @@ public class Job {
     private OfficeType officeType;
 
     public Job() {
+    }
+
+    public Job(String id,String name, int pri, boolean enable, OfficeType officeType) {
+        this.id = id;
+        this.pri = pri;
+        this.name = name;
+        this.enable = enable;
+        this.officeType = officeType;
     }
 
     @Id
@@ -72,5 +80,9 @@ public class Job {
 
     public void setOfficeType(OfficeType officeType) {
         this.officeType = officeType;
+    }
+
+    public int compareTo(Job o) {
+        return Integer.valueOf(getPri()).compareTo(o.getPri()) ;
     }
 }

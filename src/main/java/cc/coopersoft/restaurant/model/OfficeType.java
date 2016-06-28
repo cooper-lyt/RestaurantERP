@@ -3,7 +3,7 @@ package cc.coopersoft.restaurant.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Date;
+import java.util.*;
 
 /**
  * Created by cooper on 6/23/16.
@@ -11,7 +11,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "OFFICE_TYPE",catalog = "RESTAURANT")
-public class OfficeType {
+public class OfficeType implements java.io.Serializable{
 
     private String id;
     private String name;
@@ -20,6 +20,8 @@ public class OfficeType {
     private boolean sale;
     private Date botime;
     private boolean enable;
+
+    private Set<Job> jobs = new HashSet<Job>(0);
 
     public OfficeType(String id, Date botime, boolean enable) {
         this.id = id;
@@ -96,7 +98,23 @@ public class OfficeType {
         return enable;
     }
 
-    public void setEnable(boolean disable) {
-        this.enable = disable;
+    public void setEnable(boolean enable) {
+        this.enable = enable;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "officeType" ,orphanRemoval = true,cascade = CascadeType.ALL)
+    public Set<Job> getJobs() {
+        return jobs;
+    }
+
+    public void setJobs(Set<Job> jobs) {
+        this.jobs = jobs;
+    }
+
+    @Transient
+    public List<Job> getJobList(){
+        List<Job> result = new ArrayList<Job>(getJobs());
+        Collections.sort(result);
+        return result;
     }
 }

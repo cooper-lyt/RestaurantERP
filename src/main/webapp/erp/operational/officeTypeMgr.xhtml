@@ -9,6 +9,13 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:ui="http://java.sun.com/jsf/facelets">
 
+    <ui:define name="custom-header">
+        <f:metadata>
+            <o:viewParam name="officeTypeId" value="#{officeTypeHome.id}"/>
+        </f:metadata>
+    </ui:define>
+
+
     <b:row style="margin-top: 20px;">
         <b:column colMd="3">
             <o:form id="officeTypes" includeViewParams="true">
@@ -19,15 +26,18 @@
                     </div>
 
                     <ui:repeat value="#{officeTypeManager.officeTypes}" var="_type">
-                        <p:commandLink ajax="true" immediate="true" styleClass="menu-item #{officeTypeHome.id eq _type.id ? 'selected' : ''}"
-                                       update="officeTypes,officeTypeDetails" process="@this" style="#{_type.enable ? 'text-decoration:line-through;' : ''}"
+                        <p:commandLink ajax="true" immediate="true"
+                                       styleClass="menu-item #{officeTypeHome.id eq _type.id ? 'selected' : ''}"
+                                       update="officeTypes,officeTypeDetails,jobList" process="@this"
+                                       style="#{_type.enable ? '' : 'text-decoration:line-through;'}"
                                        value="#{_type.name}">
                             <f:setPropertyActionListener value="#{_type.id}" target="#{officeTypeHome.id}"/>
                         </p:commandLink>
                     </ui:repeat>
 
-                    <p:commandLink ajax="true" immediate="true" styleClass="menu-item #{empty officeTypeHome.id}"
-                                   update="officeTypes,officeTypeDetails" process="@this" style="#{_type.enable ? 'text-decoration:line-through;' : ''}"
+                    <p:commandLink ajax="true" immediate="true"
+                                   styleClass="menu-item #{officeTypeHome.idDefined ? '' : 'selected'}"
+                                   update="officeTypes,officeTypeDetails,jobList" process="@this"
                                    value="新增一个类型">
                         <f:setPropertyActionListener value="" target="#{officeTypeHome.id}"/>
                     </p:commandLink>
@@ -36,41 +46,67 @@
         </b:column>
         <b:column colMd="9">
 
-            <o:form id="officeTypeDetails" includeViewParams="true" >
-                <b:panel collapsible="false" title="操作" titleClass="header-sm">
+            <o:form id="officeTypeDetails" includeViewParams="true">
+                <b:panel collapsible="false" title="类型设置" titleClass="header-sm">
 
+
+                    <b:row>
+                        <b:column colSm="4" colMd="4">
+                            <b:switch value="#{officeTypeHome.instance.store}" label="仓库" renderLabel="false"
+                                      on-text="可仓储" off-text="无仓库"/>
+                        </b:column>
+
+                        <b:column colSm="4" colMd="4">
+                            <b:switch value="#{officeTypeHome.instance.sale}" label="销售" renderLabel="false"
+                                      on-text="可销售" off-text="无销售"/>
+                        </b:column>
+
+                        <b:column colSm="4" colMd="4">
+                            <b:switch value="#{officeTypeHome.instance.produce}" label="生产" renderLabel="false"
+                                      on-text="可生产" off-text="无生产"/>
+                        </b:column>
+
+                    </b:row>
 
                     <span class="input-group-append">
 
 <b:inputText value="#{officeTypeHome.instance.name}" label="名称" renderLabel="true">
     <f:facet name="append">
         <b:switch value="#{officeTypeHome.instance.enable}"
-                  off-text="禁用" on-text="启用" />
+                  off-text="禁用" on-text="启用"/>
     </f:facet>
 </b:inputText>
+                        <b:message/>
 </span>
-<b:row>
-    <b:column colSm="4" colMd="4">
-        <b:switch value="##{officeTypeHome.instance.store}" label="仓库" renderLabel="false" on-text="可仓储" off-text="无仓库"/>
-    </b:column>
 
-    <b:column colSm="4" colMd="4">
-        <b:switch value="##{officeTypeHome.instance.sale}" label="销售" renderLabel="false" on-text="可销售" off-text="无销售"/>
-    </b:column>
+                    <b:commandButton action="#{officeTypeHome.saveOrUpdate}" value="保存">
 
-    <b:column colSm="4" colMd="4">
-        <b:switch value="##{officeTypeHome.instance.produce}" label="生产" renderLabel="false" on-text="可生产" off-text="无生产"/>
+                    </b:commandButton>
+
+
+                </b:panel>
+            </o:form>
+            <o:form id="jobList" includeViewParams="true">
+
+            <b:panel rendered="#{officeTypeHome.idDefined}" collapsible="false" title="岗位" titleClass="header-sm">
+                <ui:repeat value="#{officeTypeHome.jobs}" var="_job">
+                    <b:inputText value="#{_job.name}">
+
+                    </b:inputText>
+                </ui:repeat>
+
+                <b:commandButton action="#{officeTypeHome.addJob}"
+                                 immediate="true" process="@this" value="增加岗位">
+
+                </b:commandButton>
+            </b:panel>
+
+
+        </o:form>
+
     </b:column>
 
 </b:row>
 
 
-
-
-                </b:panel>
-            </o:form>
-        </b:column>
-    </b:row>
-
-
-</ui:composition>
+        </ui:composition>
