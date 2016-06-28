@@ -11,6 +11,10 @@ a:focus {
     outline: none;
 }
 
+.input-group-btn .btn:focus{
+    outline: none;
+}
+
 .right, .float-right {
     float: right !important;
 }
@@ -615,13 +619,44 @@ table.floatThead-table {
     z-index: 10;
     display: inline-block;
     max-width: 450px;
-    padding: 5px 8px;
-    margin: 3px 0 0;
+    padding: 3px 8px;
+    margin: -13px 0 0 0;
     font-size: 13px;
     font-weight: normal;
     border-style: solid;
     border-width: 1px;
     border-radius: 3px;
+}
+
+.alert.bf-message.alert-danger::before {
+    border-bottom-color: #d2b2b2;
+}
+
+
+
+.alert.bf-message.alert-danger::after {
+    border-bottom-color: #fcdede;
+}
+
+.alert.bf-message::before , .alert.bf-message::after {
+    position: absolute;
+    bottom: 100%;
+    left: 10px;
+    z-index: 15;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+    content: " ";
+    border:solid transparent;
+}
+
+.alert.bf-message::before{
+    margin-left: -1px;
+    border-width: 6px;
+}
+
+.alert.bf-message::after{
+    border-width: 5px;
 }
 
 .treeview .list-group-item {

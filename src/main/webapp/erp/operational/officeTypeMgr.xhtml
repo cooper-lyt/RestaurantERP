@@ -79,7 +79,7 @@
                         <b:message/>
 </span>
 
-                    <b:commandButton action="#{officeTypeHome.saveOrUpdate}" value="保存">
+                    <b:commandButton look="success" style="margin-top: 14px" action="#{officeTypeHome.saveOrUpdate}" value="保存">
 
                     </b:commandButton>
 
@@ -90,15 +90,27 @@
 
             <b:panel rendered="#{officeTypeHome.idDefined}" collapsible="false" title="岗位" titleClass="header-sm">
                 <ui:repeat value="#{officeTypeHome.jobs}" var="_job">
-                    <b:inputText value="#{_job.name}">
+                    <b:inputText disabled="#{not _job.enable}" value="#{_job.name}">
 
+                        <f:facet name="prepend">
+
+                            <h:selectBooleanCheckbox value="#{_job.enable}">
+                                <f:ajax execute="@this" immediate="true" render="jobList"/>
+                            </h:selectBooleanCheckbox>
+                        </f:facet>
                     </b:inputText>
+                    <b:message/>
                 </ui:repeat>
 
-                <b:commandButton action="#{officeTypeHome.addJob}"
-                                 immediate="true" process="@this" value="增加岗位">
 
-                </b:commandButton>
+                <b:inputText value="#{officeTypeHome.newJobName}" label="岗位名称" renderLabel="false"
+                             required="true" placeholder="增加一个新的岗位">
+                    <f:facet name="append">
+                        <b:commandButton look="success" ajax="true" iconAwesome="plus"
+                                         process="@parent" update="jobList" action="#{officeTypeHome.addJob}" />
+                    </f:facet>
+                </b:inputText>
+                <b:message/>
             </b:panel>
 
 

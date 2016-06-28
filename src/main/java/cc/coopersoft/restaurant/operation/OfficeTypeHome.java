@@ -13,10 +13,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by cooper on 6/24/16.
@@ -58,7 +55,7 @@ public class OfficeTypeHome extends EntityHome<OfficeType,String> {
         if ( jobs == null || clearDirty()){
 
             jobs = new ArrayList<Job>(getInstance().getJobs());
-
+            Collections.sort(jobs);
         }
         return jobs;
     }
@@ -87,6 +84,9 @@ public class OfficeTypeHome extends EntityHome<OfficeType,String> {
             }
         }
         getInstance().getJobs().add(new Job(UUID.randomUUID().toString().replace("-",""),newJobName,maxPri + 1,true,getInstance()));
+        saveOrUpdate();
         jobs = null;
+        newJobName = null;
+
     }
 }
