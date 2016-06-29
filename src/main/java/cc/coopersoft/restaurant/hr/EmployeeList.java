@@ -26,22 +26,10 @@ import java.util.logging.Logger;
 @ConversationScoped
 public class EmployeeList implements TreeNodeEventListener, java.io.Serializable {
 
-
-    private ConditionAdapter job = ConditionAdapter.instance(null);
-
     private ConditionAdapter condition = ConditionAdapter.instance(null);
 
     private String officeId;
 
-    public String getJob() {
-        return job.getCondition();
-    }
-
-    public void setJob(String job) {
-        if (this.job.isDirty(job)) refresh();
-        this.job = ConditionAdapter.instance(job);
-
-    }
 
     public String getCondition() {
         return condition.getCondition();
@@ -79,7 +67,7 @@ public class EmployeeList implements TreeNodeEventListener, java.io.Serializable
 
     protected void initOffices(){
         if (offices == null){
-            offices = employeeRepository.searchEmployeeOffices(condition.getContains(),condition.getCondition(),condition.isEmpty(),job.getCondition(),job.isEmpty());
+            offices = employeeRepository.searchEmployeeOffices(condition.getContains(),condition.getCondition(),condition.isEmpty());
 
             if (!offices.isEmpty() && DataHelper.empty(officeId)){
                 officeId = offices.get(0).getId();
@@ -98,7 +86,6 @@ public class EmployeeList implements TreeNodeEventListener, java.io.Serializable
     public void initParam(){
         officeId = facesContext.getExternalContext().getRequestParameterMap().get("employeeOfficeId");
         setCondition(facesContext.getExternalContext().getRequestParameterMap().get("condition"));
-        setJob(facesContext.getExternalContext().getRequestParameterMap().get("job"));
     }
 
 
@@ -108,7 +95,7 @@ public class EmployeeList implements TreeNodeEventListener, java.io.Serializable
                 initOffices();
             }
             if (!DataHelper.empty(officeId)) {
-                employees = BatchData.fillData(employeeRepository.searchEmployee(condition.getContains(), condition.getCondition(), condition.isEmpty(), job.getCondition(), job.isEmpty(), officeId));
+                employees = BatchData.fillData(employeeRepository.searchEmployee(condition.getContains(), condition.getCondition(), condition.isEmpty(), officeId));
             }
         }
     }

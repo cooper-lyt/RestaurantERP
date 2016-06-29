@@ -16,19 +16,15 @@ import java.util.List;
 public interface EmployeeRepository extends EntityRepository<Employee,String> {
 
 
-    @Query("select new cc.coopersoft.restaurant.hr.repository.model.EmployeeOffice(emp.office.id,max(emp.office.name),count(emp.id) ) from Employee emp where emp.status <> 'LEAVE' and (emp.jobs = :job or false = :hasJob) and (emp.name like :likeCondition or emp.id = :condition or emp.phone =:condition or false = :hasCondition)  group by emp.office.id order by emp.office.botime")
+    @Query("select new cc.coopersoft.restaurant.hr.repository.model.EmployeeOffice(emp.office.id,max(emp.office.name),count(emp.id) ) from Employee emp where emp.status <> 'LEAVE' and (emp.name like :likeCondition or emp.id = :condition or emp.phone =:condition or false = :hasCondition)  group by emp.office.id order by emp.office.botime")
     List<EmployeeOffice> searchEmployeeOffices(@QueryParam("likeCondition") String likeCondition,
                                                   @QueryParam("condition")String fullCondition,
-                                                  @QueryParam("hasCondition") boolean hasCondition,
-                                                  @QueryParam("job") String job,
-                                                  @QueryParam("hasJob") boolean hasJob);
+                                                  @QueryParam("hasCondition") boolean hasCondition);
 
-    @Query("select emp from Employee emp where emp.status <> 'LEAVE' and emp.office.id = :officeId and (emp.jobs = :job or false = :hasJob) and (emp.name like :likeCondition or emp.id = :condition or emp.phone =:condition or false = :hasCondition)  order by emp.joinDate")
+    @Query("select emp from Employee emp where emp.status <> 'LEAVE' and emp.office.id = :officeId and (emp.name like :likeCondition or emp.id = :condition or emp.phone =:condition or false = :hasCondition)  order by emp.joinDate")
     List<Employee> searchEmployee(@QueryParam("likeCondition") String likeCondition,
                                   @QueryParam("condition")String fullCondition,
                                   @QueryParam("hasCondition") boolean hasCondition,
-                                  @QueryParam("job") String job,
-                                  @QueryParam("hasJob") boolean hasJob,
                                   @QueryParam("officeId") String officeId);
 
 }

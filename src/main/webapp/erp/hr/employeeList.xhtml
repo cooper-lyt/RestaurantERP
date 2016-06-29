@@ -25,7 +25,6 @@
             <o:viewParam name="employeeId" value="#{employeeHome.id}"/>
 
             <o:viewParam name="condition" value="#{employeeList.condition}"/>
-            <o:viewParam name="job" value="#{employeeList.job}"/>
         </f:metadata>
     </ui:define>
 
@@ -34,17 +33,6 @@
     <ui:define name="search-condition">
         <b:inputText value="#{employeeList.condition}" styleClass="form-control input-block" aria-label="Search"
                      placeholder="查询条件">
-            <f:facet name="prepend">
-                <h:selectOneMenu id="jobCondition" value="#{employeeList.job}"
-                                 pt:data-header="按岗位查询"
-                                 pt:data-size="auto"
-                                 pt:data-width="150px"
-                                 styleClass="js-selectpicker form-control select-theme"  >
-                    <f:selectItem noSelectionOption="true" itemLabel="所有岗位"/>
-                    <f:selectItems value="#{dictionaryProducer.getDictionaries('hr.job')}" var="_job"
-                                   itemValue="#{_job.id}" itemLabel="#{_job.name}"/>
-                </h:selectOneMenu>
-            </f:facet>
         </b:inputText>
     </ui:define>
     <ui:define name="search-action">

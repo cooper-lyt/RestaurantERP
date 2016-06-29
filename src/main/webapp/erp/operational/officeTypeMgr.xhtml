@@ -94,9 +94,24 @@
 
                         <f:facet name="prepend">
 
+
                             <h:selectBooleanCheckbox value="#{_job.enable}">
-                                <f:ajax execute="@this" immediate="true" render="jobList"/>
+                                <f:ajax execute="@this" listener="#{officeTypeHome.saveOrUpdate}" render="jobList"/>
                             </h:selectBooleanCheckbox>
+                        </f:facet>
+                        <f:facet name="append">
+
+
+                            <b:commandButton disabled="#{not _job.enable}" iconAwesome="save" ajax="true" process="@parent"
+                                             action="#{officeTypeHome.saveOrUpdate}" update="@parent"/>
+
+                            <b:commandButton iconAwesome="arrow-up" ajax="true" process="@this" action="#{officeTypeHome.upJob}" update="jobList">
+                                    <f:setPropertyActionListener value="#{_job.id}" target="#{officeTypeHome.selectJobId}"/>
+                            </b:commandButton>
+
+                            <b:commandButton iconAwesome="arrow-down" ajax="true" process="@this" action="#{officeTypeHome.downJob}" update="jobList">
+                                <f:setPropertyActionListener value="#{_job.id}" target="#{officeTypeHome.selectJobId}"/>
+                            </b:commandButton>
                         </f:facet>
                     </b:inputText>
                     <b:message/>

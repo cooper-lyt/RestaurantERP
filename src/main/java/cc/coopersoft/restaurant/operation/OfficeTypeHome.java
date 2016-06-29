@@ -5,6 +5,8 @@ import cc.coopersoft.restaurant.model.Job;
 import cc.coopersoft.restaurant.model.OfficeType;
 import cc.coopersoft.restaurant.operation.repository.OfficeTypeRepository;
 import org.apache.deltaspike.data.api.EntityRepository;
+import org.apache.deltaspike.jpa.api.transaction.Transactional;
+import org.omnifaces.cdi.Param;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
@@ -27,6 +29,16 @@ public class OfficeTypeHome extends EntityHome<OfficeType,String> {
 
     @Inject
     private FacesContext facesContext;
+
+    private String selectJobId;
+
+    public String getSelectJobId() {
+        return selectJobId;
+    }
+
+    public void setSelectJobId(String selectJobId) {
+        this.selectJobId = selectJobId;
+    }
 
     @PostConstruct
     public void initParam(){
@@ -71,11 +83,49 @@ public class OfficeTypeHome extends EntityHome<OfficeType,String> {
     }
 
     @Override
+    @Transactional
     public void saveOrUpdate(){
         super.saveOrUpdate();
         setId(getInstance().getId());
     }
 
+    private void switchJobPri(Job a, Job b){
+        int pri = a.getPri();
+        a.setPri(b.getPri());
+        b.setPri(pri);
+        super.saveOrUpdate();
+        Collections.sort(jobs);
+    }
+
+    @Transactional
+    public void upJob(){
+        Job befor = null;
+        for(Job job: getJobs()){
+            if (befor != null && selectJobId.equals(job.getId())){
+                switchJobPri(befor,job);
+                return;
+            }else{
+                befor = job;
+            }
+        }
+    }
+
+    @Transactional
+    public void downJob(){
+        Job selectJob = null;
+        for(Job job: getJobs()){
+            if (selectJob == null){
+                if (selectJobId.equals(job.getId())){
+                    selectJob = job;
+                }
+            }else{
+                switchJobPri(selectJob,job);
+                return;
+            }
+        }
+    }
+
+    @Transactional
     public void addJob(){
         int maxPri = 1;
         for(Job job: getInstance().getJobs()){

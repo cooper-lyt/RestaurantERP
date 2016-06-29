@@ -4,9 +4,10 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:b="http://bootsfaces.net/ui"
-                xmlns:ng="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jstl/core"
                 xmlns:o="http://omnifaces.org/ui">
 
 
@@ -15,8 +16,8 @@
         <b:inputText value="#{officeManager.condition}" styleClass="form-control input-block" aria-label="Search"
                      placeholder="查询条件">
             <f:facet name="prepend">
-                <h:selectBooleanCheckbox value="#{officeManager.showDestroy}" styleClass="js-tooltip" title="是否显示停止营业的店面" ng:data-container="body"
-                                         ng:data-placement="auto" ng:data-toggle="tooltip"/>
+                <h:selectBooleanCheckbox value="#{officeManager.showDestroy}" styleClass="js-tooltip" title="是否显示停止营业的店面" pt:data-container="body"
+                                         pt:data-placement="auto" pt:data-toggle="tooltip"/>
             </f:facet>
         </b:inputText>
     </ui:define>
@@ -31,9 +32,14 @@
                         $('.js-tooltip').tooltip();
                     }
             );
-            
+
+
 
         </h:outputScript>
+
+        <h:outputStylesheet library="bootstrap-select" name="css/bootstrap-select.min.css"/>
+        <h:outputStylesheet library="bootstrap-select" name="css/bootstrap-select-plug.css"/>
+        <h:outputScript library="bootstrap-select" name="js/bootstrap-select.min.js"/>
         <f:metadata>
             <o:viewParam name="officeId" value="#{officeHome.id}" />
             <o:viewParam name="condition" value="#{officeManager.condition}"/>
@@ -58,9 +64,21 @@
                 <b:inputText id="name" value="#{officeHome.instance.name}"
                              label="名称" renderLabel="true" required="true"/>
 
-                <b:selectOneMenu label="种类" value="#{officeHome.instance.type}" renderLabel="true" required="true" converter="omnifaces.GenericEnumConverter">
-                    <f:selectItems value="#{officeManager.allOfficeTypeList}" var="_type" itemLabel="#{enumHelper.getLabel(_type)}" itemValue="#{_type.name()}"/>
-                </b:selectOneMenu>
+            <div class="form-group">
+                    <h:outputLabel for="officeTypeInput" value="营业类型" styleClass="bf-required"/>
+                    <h:selectOneMenu id="officeTypeInput" required="true" value="#{officeHome.instance.type}"
+                                     pt:data-header="请选择营业类型" label="营业类型"
+                                     pt:data-size="auto" converter="erpEntityConvert"
+                                     styleClass="js-selectpicker form-control edit-select select-theme"  >
+                        <c:forEach items="#{officeTypeList}" var="_type">
+                            <f:selectItem itemValue="#{_type}" itemLabel="#{_type.name}"/>
+                        </c:forEach>
+
+                    </h:selectOneMenu>
+                </div>
+                <h:outputScript>
+                    $('.js-selectpicker').selectpicker();
+                </h:outputScript>
 
                 <b:selectOneMenu label="状态" renderLabel="true" required="true" value="#{officeHome.instance.status}" converter="omnifaces.GenericEnumConverter">
                     <f:selectItems value="#{officeManager.allOfficeStatusList}" var="_status" itemLabel="#{enumHelper.getLabel(_status)}" itemValue="#{_status.name()}"/>
@@ -140,7 +158,7 @@
                 <f:facet name="header">
                     种类
                 </f:facet>
-                <h:outputText value="#{enumHelper.getLabel(_office.type)}" style="white-space:nowrap; #{_office.status eq 'DESTROY' ? 'text-decoration:line-through;' : ''}"/>
+                <h:outputText value="#{_office.type.name}" style="white-space:nowrap; #{_office.status eq 'DESTROY' ? 'text-decoration:line-through;' : ''}"/>
             </h:column>
             <h:column>
                 <f:facet name="header">
