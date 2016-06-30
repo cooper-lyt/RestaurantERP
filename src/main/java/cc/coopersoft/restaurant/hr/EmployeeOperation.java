@@ -51,17 +51,35 @@ public class EmployeeOperation implements java.io.Serializable{
         this.validTime = validTime;
     }
 
+    private JobInfo jobInfo;
+
+    public JobInfo getJobInfo() {
+        return jobInfo;
+    }
+
+    public void clearJob(){
+        jobInfo.setJob(null);
+    }
 
     @Inject @Default
     private Conversation conversation;
 
-    public void beginJoin() {
+    public void beginConversation(){
         if ( conversation.isTransient() )
         {
             conversation.begin();
-            conversation.setTimeout(1200000);
+            conversation.setTimeout(600000);
         }
+    }
+
+    public void beginJoin() {
+        beginConversation();
         employeeHome.clearInstance();
+    }
+
+    public void beginChangeJob(){
+        beginConversation();
+        jobInfo = new JobInfo(employeeHome.getInstance().getWorkCode(),employeeHome.getInstance().getOffice(),employeeHome.getInstance().getJob(),employeeHome.getInstance().getLevel());
     }
 
 
@@ -103,12 +121,18 @@ public class EmployeeOperation implements java.io.Serializable{
         String id = UUID.randomUUID().toString().replace("-","");
         Business business = new Business(id,Business.Type.EMP_JOB_CHANGE,Business.Status.COMPLETE,new Date());
         EmployeeAction employeeAction = new EmployeeAction(id,validTime,employeeHome.getInstance(),business);
-        employeeAction.setJobInfo(new JobInfo(employeeHome.getInstance().getJob(),employeeHome.getInstance().getLevel(),employeeHome.getInstance().getWorkCode(),employeeHome.getInstance().getOffice(),employeeAction));
+        jobInfo.setEmployeeAction(employeeAction);
+        employeeHome.getInstance().setOffice(jobInfo.getOffice());
+        employeeHome.getInstance().setJob(jobInfo.getJob());
+        employeeHome.getInstance().setWorkCode(jobInfo.getWorkCode());
+        employeeHome.getInstance().setLevel(jobInfo.getLevel());
+        employeeAction.setJobInfo(jobInfo);
         business.getEmployeeActions().add(employeeAction);
         User user = (User)identity.getAccount();
         business.getOperations().add(new Operation(id,user.getLoginName(),user.getFirstName() + user.getLastName(),"入职操作",new Date(), Operation.Type.APPLY,business));
         entityManager.persist(business);
         entityManager.flush();
+        endConversation();
     }
 
 }

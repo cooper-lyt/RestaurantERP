@@ -22,6 +22,13 @@ public class JobInfo {
     public JobInfo() {
     }
 
+    public JobInfo(String workCode, Office office, Job job, String level) {
+        this.workCode = workCode;
+        this.office = office;
+        this.job = job;
+        this.level = level;
+    }
+
     public JobInfo(Job job, String level, String workCode, Office office, EmployeeAction employeeAction) {
         this.job = job;
         this.level = level;
