@@ -90,11 +90,18 @@ public class EntityLoader implements Serializable{
     {
 
         logger.config("get key:" + key);
-        Identifier identifier = store.get(new Integer(key));
+        Identifier identifier;
+        try {
+            identifier = store.get(new Integer(key));
+        } catch (NumberFormatException e){
+            return null;
+        }
         if (identifier != null)
         {
             logger.config("find entity:" + identifier.getClazz() + "-" + identifier.getId());
-            return em.find(identifier.getClazz(),identifier.getId());
+
+                return em.find(identifier.getClazz(), identifier.getId());
+
         }
         else
         {

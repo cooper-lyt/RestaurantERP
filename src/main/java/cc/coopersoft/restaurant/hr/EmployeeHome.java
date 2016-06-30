@@ -48,4 +48,8 @@ public class EmployeeHome extends EntityHome<Employee,String> {
         setId(facesContext.getExternalContext().getRequestParameterMap().get("employeeId"));
     }
 
+    public void clearJob(){
+        getInstance().setJob(null);
+    }
+
 }

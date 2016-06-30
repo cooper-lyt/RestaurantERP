@@ -112,8 +112,13 @@ public class OfficeType implements java.io.Serializable{
     }
 
     @Transient
-    public List<Job> getJobList(){
-        List<Job> result = new ArrayList<Job>(getJobs());
+    public List<Job> getEnableJobList(){
+        List<Job> result = new ArrayList<Job>();
+        for(Job job: getJobs()){
+            if (job.isEnable()){
+                result.add(job);
+            }
+        }
         Collections.sort(result);
         return result;
     }

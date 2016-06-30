@@ -8,7 +8,11 @@ import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.picketlink.Identity;
 import org.picketlink.idm.model.basic.User;
 
+import javax.annotation.PreDestroy;
+import javax.enterprise.context.Conversation;
+import javax.enterprise.context.ConversationScoped;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -20,8 +24,8 @@ import java.util.logging.Logger;
  * Created by cooper on 6/19/16.
  */
 @Named
-@RequestScoped
-public class EmployeeOperation {
+@ConversationScoped
+public class EmployeeOperation implements java.io.Serializable{
 
     @Inject
     private EmployeeHome employeeHome;
@@ -30,6 +34,7 @@ public class EmployeeOperation {
     private Identity identity;
 
     @Inject
+    @Default
     private EntityManager entityManager;
 
     @Inject
@@ -44,6 +49,29 @@ public class EmployeeOperation {
 
     public void setValidTime(Date validTime) {
         this.validTime = validTime;
+    }
+
+
+    @Inject @Default
+    private Conversation conversation;
+
+    public void beginJoin() {
+        if ( conversation.isTransient() )
+        {
+            conversation.begin();
+            conversation.setTimeout(1200000);
+        }
+        employeeHome.clearInstance();
+    }
+
+
+
+    @PreDestroy
+    public void endConversation() {
+        if ( !conversation.isTransient() )
+        {
+            conversation.end();
+        }
     }
 
     @Transactional
@@ -66,6 +94,7 @@ public class EmployeeOperation {
 
         entityManager.persist(business);
         entityManager.flush();
+        endConversation();
 
     }
 
