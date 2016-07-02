@@ -736,3 +736,7 @@ table.floatThead-table {
 .input-group .bootstrap-select.form-control{
     z-index: inherit !important;
 }
+
+.important-text{
+    font-weight: bold;
+}

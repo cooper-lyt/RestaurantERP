@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:composition template="/applayout/pageTemplate.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:define name="custom-header">
+        <f:metadata>
+            <o:viewParam name="employeeId" value="#{employeeHome.id}"/>
+        </f:metadata>
+    </ui:define>
+
+    <b:jumbotron style="margin-top: 20px;">
+        <h1>新员工已入职!</h1>
+        <p>员工 <span class="important-text">#{employeeHome.instance.name}</span>  于 <h:outputText styleClass="important-text" value="#{employeeOperation.validTime}"><f:convertDateTime pattern="yyyy年MM月dd日"/></h:outputText> 入职到 <span class="important-text">#{employeeHome.instance.office.name}</span> 岗位 <span class="important-text">#{employeeHome.instance.job.name}</span> 级别为 <span class="important-text">#{dictionaryProducer.getDictionaryValue(employeeHome.instance.level)}</span>, 新的工作编号为 <span class="important-text">#{employeeHome.instance.workCode}</span>.</p>
+
+        <p><h:outputLink value="#{request.contextPath}/erp/hr/employeeJoin.xhtml" styleClass="btn btn-primary btn-lg">继续办理入职</h:outputLink> </p>
+
+    </b:jumbotron>
+
+
+</ui:composition>
