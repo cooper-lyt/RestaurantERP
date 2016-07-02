@@ -89,16 +89,16 @@ public class Job implements java.io.Serializable, Comparable<Job> {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || !(o instanceof Job)) return false;
 
         Job job = (Job) o;
 
-        return id != null ? id.equals(job.id) : job.id == null;
+        return getId() != null ? getId().equals(job.getId()) : job.getId() == null;
 
     }
 
     @Override
     public int hashCode() {
-        return id != null ? id.hashCode() : 0;
+        return getId() != null ? getId().hashCode() : 0;
     }
 }

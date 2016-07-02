@@ -1,0 +1,134 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:composition template="/applayout/pageTemplate.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:co="http://coopersoft.cc/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:define name="custom-header">
+        <h:outputStylesheet library="bootstrap-datepicker" name="css/bootstrap-datetimepicker.min.css"/>
+        <h:outputScript library="bootstrap-datepicker" name="js/bootstrap-datetimepicker.min.js"/>
+        <h:outputScript library="bootstrap-datepicker" name="js/locales/bootstrap-datetimepicker.zh-CN.js"/>
+
+
+        <h:outputStylesheet library="bootstrap-select" name="css/bootstrap-select.min.css"/>
+        <h:outputStylesheet library="bootstrap-select" name="css/bootstrap-select-plug.css"/>
+        <h:outputScript library="bootstrap-select" name="js/bootstrap-select.min.js"/>
+
+        <h:outputScript library="floatThead" name="jquery.floatThead.min.js"/>
+
+        <f:metadata>
+            <o:viewAction action="#{employeeOperation.beginChangeJob}" onPostback="false"/>
+            <o:viewParam name="employeeId" value="#{employeeHome.id}"/>
+        </f:metadata>
+
+    </ui:define>
+
+
+    <b:messages globalOnly="false" styleClass="top-messages"/>
+
+
+    <o:form id="jobChange" includeViewParams="true" styleClass="page-form">
+
+        <b:row>
+
+        <b:column offsetLg="2" offsetMd="2" offsetSm="1" offsetXs="0" colLg="8" colMd="8" colSm="10" colXs="12">
+        <div class="subhead">
+            <h2 class="subhead-heading">工作调动</h2>
+            <p class="subhead-description">
+                员工调岗,升职,降职等操作,薪酬会根据调动日期重新计算.
+            </p>
+        </div>
+
+            <b:inputText label="调动时间" renderLabel="true" required="true" value="#{employeeOperation.validTime}"
+                         styleClass="js-datepicker">
+                <f:convertDateTime pattern="yyyy-MM-dd"/>
+            </b:inputText>
+            <b:message/>
+
+            <p:outputPanel id="officeField">
+                <div class="form-group">
+                    <h:outputLabel for="office" value="工作地点" styleClass="bf-required"/>
+                    <h:selectOneMenu id="office" required="true" value="#{employeeOperation.jobInfo.office}"
+                                     pt:data-live-search="true" label="工作地点"
+                                     pt:data-header="请选择工作地点"
+                                     pt:data-size="auto" converter="erpEntityConvert"
+                                     styleClass="js-officeSelect form-control edit-select select-theme">
+                        <f:selectItem noSelectionOption="true" itemLabel="请选择工作地点" itemValue="#{null}"/>
+                        <c:forEach items="#{officeList}" var="_office">
+                            <f:selectItem itemLabel="#{_office.name}" itemValue="#{_office}"/>
+                        </c:forEach>
+                        <f:ajax execute="office" render="officeField jobField" event="valueChange"
+                                listener="#{employeeOperation.clearJob}"/>
+
+                    </h:selectOneMenu>
+                </div>
+                <b:message for="office"/>
+                <h:outputScript>
+                    $('.js-officeSelect').selectpicker();
+                </h:outputScript>
+            </p:outputPanel>
+
+
+            <p:outputPanel id="jobField">
+                <div class="form-group">
+                    <h:outputLabel for="jobInput" value="岗位" styleClass="bf-required"/>
+                    <h:selectOneMenu id="jobInput" required="true" value="#{employeeOperation.jobInfo.job}"
+                                     pt:data-header="#{empty employeeOperation.jobInfo.office ? '请先选择工作地点' : '请选择岗位'}"
+                                     pt:data-size="auto" converter="erpEntityConvert" label="岗位"
+                                     disabled="#{empty employeeOperation.jobInfo.office}"
+                                     styleClass="js-jobSelect form-control edit-select select-theme">
+                        <c:forEach items="#{employeeOperation.jobInfo.office.type.enableJobList}" var="_job">
+                            <f:selectItem itemLabel="#{_job.name}" itemValue="#{_job}"/>
+                        </c:forEach>
+                    </h:selectOneMenu>
+                </div>
+                <b:message for="jobInput"/>
+                <h:outputScript>
+
+                    $('.js-jobSelect').selectpicker();
+                </h:outputScript>
+            </p:outputPanel>
+
+
+            <b:selectOneMenu value="#{employeeOperation.jobInfo.level}" label="级别" renderLabel="true"
+                             required="true">
+                <f:selectItems value="#{dictionaryProducer.getDictionaries('hr.level')}" var="_level"
+                               itemValue="#{_level.id}" itemLabel="#{_level.name}"/>
+            </b:selectOneMenu>
+
+            <b:inputText label="工作编号" renderLabel="true" value="#{employeeOperation.jobInfo.workCode}"/>
+            <b:message/>
+
+
+            <b:fetchBeanInfos/>
+            <h:outputScript>
+
+                $('.js-datepicker').datetimepicker({
+                language: "zh-CN",
+                format: 'yyyy-mm-dd',
+                weekStart: 1,
+                todayBtn: 1,
+                autoclose: 1,
+                todayHighlight: 1,
+                startView: 2,
+                minView: 2,
+                forceParse: 0
+                });
+            </h:outputScript>
+
+
+            <hr/>
+
+            <b:commandButton action="#{employeeOperation.jobChange}" look="success" value="调动工作"/>
+
+        </b:column>
+        </b:row>
+    </o:form>
+</ui:composition>

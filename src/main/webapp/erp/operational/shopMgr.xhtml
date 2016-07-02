@@ -8,6 +8,7 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:co="http://coopersoft.cc/ui"
                 xmlns:o="http://omnifaces.org/ui">
 
 
@@ -80,10 +81,10 @@
                     $('.js-selectpicker').selectpicker();
                 </h:outputScript>
 
-                <b:selectOneMenu label="状态" renderLabel="true" required="true" value="#{officeHome.instance.status}" converter="omnifaces.GenericEnumConverter">
-                    <f:selectItems value="#{officeManager.allOfficeStatusList}" var="_status" itemLabel="#{enumHelper.getLabel(_status)}" itemValue="#{_status.name()}"/>
 
-                </b:selectOneMenu>
+                <co:selectOneMenu label="状态" renderLabel="true" required="true" value="#{officeHome.instance.status}" converter="omnifaces.GenericEnumConverter">
+                    <f:selectItems value="#{officeManager.allOfficeStatusList}" itemValue="#{_status}" var="_status" itemLabel="#{enumHelper.getLabel(_status)}"/>
+                </co:selectOneMenu>
 
                 <p:outputPanel id="fetchBeanInfo">
                     <b:fetchBeanInfos />

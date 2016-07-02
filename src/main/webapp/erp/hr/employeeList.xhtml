@@ -10,17 +10,6 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:o="http://omnifaces.org/ui">
 
     <ui:define name="custom-header">
-        <h:outputStylesheet library="bootstrap-datepicker" name="css/bootstrap-datetimepicker.min.css"/>
-        <h:outputScript library="bootstrap-datepicker" name="js/bootstrap-datetimepicker.min.js"/>
-        <h:outputScript library="bootstrap-datepicker" name="js/locales/bootstrap-datetimepicker.zh-CN.js"/>
-
-
-        <h:outputStylesheet library="bootstrap-select" name="css/bootstrap-select.min.css"/>
-        <h:outputStylesheet library="bootstrap-select" name="css/bootstrap-select-plug.css"/>
-        <h:outputScript library="bootstrap-select" name="js/bootstrap-select.min.js"/>
-
-        <h:outputScript library="floatThead" name="jquery.floatThead.min.js"/>
-
         <f:metadata>
             <o:viewParam name="employeeOfficeId" value="#{employeeList.officeId}"/>
             <o:viewParam name="employeeId" value="#{employeeHome.id}"/>
@@ -40,110 +29,6 @@
         <b:commandButton action="#{employeeList.refresh}" look="default">查询</b:commandButton>
     </ui:define>
 
-    <o:form id="jobChange" includeViewParams="true">
-        <b:modal id="jobChangeModal" title="工作调动 - #{employeeHome.instance.name}(#{employeeHome.id})"
-                 styleClass="jobChangeModal">
-
-            <p:outputPanel id="jobChangeInputs">
-                <b:messages/>
-
-                <b:inputText label="调动时间" renderLabel="true" required="true" value="#{employeeOperation.validTime}"
-                             styleClass="js-datepicker">
-                    <f:convertDateTime pattern="yyyy-MM-dd"/>
-                </b:inputText>
-                <b:message/>
-
-
-                <p:outputPanel id="officeField">
-                    <div class="form-group">
-                        <h:outputLabel for="office" value="工作地点" styleClass="bf-required"/>
-                        <h:selectOneMenu id="office" required="true" value="#{employeeOperation.jobInfo.office}"
-                                         pt:data-live-search="true" label="工作地点"
-                                         pt:data-header="请选择工作地点"
-                                         pt:data-size="auto" converter="erpEntityConvert"
-                                         styleClass="js-officeSelect form-control edit-select select-theme">
-                            <f:selectItem noSelectionOption="true" itemLabel="请选择工作地点" itemValue="#{null}"/>
-                            <c:forEach items="#{officeList}" var="_office">
-                                <f:selectItem itemLabel="#{_office.name}" itemValue="#{_office}"
-                                              pt:data-tokens="#{_office.name}"/>
-                            </c:forEach>
-                            <f:ajax execute="office" render="officeField jobField" event="valueChange"
-                                    listener="#{employeeOperation.clearJob}"/>
-
-                        </h:selectOneMenu>
-                    </div>
-                    <b:message for="office"/>
-                    <h:outputScript>
-                        $('.js-officeSelect').selectpicker();
-                    </h:outputScript>
-                </p:outputPanel>
-                <p:outputPanel id="jobField">
-                    <div class="form-group">
-                        <h:outputLabel for="jobInput" value="岗位" styleClass="bf-required"/>
-                        <h:selectOneMenu id="jobInput" required="true" value="#{employeeOperation.jobInfo.job}"
-                                         pt:data-header="#{empty employeeOperation.jobInfo.office ? '请先选择工作地点' : '请选择岗位'}"
-                                         pt:data-size="auto" converter="erpEntityConvert" label="岗位"
-                                         disabled="#{empty employeeOperation.jobInfo.office}"
-                                         styleClass="js-jobSelect form-control edit-select select-theme">
-                            <c:forEach items="#{employeeOperation.jobInfo.office.type.enableJobList}" var="_job">
-                                <f:selectItem itemLabel="#{_job.name}" itemValue="#{_job}"/>
-                            </c:forEach>
-                        </h:selectOneMenu>
-                    </div>
-                    <b:message for="jobInput"/>
-                    <h:outputScript>
-
-                        $('.js-jobSelect').selectpicker();
-                    </h:outputScript>
-                </p:outputPanel>
-
-
-                <b:selectOneMenu value="#{employeeOperation.jobInfo.level}" label="级别" renderLabel="true"
-                                 required="true">
-                    <f:selectItems value="#{dictionaryProducer.getDictionaries('hr.level')}" var="_level"
-                                   itemValue="#{_level.id}" itemLabel="#{_level.name}"/>
-                </b:selectOneMenu>
-
-                <b:inputText label="工作编号" renderLabel="true" value="#{employeeOperation.jobInfo.workCode}"/>
-                <b:message/>
-
-
-                <b:fetchBeanInfos/>
-                <h:outputScript>
-                    var noFailedMessages = #{facesContext.maximumSeverity==null || facesContext.maximumSeverity.ordinal lt 2};
-                </h:outputScript>
-
-                <h:outputScript>
-
-                    $('.js-datepicker').datetimepicker({
-                        language: "zh-CN",
-                        format: 'yyyy-mm-dd',
-                        weekStart: 1,
-                        todayBtn: 1,
-                        autoclose: 1,
-                        todayHighlight: 1,
-                        startView: 2,
-                        minView: 2,
-                        forceParse: 0
-                    });
-                </h:outputScript>
-
-            </p:outputPanel>
-            <f:facet name="footer">
-                <b:button value="取消" dismiss="modal" onclick="return false;"/>
-
-
-                <b:commandButton ajax="true" value="确定"
-                                 oncomplete="if(!validationFailed &amp;&amp; noFailedMessages) $('.jobChangeModal').modal('hide');"
-                                 action="#{employeeOperation.jobChange}" look="success"
-                                 update="jobChangeInputs,employees">
-                    <f:param name="cid" value="#{javax.enterprise.context.conversation.id}"/>
-                </b:commandButton>
-            </f:facet>
-
-        </b:modal>
-
-    </o:form>
 
     <o:form id="edit" includeViewParams="true">
         <b:modal id="editModal" title="#{employeeHome.id}" styleClass="editModal">
@@ -275,12 +160,9 @@
                                 <f:setPropertyActionListener value="#{_emp.data.id}" target="#{employeeHome.id}"/>
                             </b:commandButton>
 
-                            <b:commandButton styleClass="list-action" tooltip="工作调动" immediate="true"
-                                             process="@this" ajax="true" iconAwesome="exchange" look="link"
-                                             action="#{employeeOperation.beginChangeJob}"
-                                             oncomplete="$('.jobChangeModal').modal();" update="jobChange">
-                                <f:setPropertyActionListener value="#{_emp.data.id}" target="#{employeeHome.id}"/>
-                            </b:commandButton>
+                            <b:button value="" tooltip="工作调动" outcome="/erp/hr/employeeJobChange.xhtml" styleClass="list-action" iconAwesome="exchange" look="link">
+                                <f:param name="employeeId" value="#{_emp.data.id}"/>
+                            </b:button>
 
                             <h:outputLink styleClass="list-action"
                                           value="#{request.contextPath}/erp/hr/employeeInfo.xhtml">

@@ -78,7 +78,9 @@ public class EmployeeOperation implements java.io.Serializable{
     }
 
     public void beginChangeJob(){
+        logger.config("call begin change job:" + employeeHome.getInstance().getOffice().getName());
         beginConversation();
+        validTime = new Date();
         jobInfo = new JobInfo(employeeHome.getInstance().getWorkCode(),employeeHome.getInstance().getOffice(),employeeHome.getInstance().getJob(),employeeHome.getInstance().getLevel());
     }
 
@@ -94,6 +96,7 @@ public class EmployeeOperation implements java.io.Serializable{
 
     @Transactional
     public void join(){
+
         String id = UUID.randomUUID().toString().replace("-","");
         logger.config("new id is:" + identity.getAccount().getId() );
 
@@ -133,6 +136,7 @@ public class EmployeeOperation implements java.io.Serializable{
         entityManager.persist(business);
         entityManager.flush();
         endConversation();
+
     }
 
 }
