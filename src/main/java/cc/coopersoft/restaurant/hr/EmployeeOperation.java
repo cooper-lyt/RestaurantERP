@@ -1,9 +1,6 @@
 package cc.coopersoft.restaurant.hr;
 
-import cc.coopersoft.restaurant.model.Business;
-import cc.coopersoft.restaurant.model.EmployeeAction;
-import cc.coopersoft.restaurant.model.JobInfo;
-import cc.coopersoft.restaurant.model.Operation;
+import cc.coopersoft.restaurant.model.*;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.picketlink.Identity;
 import org.picketlink.idm.model.basic.User;
@@ -139,6 +136,20 @@ public class EmployeeOperation implements java.io.Serializable{
         endConversation();
 
         return "/erp/hr/JobChangeWell.xhtml";
+    }
+
+    @Transactional
+    public void leave(){
+        String id = UUID.randomUUID().toString().replace("-","");
+        Business business = new Business(id,Business.Type.EMP_LEAVE,Business.Status.COMPLETE,new Date());
+        EmployeeAction employeeAction = new EmployeeAction(id,validTime,employeeHome.getInstance(),business);
+        business.getEmployeeActions().add(employeeAction);
+        User user = (User)identity.getAccount();
+        business.getOperations().add(new Operation(id,user.getLoginName(),user.getFirstName() + user.getLastName(),"入职操作",new Date(), Operation.Type.APPLY,business));
+        employeeHome.getInstance().setStatus(Employee.Status.LEAVE);
+        entityManager.persist(business);
+        entityManager.flush();
+      //  return "/erp/hr/EmployeeLeaveWell.xhtml";
     }
 
 }

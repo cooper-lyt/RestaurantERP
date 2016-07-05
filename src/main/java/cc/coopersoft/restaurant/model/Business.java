@@ -15,7 +15,7 @@ import java.util.Set;
 public class Business {
 
     public enum Type{
-        EMP_JOIN,EMP_JOB_CHANGE
+        EMP_JOIN,EMP_JOB_CHANGE,EMP_LEAVE
     }
 
     public enum Status{

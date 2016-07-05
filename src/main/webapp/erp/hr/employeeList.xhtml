@@ -10,6 +10,11 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:o="http://omnifaces.org/ui">
 
     <ui:define name="custom-header">
+
+        <h:outputStylesheet library="bootstrap-datepicker" name="css/bootstrap-datetimepicker.min.css"/>
+        <h:outputScript library="bootstrap-datepicker" name="js/bootstrap-datetimepicker.min.js"/>
+        <h:outputScript library="bootstrap-datepicker" name="js/locales/bootstrap-datetimepicker.zh-CN.js"/>
+
         <f:metadata>
             <o:viewParam name="employeeOfficeId" value="#{employeeList.officeId}"/>
             <o:viewParam name="employeeId" value="#{employeeHome.id}"/>
@@ -28,6 +33,46 @@
     <ui:define name="search-action">
         <b:commandButton action="#{employeeList.refresh}" look="default">查询</b:commandButton>
     </ui:define>
+
+    <o:form id="leave" includeViewParams="true">
+        <b:modal id="leaveModal" title="#{employeeHome.id}" styleClass="leaveModal">
+            <p:outputPanel id="leaveInputs">
+                <b:inputText label="离职时间" renderLabel="true" required="true"
+                             value="#{employeeOperation.validTime}" styleClass="js-datepicker">
+                    <f:convertDateTime pattern="yyyy-MM-dd"/>
+                </b:inputText>
+                <b:message/>
+                <b:fetchBeanInfos/>
+                <h:outputScript >
+                    var noFailedMessages = #{facesContext.maximumSeverity==null || facesContext.maximumSeverity.ordinal lt 2};
+
+                    $('.js-datepicker').datetimepicker({
+                        language: "zh-CN",
+                        format: 'yyyy-mm-dd',
+                        weekStart: 1,
+                        todayBtn: 1,
+                        autoclose: 1,
+                        todayHighlight: 1,
+                        startView: 2,
+                        minView: 2,
+                        forceParse: 0
+                    });
+                </h:outputScript>
+
+
+
+            </p:outputPanel>
+            <f:facet name="footer">
+                <b:button value="取消" dismiss="modal" onclick="return false;"/>
+
+
+                <b:commandButton ajax="true" value="离职"
+                                 oncomplete="if(!validationFailed &amp;&amp; noFailedMessages) $('.leaveModal').modal('hide');"
+                                 action="#{employeeOperation.leave}" look="success" update="leaveInputs,employees">
+                </b:commandButton>
+            </f:facet>
+        </b:modal>
+    </o:form>
 
 
     <o:form id="edit" includeViewParams="true">
@@ -151,12 +196,18 @@
                     </h:column>
 
                     <h:column>
-                        <div class="list-actions right" style="width: 110px">
+                        <div class="list-actions right" style="width: 160px">
 
 
                             <b:commandButton styleClass="list-action" tooltip="编辑" immediate="true"
                                              process="@this" ajax="true" icon="pencil" look="link"
                                              oncomplete="$('.editModal').modal();" update="edit">
+                                <f:setPropertyActionListener value="#{_emp.data.id}" target="#{employeeHome.id}"/>
+                            </b:commandButton>
+
+                            <b:commandButton styleClass="list-action" tooltip="离职" immediate="true"
+                                             process="@this" ajax="true"  iconAwesome="user-times" look="link"
+                                             oncomplete="$('.leaveModal').modal();" update="leave">
                                 <f:setPropertyActionListener value="#{_emp.data.id}" target="#{employeeHome.id}"/>
                             </b:commandButton>
 
