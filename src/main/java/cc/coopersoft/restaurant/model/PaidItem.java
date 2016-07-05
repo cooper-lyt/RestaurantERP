@@ -3,13 +3,14 @@ package cc.coopersoft.restaurant.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
 
 /**
  * Created by cooper on 6/23/16.
  */
 @Entity
 @Table(name = "PAID_ITEM",catalog = "RESTAURANT")
-public class PaidItem implements java.io.Serializable{
+public class PaidItem implements java.io.Serializable, Comparable<PaidItem>{
 
     //TODO:  type enum day_calc ones join_date
 
@@ -20,7 +21,18 @@ public class PaidItem implements java.io.Serializable{
     private Job job;
     private PaidProject paidProject;
 
+    private BigDecimal money;
+
     public PaidItem() {
+    }
+
+    public PaidItem(String id, String category, String level, Job job, PaidProject paidProject, BigDecimal money) {
+        this.id = id;
+        this.category = category;
+        this.level = level;
+        this.job = job;
+        this.paidProject = paidProject;
+        this.money = money;
     }
 
     @Id
@@ -77,5 +89,33 @@ public class PaidItem implements java.io.Serializable{
 
     public void setPaidProject(PaidProject paidProject) {
         this.paidProject = paidProject;
+    }
+
+
+    @Column(name = "MONEY",nullable = false)
+    @NotNull
+    public BigDecimal getMoney() {
+        return money;
+    }
+
+    public void setMoney(BigDecimal money) {
+        this.money = money;
+    }
+
+    public int compareTo(PaidItem o) {
+        if (getPaidProject().equals(o.getPaidProject())){
+            if (getCategory().equals(o.getCategory())){
+                if(getJob().equals(o.getJob())){
+                    return getLevel().compareTo(o.getLevel());
+                }else{
+                    return getJob().compareTo(o.getJob());
+                }
+            }else {
+                return getCategory().compareTo(o.getCategory());
+            }
+
+        }else{
+            return getPaidProject().compareTo(o.getPaidProject());
+        }
     }
 }

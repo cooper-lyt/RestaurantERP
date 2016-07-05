@@ -68,6 +68,15 @@ UNLOCK TABLES;
 INSERT INTO DICTIONARY_CATEGORY(ID, NAME, SYSTEM, ENABLE, BOTIME) VALUES('hr.level','员工级别',true,true,'2016-06-1');
 INSERT INTO DICTIONARY(ID, CATEGORY, NAME, PRI, ENABLE) VALUES('hr.level1','hr.level','初级',4,true);
 
+
+INSERT INTO DICTIONARY_CATEGORY(ID, NAME, SYSTEM, ENABLE, BOTIME) VALUES('hr.paidCategory','薪酬类别',true,true,'2016-06-1');
+INSERT INTO DICTIONARY(ID, CATEGORY, NAME, PRI, ENABLE) VALUES('hr.paidCategory.base','hr.paidCategory','基本工资',4,true);
+INSERT INTO DICTIONARY(ID, CATEGORY, NAME, PRI, ENABLE) VALUES('hr.paidCategory.level','hr.paidCategory','技能等级津贴',4,true);
+INSERT INTO DICTIONARY(ID, CATEGORY, NAME, PRI, ENABLE) VALUES('hr.paidCategory.leader','hr.paidCategory','组长津贴',4,true);
+
+
+
+
 --
 -- Dumping data for table `hibernate_sequence`
 --

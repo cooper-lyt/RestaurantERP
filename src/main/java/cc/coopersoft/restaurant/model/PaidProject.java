@@ -4,19 +4,22 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by cooper on 6/23/16.
  */
 @Entity
 @Table(name = "PAID_PROJECT",catalog = "RESTAURANT")
-public class PaidProject implements java.io.Serializable {
+public class PaidProject implements java.io.Serializable, Comparable<PaidProject> {
 
     private String id;
     private String name;
     private Date botime;
 
     private OfficeType officeType;
+    private Set<PaidItem> paidItems = new HashSet<PaidItem>(0);
 
     public PaidProject() {
     }
@@ -69,5 +72,34 @@ public class PaidProject implements java.io.Serializable {
 
     public void setOfficeType(OfficeType officeType) {
         this.officeType = officeType;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true,mappedBy = "paidProject", cascade = CascadeType.ALL)
+    public Set<PaidItem> getPaidItems() {
+        return paidItems;
+    }
+
+    public void setPaidItems(Set<PaidItem> paidItems) {
+        this.paidItems = paidItems;
+    }
+
+    public int compareTo(PaidProject o) {
+        return getBotime().compareTo(o.getBotime());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || !(o instanceof PaidProject)) return false;
+
+        PaidProject that = (PaidProject) o;
+
+        return getId() != null ? getId().equals(that.getId()) : that.getId() == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return getId() != null ? getId().hashCode() : 0;
     }
 }

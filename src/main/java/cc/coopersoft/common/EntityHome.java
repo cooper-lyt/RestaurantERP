@@ -155,6 +155,7 @@ public abstract class EntityHome<E, PK extends Serializable> extends MutableCont
             save();
         }else if(getEntityRepository().findBy(getInstaceId()) == null){
             save();
+            id = getInstaceId();
         }else{
             messages.addError().primaryKeyConflict();
         }

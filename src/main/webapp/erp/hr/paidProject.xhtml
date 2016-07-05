@@ -1,0 +1,135 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:composition template="/applayout/pageTemplate.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:co="http://coopersoft.cc/ui"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:define name="custom-header">
+
+        <h:outputStylesheet library="bootstrap-select" name="css/bootstrap-select.min.css"/>
+        <h:outputStylesheet library="bootstrap-select" name="css/bootstrap-select-plug.css"/>
+        <h:outputScript library="bootstrap-select" name="js/bootstrap-select.min.js"/>
+        <h:outputScript library="bootstrap-select" name="js/i18n/defaults-zh_CN.min.js"/>
+        <f:metadata>
+            <o:viewParam name="paidProjectId" value="#{paidProjectHome.id}"/>
+        </f:metadata>
+    </ui:define>
+
+
+    <b:row style="margin-top: 20px;">
+        <b:column colMd="3">
+
+            <o:form id="projects" includeViewParams="true">
+                <nav class="menu">
+
+                    <div class="menu-heading">
+                        薪酬方案
+                    </div>
+
+                    <ui:repeat value="#{paidProjectManager.paidProjects}" var="_paidProject">
+                        <p:commandLink ajax="true" immediate="true"
+                                       styleClass="menu-item #{paidProjectHome.id eq _paidProject.id ? 'selected' : ''}"
+                                       update="projects,projectDetails,items,newCategoryForm" process="@this"
+                                       value="#{_paidProject.name}">
+                            <f:setPropertyActionListener value="#{_paidProject.id}" target="#{paidProjectHome.id}"/>
+                        </p:commandLink>
+                    </ui:repeat>
+
+                    <p:commandLink ajax="true" immediate="true"
+                                   styleClass="menu-item #{paidProjectHome.idDefined ? '' : 'selected'}"
+                                   update="projects,projectDetails,items,newCategoryForm" process="@this"
+                                   value="新增方案">
+                        <f:setPropertyActionListener value="" target="#{paidProjectHome.id}"/>
+                    </p:commandLink>
+                </nav>
+            </o:form>
+        </b:column>
+
+        <b:column colMd="9">
+            <o:form id="projectDetails" includeViewParams="true">
+                <b:panel collapsible="false" title="方案内容" titleClass="header-sm">
+                    <b:inputText label="名称" renderLabel="false" placeholder="方案名称" required="true" value="#{paidProjectHome.instance.name}">
+                        <f:facet name="prepend">
+
+                            <h:selectOneMenu id="officeTypeInput" disabled="#{paidProjectHome.idDefined}" label="营业类型"
+                                             renderLabel="false" required="true" value="#{paidProjectHome.instance.officeType}" converter="erpEntityConvert"
+                                             pt:data-width="150px"
+                                             pt:data-size="auto"
+                                             styleClass="js-officeTypeSelect form-control edit-select select-theme">
+                                <f:selectItems value="#{officeTypeList}" var="_type" itemLabel="#{_type.name}" itemValue="#{_type}"/>
+
+                            </h:selectOneMenu>
+                        </f:facet>
+                        <f:facet name="append">
+
+                            <b:commandButton look="success" action="#{paidProjectHome.saveOrUpdate}" value="保存">
+
+                            </b:commandButton>
+                        </f:facet>
+                    </b:inputText>
+                    <b:message/>
+
+
+                </b:panel>
+
+                <h:outputScript>
+
+                    $('.js-officeTypeSelect').selectpicker();
+                </h:outputScript>
+
+            </o:form>
+
+            <o:form id="items" includeViewParams="true">
+                <ui:repeat value="#{paidProjectHome.paidItems}" var="_itemEntry">
+                    <b:panel look="success" title="#{dictionaryProducer.getDictionaryValue(_itemEntry.key)}" titleClass="header-sm">
+
+                        <ui:repeat value="#{_itemEntry.value}" var="_item">
+                            <b:inputText required="true" value="#{_item.money}" renderLabel="true" label="#{_item.job.name} - #{dictionaryProducer.getDictionaryValue(_item.level)}">
+                                <f:convertNumber pattern="#0.00"/>
+                                <f:ajax event="blur" execute="@this" render="@none" listener="#{paidProjectHome.saveOrUpdate}"/>
+                            </b:inputText>
+
+                        </ui:repeat>
+
+                    </b:panel>
+
+                </ui:repeat>
+            </o:form>
+
+            <o:form id="newCategoryForm" includeViewParams="true">
+                <b:panel collapsible="false" title="增加薪酬项" titleClass="header-sm" rendered="#{paidProjectHome.idDefined and  not empty paidProjectHome.allowCategories}">
+
+                    <b:row>
+                       <b:column colMd="9">
+
+                           <b:selectOneMenu value="#{paidProjectHome.selectCategory}" label="薪酬种类" required="true" renderLabel="false">
+                               <f:selectItems value="#{paidProjectHome.allowCategories}" var="_category"
+                                              itemLabel="#{_category.name}" itemValue="#{_category.id}"/>
+                           </b:selectOneMenu>
+                           <b:message/>
+                       </b:column>
+
+                        <b:column colMd="3">
+
+                            <b:commandButton value="增加" update="items,newCategoryForm"
+                                             action="#{paidProjectHome.addCategory}" ajax="true">
+                                <f:setPropertyActionListener value="#{paidProjectHome.instance.id}" target="#{paidProjectHome.id}"/>
+                            </b:commandButton>
+                        </b:column>
+                    </b:row>
+
+
+                </b:panel>
+            </o:form>
+        </b:column>
+
+    </b:row>
+
+</ui:composition>
