@@ -26,6 +26,7 @@ public class Business {
     private Type type;
     private Status status;
     private Date startTime;
+    private String description;
 
     private Set<EmployeeAction> employeeActions = new HashSet<EmployeeAction>(0);
     private Set<Operation> operations = new HashSet<Operation>(0);
@@ -100,5 +101,15 @@ public class Business {
 
     public void setOperations(Set<Operation> operations) {
         this.operations = operations;
+    }
+
+    @Column(name = "DESCRIPTION",length = 512)
+    @Size(max = 512)
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

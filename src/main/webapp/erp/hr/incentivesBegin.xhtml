@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:composition template="/applayout/pageTemplate.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:define name="custom-header">
+        <h:outputStylesheet library="bootstrap-datepicker" name="css/bootstrap-datetimepicker.min.css"/>
+        <h:outputScript library="bootstrap-datepicker" name="js/bootstrap-datetimepicker.min.js"/>
+        <h:outputScript library="bootstrap-datepicker" name="js/locales/bootstrap-datetimepicker.zh-CN.js"/>
+
+        <h:outputStylesheet library="bootstrap-select" name="css/bootstrap-select.min.css"/>
+        <h:outputStylesheet library="bootstrap-select" name="css/bootstrap-select-plug.css"/>
+        <h:outputScript library="bootstrap-select" name="js/bootstrap-select.min.js"/>
+        <h:outputScript library="bootstrap-select" name="js/i18n/defaults-zh_CN.min.js"/>
+        <h:outputScript>
+
+            $(document).ready(function () {
+                $('.js-datepicker').datetimepicker({
+                    language: "zh-CN",
+                    format: 'yyyy-mm-dd',
+                    weekStart: 1,
+                    todayBtn: 1,
+                    autoclose: 1,
+                    todayHighlight: 1,
+                    startView: 2,
+                    minView: 2,
+                    forceParse: 0
+                });
+
+            });
+
+
+        </h:outputScript>
+    </ui:define>
+
+    <b:messages globalOnly="false" styleClass="top-messages"/>
+
+    <h:form styleClass="page-form">
+        <b:row>
+
+            <b:column offsetLg="2" offsetMd="2" offsetSm="1" offsetXs="0" colLg="8" colMd="8" colSm="10" colXs="12">
+                <div class="setup-header setup-gift">
+                    <h1 class="subhead-heading">奖惩发放</h1>
+
+                    <ol class="steps">
+                        <li class="current">
+                            <b:iconAwesome name="gift" size="2x"/>
+                            <strong class="step">奖惩信息</strong>
+                            奖励或惩罚的基本情况
+                        </li>
+                        <li>
+                            <b:iconAwesome name="users" size="2x"/>
+                            <strong class="step">员工选择:</strong>
+                            选取奖惩相关的员工
+                        </li>
+                        <li>
+                            <b:iconAwesome name="star" size="2x"/>
+                            <strong class="step">完成:</strong>
+                            完成本次奖励或惩罚
+                        </li>
+                    </ol>
+                </div>
+
+
+                <b:inputText label="奖惩时间" required="true" value="#{employeeOperation.validTime}" styleClass="js-datepicker">
+                    <f:convertDateTime pattern="yyyy-MM-dd"/>
+                </b:inputText>
+                <b:message/>
+
+
+                <b:inputText required="true" label="奖惩金额" value="#{employeeOperation.giftMoney}">
+                    <f:convertNumber pattern="#0.00"/>
+                </b:inputText>
+                <b:message/>
+
+                <p:outputPanel id="officeField">
+                    <div class="form-group">
+                        <h:outputLabel for="office" value="营业单位" styleClass="bf-required"/>
+                        <h:selectOneMenu id="office" value="#{officeHome.id}"
+                                         pt:data-live-search="true" label="营业单位"
+                                         pt:data-header="请选择营业单位"
+                                         pt:data-size="auto"
+                                         styleClass="js-officeSelect form-control edit-select select-theme">
+                            <f:selectItem noSelectionOption="true" itemLabel="全体员工" itemValue="#{null}"/>
+
+                            <f:selectItems value="#{officeList}" var="_office" itemLabel="#{_office.name}"
+                                           itemValue="#{_office.id}"/>
+                        </h:selectOneMenu>
+                    </div>
+                    <b:message for="office"/>
+                    <h:outputScript>
+                        $('.js-officeSelect').selectpicker();
+                    </h:outputScript>
+                </p:outputPanel>
+
+
+                <b:inputTextarea value="#{employeeOperation.description}" label="描述" renderLabel="true"/>
+
+
+                <b:commandButton action="#{employeeOperation.beginGift}" look="success" value="奖惩发放"/>
+
+
+            </b:column>
+
+        </b:row>
+    </h:form>
+
+</ui:composition>

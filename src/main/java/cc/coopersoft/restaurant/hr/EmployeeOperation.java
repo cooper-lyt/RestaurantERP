@@ -1,6 +1,7 @@
 package cc.coopersoft.restaurant.hr;
 
 import cc.coopersoft.restaurant.model.*;
+import cc.coopersoft.restaurant.operation.OfficeHome;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.picketlink.Identity;
 import org.picketlink.idm.model.basic.User;
@@ -8,11 +9,11 @@ import org.picketlink.idm.model.basic.User;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.Conversation;
 import javax.enterprise.context.ConversationScoped;
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -58,6 +59,26 @@ public class EmployeeOperation implements java.io.Serializable{
         jobInfo.setJob(null);
     }
 
+    private BigDecimal giftMoney;
+
+    private String description;
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public BigDecimal getGiftMoney() {
+        return giftMoney;
+    }
+
+    public void setGiftMoney(BigDecimal giftMoney) {
+        this.giftMoney = giftMoney;
+    }
+
     @Inject @Default
     private Conversation conversation;
 
@@ -81,6 +102,14 @@ public class EmployeeOperation implements java.io.Serializable{
         jobInfo = new JobInfo(employeeHome.getInstance().getWorkCode(),employeeHome.getInstance().getOffice(),employeeHome.getInstance().getJob(),employeeHome.getInstance().getLevel());
     }
 
+    @Inject
+    private OfficeHome officeHome;
+
+    public String beginGift(){
+        beginConversation();
+
+        return officeHome.isIdDefined() ? "/erp/hr/giftEmployee.xhtml" : "";
+    }
 
 
     @PreDestroy

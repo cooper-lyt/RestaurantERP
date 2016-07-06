@@ -27,4 +27,11 @@ public interface EmployeeRepository extends EntityRepository<Employee,String> {
                                   @QueryParam("hasCondition") boolean hasCondition,
                                   @QueryParam("officeId") String officeId);
 
+    @Query("select emp from Employee emp where emp.status <> 'LEAVE' and emp.office.id = :officeId and (emp.job.id = :jobId or false = :hasJob) and (emp.level = :level or false = :hasLevel) order by emp.joinDate")
+    List<Employee> findByOffice(@QueryParam("officeId") String officeId,
+                                @QueryParam("jobId") String jobId,
+                                @QueryParam("hasJob") boolean hasJob,
+                                @QueryParam("level") String level,
+                                @QueryParam("hasLevel") boolean hasLevel);
+
 }

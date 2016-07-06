@@ -136,7 +136,16 @@ background-color: inherit;
     background: #4183c4;
 }
 
+
 /* 设置 border-radius:0 ; 滚动条会不好使!!*/
 .bootstrap-select.btn-group .dropdown-menu.inner{
     border-radius: 0.0001px;
+}
+
+.bootstrap-select.sm-select {
+    height: auto;
+}
+
+.bootstrap-select.sm-select .btn.dropdown-toggle{
+    padding: 2px 10px;
 }
