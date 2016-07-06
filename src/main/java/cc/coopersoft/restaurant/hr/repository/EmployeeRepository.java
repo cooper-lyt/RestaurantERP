@@ -34,4 +34,7 @@ public interface EmployeeRepository extends EntityRepository<Employee,String> {
                                 @QueryParam("level") String level,
                                 @QueryParam("hasLevel") boolean hasLevel);
 
+    @Query("select emp from Employee emp where emp.status = 'NORMAL' order by emp.joinDate")
+    List<Employee> findAllNormal();
+
 }

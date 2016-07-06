@@ -1,5 +1,7 @@
 package cc.coopersoft.restaurant.hr;
 
+import cc.coopersoft.common.BatchData;
+import cc.coopersoft.restaurant.hr.repository.EmployeeRepository;
 import cc.coopersoft.restaurant.model.*;
 import cc.coopersoft.restaurant.operation.OfficeHome;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
@@ -105,10 +107,57 @@ public class EmployeeOperation implements java.io.Serializable{
     @Inject
     private OfficeHome officeHome;
 
-    public String beginGift(){
-        beginConversation();
+    @Inject
+    private EmployeeRepository employeeRepository;
 
-        return officeHome.isIdDefined() ? "/erp/hr/giftEmployee.xhtml" : "";
+    @Transactional
+    public String beginGift(){
+        if (officeHome.isIdDefined()){
+            beginConversation();
+            return "/erp/hr/giftEmployee.xhtml";
+        }else{
+
+            Business business = createEmployeeBusiness(Business.Type.EMP_GIFT);
+            for(Employee emp: employeeRepository.findAllNormal()){
+                createGift(business,emp);
+            }
+            entityManager.persist(business);
+            entityManager.flush();
+            endConversation();
+            return "/erp/hr/giftWell.xhtml";
+        }
+    }
+
+    private Business createEmployeeBusiness(Business.Type type){
+        String id = UUID.randomUUID().toString().replace("-","");
+        Business business = new Business(id,type, Business.Status.COMPLETE,new Date());
+        User user = (User)identity.getAccount();
+        business.getOperations().add(new Operation(id,user.getLoginName(),user.getFirstName() + user.getLastName(),"建立",new Date(), Operation.Type.APPLY,business));
+        return business;
+    }
+
+    @Inject
+    private EmployeeChoice employeeChoice;
+
+    @Transactional
+    public String createGift(){
+        Business business = createEmployeeBusiness(Business.Type.EMP_GIFT);
+        for (BatchData<Employee> emp: employeeChoice.getDataList()){
+            if (emp.isSelected()){
+                createGift(business,emp.getData());
+            }
+        }
+        entityManager.persist(business);
+        entityManager.flush();
+        endConversation();
+        return "/erp/hr/giftWell.xhtml";
+
+    }
+
+    private void createGift(Business business, Employee employee){
+        EmployeeAction employeeAction = new EmployeeAction(UUID.randomUUID().toString().replace("-",""),validTime,employee,business);
+        employeeAction.setMoney(giftMoney);
+        business.getEmployeeActions().add(employeeAction);
     }
 
 
@@ -123,22 +172,10 @@ public class EmployeeOperation implements java.io.Serializable{
     @Transactional
     public String join(){
 
-        String id = UUID.randomUUID().toString().replace("-","");
-        logger.config("new id is:" + identity.getAccount().getId() );
-
-        Business business = new Business(id,Business.Type.EMP_JOIN, Business.Status.COMPLETE,new Date());
-
-
-        EmployeeAction employeeAction = new EmployeeAction(id,employeeHome.getInstance().getJoinDate(),employeeHome.getInstance(),business);
-
+        Business business = createEmployeeBusiness(Business.Type.EMP_JOIN);
+        EmployeeAction employeeAction = new EmployeeAction(business.getId(),employeeHome.getInstance().getJoinDate(),employeeHome.getInstance(),business);
         employeeAction.setJobInfo(new JobInfo(employeeHome.getInstance().getJob(),employeeHome.getInstance().getLevel(),employeeHome.getInstance().getWorkCode(),employeeHome.getInstance().getOffice(),employeeAction));
         business.getEmployeeActions().add(employeeAction);
-
-        User user = (User)identity.getAccount();
-
-        logger.config("new id is:" + user.getLoginName());
-        business.getOperations().add(new Operation(id,user.getLoginName(),user.getFirstName() + user.getLastName(),"入职操作",new Date(), Operation.Type.APPLY,business));
-
         entityManager.persist(business);
         entityManager.flush();
         endConversation();
@@ -148,9 +185,8 @@ public class EmployeeOperation implements java.io.Serializable{
 
     @Transactional
     public String jobChange(){
-        String id = UUID.randomUUID().toString().replace("-","");
-        Business business = new Business(id,Business.Type.EMP_JOB_CHANGE,Business.Status.COMPLETE,new Date());
-        EmployeeAction employeeAction = new EmployeeAction(id,validTime,employeeHome.getInstance(),business);
+        Business business = createEmployeeBusiness(Business.Type.EMP_JOB_CHANGE);
+        EmployeeAction employeeAction = new EmployeeAction(business.getId(),validTime,employeeHome.getInstance(),business);
         jobInfo.setEmployeeAction(employeeAction);
         employeeHome.getInstance().setOffice(jobInfo.getOffice());
         employeeHome.getInstance().setJob(jobInfo.getJob());
@@ -158,8 +194,6 @@ public class EmployeeOperation implements java.io.Serializable{
         employeeHome.getInstance().setLevel(jobInfo.getLevel());
         employeeAction.setJobInfo(jobInfo);
         business.getEmployeeActions().add(employeeAction);
-        User user = (User)identity.getAccount();
-        business.getOperations().add(new Operation(id,user.getLoginName(),user.getFirstName() + user.getLastName(),"入职操作",new Date(), Operation.Type.APPLY,business));
         entityManager.persist(business);
         entityManager.flush();
         endConversation();
@@ -169,12 +203,9 @@ public class EmployeeOperation implements java.io.Serializable{
 
     @Transactional
     public void leave(){
-        String id = UUID.randomUUID().toString().replace("-","");
-        Business business = new Business(id,Business.Type.EMP_LEAVE,Business.Status.COMPLETE,new Date());
-        EmployeeAction employeeAction = new EmployeeAction(id,validTime,employeeHome.getInstance(),business);
+        Business business = createEmployeeBusiness(Business.Type.EMP_LEAVE);
+        EmployeeAction employeeAction = new EmployeeAction(business.getId(),validTime,employeeHome.getInstance(),business);
         business.getEmployeeActions().add(employeeAction);
-        User user = (User)identity.getAccount();
-        business.getOperations().add(new Operation(id,user.getLoginName(),user.getFirstName() + user.getLastName(),"入职操作",new Date(), Operation.Type.APPLY,business));
         employeeHome.getInstance().setStatus(Employee.Status.LEAVE);
         entityManager.persist(business);
         entityManager.flush();

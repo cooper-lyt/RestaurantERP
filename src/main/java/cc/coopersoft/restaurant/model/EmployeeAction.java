@@ -3,6 +3,7 @@ package cc.coopersoft.restaurant.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -18,6 +19,7 @@ public class EmployeeAction implements java.io.Serializable{
     private Employee employee;
     private Business business;
     private JobInfo jobInfo;
+    private BigDecimal money;
 
     public EmployeeAction() {
     }
@@ -49,6 +51,15 @@ public class EmployeeAction implements java.io.Serializable{
 
     public void setValidTime(Date validTime) {
         this.validTime = validTime;
+    }
+
+    @Column(name="MONEY")
+    public BigDecimal getMoney() {
+        return money;
+    }
+
+    public void setMoney(BigDecimal money) {
+        this.money = money;
     }
 
     @ManyToOne(fetch = FetchType.LAZY,optional = false,cascade = CascadeType.ALL)

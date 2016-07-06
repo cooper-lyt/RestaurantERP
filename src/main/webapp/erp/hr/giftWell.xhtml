@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:composition template="/applayout/pageTemplate.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+    <div class="page-form">
+        <b:row>
+
+            <b:column offsetLg="2" offsetMd="2" offsetSm="1" offsetXs="0" colLg="8" colMd="8" colSm="10" colXs="12">
+                <div class="setup-header setup-gift">
+                    <h1 class="subhead-heading">奖惩发放</h1>
+
+                    <ol class="steps">
+                        <li class="complete">
+                            <b:iconAwesome name="check" size="2x"/>
+                            <strong class="step">奖惩信息</strong>
+                            奖励或惩罚的基本情况
+                        </li>
+                        <li class="complete">
+                            <b:iconAwesome name="check" size="2x"/>
+                            <strong class="step">员工选择:</strong>
+                            选取奖惩相关的员工
+                        </li>
+                        <li class="current">
+                            <b:iconAwesome name="star" size="2x"/>
+                            <strong class="step">完成:</strong>
+                            完成本次奖励或惩罚
+                        </li>
+                    </ol>
+                </div>
+
+
+                <b:well>
+                    <h3>奖惩已发放完成</h3>
+                    <p>奖励或惩罚会在下次包含发放时间的薪酬结算时生效.</p>
+
+                    <p><h:outputLink value="#{request.contextPath}/erp/hr/incentivesBegin.xhtml" styleClass="btn btn-primary">继续发放奖惩</h:outputLink> </p>
+
+                </b:well>
+
+            </b:column>
+
+        </b:row>
+
+    </div>
+</ui:composition>
