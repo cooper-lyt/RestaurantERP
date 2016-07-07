@@ -131,6 +131,7 @@ public class EmployeeOperation implements java.io.Serializable{
     private Business createEmployeeBusiness(Business.Type type){
         String id = UUID.randomUUID().toString().replace("-","");
         Business business = new Business(id,type, Business.Status.COMPLETE,new Date());
+        business.setDescription(description);
         User user = (User)identity.getAccount();
         business.getOperations().add(new Operation(id,user.getLoginName(),user.getFirstName() + user.getLastName(),"建立",new Date(), Operation.Type.APPLY,business));
         return business;

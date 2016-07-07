@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:composition template="/applayout/pageTemplate.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <p:outputPanel autoUpdate="true">
+    <b:messages globalOnly="false" styleClass="top-messages"/>
+    </p:outputPanel>
+    <div class="page-form">
+        <b:row>
+
+            <b:column offsetLg="2" offsetMd="2" offsetSm="1" offsetXs="0" colLg="8" colMd="8" colSm="10" colXs="12">
+                <div class="setup-header setup-gift">
+                    <h1 class="subhead-heading">薪酬结算</h1>
+
+                    <ol class="steps steps-4">
+                        <li class="complete">
+                            <b:iconAwesome name="check" size="2x"/>
+                            <strong class="step">准备:</strong>
+                            开始薪酬结算
+                        </li>
+                        <li class="current">
+                            <b:iconAwesome name="trophy" size="2x"/>
+                            <strong class="step">绩效:</strong>
+                            员工绩效数据
+                        </li>
+                        <li>
+                            <b:iconAwesome name="calendar" size="2x"/>
+                            <strong class="step">出勤:</strong>
+                            员工的出勤数据
+                        </li>
+                        <li>
+                            <b:iconAwesome name="print" size="2x"/>
+                            <strong class="step">完成:</strong>
+                            完成结算
+                        </li>
+                    </ol>
+                </div>
+
+                <h:form enctype="multipart/form-data">
+
+                    <p:fileUpload fileUploadListener="#{employeePaidCalc.workContentFileUpload}" allowTypes="/(\.|\/)(xls|xlsx)$/" auto="true" update="workContent"/>
+
+                </h:form>
+
+
+                <p:outputPanel id="workContent">
+
+                </p:outputPanel>
+
+            </b:column>
+
+        </b:row>
+
+    </div>
+
+</ui:composition>

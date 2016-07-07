@@ -19,7 +19,8 @@ public class EmployeeAction implements java.io.Serializable{
     private Employee employee;
     private Business business;
     private JobInfo jobInfo;
-    private BigDecimal money;
+    private PaidBalance paidBalance;
+    private EmployeeGiftMoney employeeGiftMoney;
 
     public EmployeeAction() {
     }
@@ -51,15 +52,6 @@ public class EmployeeAction implements java.io.Serializable{
 
     public void setValidTime(Date validTime) {
         this.validTime = validTime;
-    }
-
-    @Column(name="MONEY")
-    public BigDecimal getMoney() {
-        return money;
-    }
-
-    public void setMoney(BigDecimal money) {
-        this.money = money;
     }
 
     @ManyToOne(fetch = FetchType.LAZY,optional = false,cascade = CascadeType.ALL)
@@ -94,4 +86,23 @@ public class EmployeeAction implements java.io.Serializable{
         this.jobInfo = jobInfo;
     }
 
+    @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    public PaidBalance getPaidBalance() {
+        return paidBalance;
+    }
+
+    public void setPaidBalance(PaidBalance paidBalance) {
+        this.paidBalance = paidBalance;
+    }
+
+    @OneToOne(fetch = FetchType.LAZY,orphanRemoval = true, cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    public EmployeeGiftMoney getEmployeeGiftMoney() {
+        return employeeGiftMoney;
+    }
+
+    public void setEmployeeGiftMoney(EmployeeGiftMoney employeeGiftMoney) {
+        this.employeeGiftMoney = employeeGiftMoney;
+    }
 }

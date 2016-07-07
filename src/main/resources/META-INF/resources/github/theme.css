@@ -812,6 +812,10 @@ table.floatThead-table {
     color: #767676;
 }
 
+.steps.steps-4 li{
+    width: 25%;
+}
+
 .steps li {
     display: table-cell;
     width: 33.3%;

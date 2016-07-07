@@ -56,6 +56,10 @@
         <class>cc.coopersoft.restaurant.model.PaidItem</class>
         <class>cc.coopersoft.restaurant.model.OfficeType</class>
         <class>cc.coopersoft.restaurant.model.Job</class>
+        <class>cc.coopersoft.restaurant.model.BasicPaidItem</class>
+        <class>cc.coopersoft.restaurant.model.EmployeeGiftBalance</class>
+        <class>cc.coopersoft.restaurant.model.EmployeeGiftMoney</class>
+        <class>cc.coopersoft.restaurant.model.PaidBalance</class>
 
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>

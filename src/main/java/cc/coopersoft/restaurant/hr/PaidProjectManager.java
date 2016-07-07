@@ -4,6 +4,7 @@ import cc.coopersoft.restaurant.hr.repository.PaidProjectRepository;
 import cc.coopersoft.restaurant.model.PaidItem;
 import cc.coopersoft.restaurant.model.PaidProject;
 
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.List;
@@ -13,6 +14,7 @@ import java.util.Map;
  * Created by cooper on 7/4/16.
  */
 @Named
+@RequestScoped
 public class PaidProjectManager {
 
     @Inject
