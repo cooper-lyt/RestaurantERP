@@ -61,7 +61,7 @@ public class EmployeeOperation implements java.io.Serializable{
         jobInfo.setJob(null);
     }
 
-    private BigDecimal giftMoney;
+    private EmployeeGiftMoney employeeGiftMoney;
 
     private String description;
 
@@ -73,12 +73,11 @@ public class EmployeeOperation implements java.io.Serializable{
         this.description = description;
     }
 
-    public BigDecimal getGiftMoney() {
-        return giftMoney;
-    }
-
-    public void setGiftMoney(BigDecimal giftMoney) {
-        this.giftMoney = giftMoney;
+    public EmployeeGiftMoney getEmployeeGiftMoney() {
+        if (employeeGiftMoney == null){
+            employeeGiftMoney = new EmployeeGiftMoney();
+        }
+        return employeeGiftMoney;
     }
 
     @Inject @Default
@@ -157,7 +156,10 @@ public class EmployeeOperation implements java.io.Serializable{
 
     private void createGift(Business business, Employee employee){
         EmployeeAction employeeAction = new EmployeeAction(UUID.randomUUID().toString().replace("-",""),validTime,employee,business);
-        employeeAction.setMoney(giftMoney);
+
+        getEmployeeGiftMoney().setId(employeeAction.getId());
+        employeeAction.setEmployeeGiftMoney(getEmployeeGiftMoney());
+
         business.getEmployeeActions().add(employeeAction);
     }
 

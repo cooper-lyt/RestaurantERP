@@ -19,6 +19,7 @@ public class EmployeeGiftMoney implements java.io.Serializable {
     private EmployeeGiftBalance employeeGiftBalance;
 
 
+
     public EmployeeGiftMoney() {
     }
 
