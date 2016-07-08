@@ -25,6 +25,13 @@ public class EmployeeGiftBalance implements java.io.Serializable {
     public EmployeeGiftBalance() {
     }
 
+    public EmployeeGiftBalance(String id, BigDecimal money, String category, PaidBalance paidBalance) {
+        this.id = id;
+        this.money = money;
+        this.category = category;
+        this.paidBalance = paidBalance;
+    }
+
     @Id
     @Column(name = "ID", unique = true, nullable = false, length = 32)
     @NotNull

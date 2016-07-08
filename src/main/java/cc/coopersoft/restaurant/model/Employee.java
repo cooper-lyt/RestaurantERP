@@ -138,5 +138,19 @@ public class Employee implements java.io.Serializable , Comparable<Employee>{
         return getJoinDate().compareTo(o.getJoinDate());
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || !(o instanceof Employee)) return false;
 
+        Employee employee = (Employee) o;
+
+        return getId() != null ? getId().equals(employee.getId()) : employee.getId() == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return getId() != null ? getId().hashCode() : 0;
+    }
 }

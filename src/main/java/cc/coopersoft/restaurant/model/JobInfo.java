@@ -37,6 +37,14 @@ public class JobInfo {
         this.employeeAction = employeeAction;
     }
 
+    public JobInfo(JobInfo jobInfo, EmployeeAction employeeAction){
+        this.workCode = jobInfo.getWorkCode();
+        this.office = jobInfo.getOffice();
+        this.job = jobInfo.getJob();
+        this.level = jobInfo.getLevel();
+        this.employeeAction = employeeAction;
+    }
+
     @Id
     @Column(name = "ID", unique = true, nullable = false, length = 32)
     @NotNull

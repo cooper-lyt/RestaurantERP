@@ -7,6 +7,7 @@ import cc.coopersoft.restaurant.model.EmployeeAction;
 import org.apache.deltaspike.data.api.*;
 
 import javax.persistence.FlushModeType;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -41,7 +42,13 @@ public interface EmployeeRepository extends EntityRepository<Employee,String> {
     @Query("select emp from Employee emp where emp.status = 'NORMAL' and emp.office.id = ?1 order by emp.joinDate")
     List<Employee> findByOfficeValid(String officeId);
 
-    @Query(value = "select empAction from EmployeeAction empAction where empAction.employee.id = ?1 and empAction.business.type = 'EMP_BALANCE' and empAction.business.status = 'COMPLETE' order by empAction.validTime desc", max = 1)
+    @Query(value = "select empAction from EmployeeAction empAction left join fetch empAction.jobInfo left join fetch empAction.paidBalance left join fetch empAction.employeeGiftMoney where empAction.employee.id = ?1 and empAction.business.type = 'EMP_BALANCE' and empAction.business.status = 'COMPLETE' order by empAction.validTime desc", max = 1)
     EmployeeAction findLastBalance(String employeeId);
+
+    @Query("select empAction from EmployeeAction empAction left join fetch empAction.jobInfo left join fetch empAction.paidBalance left join fetch empAction.employeeGiftMoney where empAction.employee.id = :employeeId and (empAction.validTime >= :startDate or true = :all) and empAction.validTime <= :endDate and empAction.business.status = 'COMPLETE' order by empAction.validTime")
+    List<EmployeeAction> findBalanceAction(@QueryParam("empId") String employeeId,
+                                           @QueryParam("startDate") Date startDate,
+                                           @QueryParam("endDate") Date endDate,
+                                           @QueryParam("all") boolean all);
 
 }

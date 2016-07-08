@@ -29,6 +29,13 @@ public class PaidBalance implements java.io.Serializable {
     public PaidBalance() {
     }
 
+    public PaidBalance(EmployeeAction employeeAction) {
+        this.workContentMoney = BigDecimal.ZERO;
+        this.workDay = BigDecimal.ZERO;
+        this.workFullMoney = BigDecimal.ZERO;
+        this.employeeAction = employeeAction;
+    }
+
     @Id
     @Column(name = "ID", unique = true, nullable = false, length = 32)
     @NotNull

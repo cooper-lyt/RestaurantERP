@@ -1,6 +1,7 @@
 package cc.coopersoft.restaurant.hr;
 
 import cc.coopersoft.common.BatchData;
+import cc.coopersoft.common.util.DataHelper;
 import cc.coopersoft.restaurant.hr.repository.EmployeeRepository;
 import cc.coopersoft.restaurant.model.*;
 import cc.coopersoft.restaurant.operation.OfficeHome;
@@ -176,7 +177,7 @@ public class EmployeeOperation implements java.io.Serializable{
     public String join(){
 
         Business business = createEmployeeBusiness(Business.Type.EMP_JOIN);
-        EmployeeAction employeeAction = new EmployeeAction(business.getId(),employeeHome.getInstance().getJoinDate(),employeeHome.getInstance(),business);
+        EmployeeAction employeeAction = new EmployeeAction(business.getId(), DataHelper.getDayBeginTime(employeeHome.getInstance().getJoinDate()),employeeHome.getInstance(),business);
         employeeAction.setJobInfo(new JobInfo(employeeHome.getInstance().getJob(),employeeHome.getInstance().getLevel(),employeeHome.getInstance().getWorkCode(),employeeHome.getInstance().getOffice(),employeeAction));
         business.getEmployeeActions().add(employeeAction);
         entityManager.persist(business);
@@ -207,7 +208,7 @@ public class EmployeeOperation implements java.io.Serializable{
     @Transactional
     public void leave(){
         Business business = createEmployeeBusiness(Business.Type.EMP_LEAVE);
-        EmployeeAction employeeAction = new EmployeeAction(business.getId(),validTime,employeeHome.getInstance(),business);
+        EmployeeAction employeeAction = new EmployeeAction(business.getId(),DataHelper.getDayEndTime(validTime),employeeHome.getInstance(),business);
         business.getEmployeeActions().add(employeeAction);
         employeeHome.getInstance().setStatus(Employee.Status.LEAVE);
         entityManager.persist(business);

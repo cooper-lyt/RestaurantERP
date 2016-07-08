@@ -3,6 +3,7 @@ package cc.coopersoft.restaurant.model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,6 +18,8 @@ public class PaidProject implements java.io.Serializable, Comparable<PaidProject
     private String id;
     private String name;
     private Date botime;
+    private BigDecimal fullWorkMoney;
+    private BigDecimal workContentMoney;
 
     private OfficeType officeType;
     private Set<PaidItem> paidItems = new HashSet<PaidItem>(0);
@@ -81,6 +84,26 @@ public class PaidProject implements java.io.Serializable, Comparable<PaidProject
 
     public void setPaidItems(Set<PaidItem> paidItems) {
         this.paidItems = paidItems;
+    }
+
+    @Column(name="FULL_WORK_MONEY",nullable = false)
+    @NotNull
+    public BigDecimal getFullWorkMoney() {
+        return fullWorkMoney;
+    }
+
+    public void setFullWorkMoney(BigDecimal fullWorkMoney) {
+        this.fullWorkMoney = fullWorkMoney;
+    }
+
+    @Column(name="WORK_CONTENT_MONEY",nullable = false)
+    @NotNull
+    public BigDecimal getWorkContentMoney() {
+        return workContentMoney;
+    }
+
+    public void setWorkContentMoney(BigDecimal workContentMoney) {
+        this.workContentMoney = workContentMoney;
     }
 
     public int compareTo(PaidProject o) {
