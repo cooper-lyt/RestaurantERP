@@ -48,7 +48,7 @@ public class PaidBalance implements java.io.Serializable {
         this.id = id;
     }
 
-    @Column(name = "WORK_CONTET_MONEY",nullable = false)
+    @Column(name = "WORK_CONTENT_MONEY",nullable = false)
     @NotNull
     public BigDecimal getWorkContentMoney() {
         return workContentMoney;

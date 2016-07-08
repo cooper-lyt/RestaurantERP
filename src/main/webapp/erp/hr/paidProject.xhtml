@@ -56,27 +56,32 @@
             <o:form id="projectDetails" includeViewParams="true">
                 <b:panel collapsible="false" title="方案内容" titleClass="header-sm">
                     <b:inputText label="名称" renderLabel="false" placeholder="方案名称" required="true" value="#{paidProjectHome.instance.name}">
-                        <f:facet name="prepend">
-
-                            <h:selectOneMenu id="officeTypeInput" disabled="#{paidProjectHome.idDefined}" label="营业类型"
-                                             renderLabel="false" required="true" value="#{paidProjectHome.instance.officeType}" converter="erpEntityConvert"
-                                             pt:data-width="150px"
-                                             pt:data-size="auto"
-                                             styleClass="js-officeTypeSelect form-control edit-select select-theme">
-                                <f:selectItems value="#{officeTypeList}" var="_type" itemLabel="#{_type.name}" itemValue="#{_type}"/>
-
-                            </h:selectOneMenu>
-                        </f:facet>
-                        <f:facet name="append">
-
-                            <b:commandButton look="success" action="#{paidProjectHome.saveOrUpdate}" value="保存">
-
-                            </b:commandButton>
-                        </f:facet>
                     </b:inputText>
                     <b:message/>
 
+                    <b:inputText label="满勤奖" required="true" value="#{paidProjectHome.instance.fullWorkMoney}">
+                        <f:convertNumber pattern="#0.00"/>
+                    </b:inputText>
+                    <b:message/>
 
+                    <b:inputText label="绩效工资" required="true" value="#{paidProjectHome.instance.workContentMoney}">
+                        <f:convertNumber pattern="#0.00"/>
+                    </b:inputText>
+                    <b:message/>
+
+                    <div class="form-group">
+                        <h:outputLabel for="officeTypeInput" value="营业类型" styleClass="bf-required"/>
+                        <h:selectOneMenu id="officeTypeInput" disabled="#{paidProjectHome.idDefined}" label="营业类型"
+                                         renderLabel="false" required="true" value="#{paidProjectHome.instance.officeType}" converter="erpEntityConvert"
+                                         pt:data-size="auto"
+                                         styleClass="js-officeTypeSelect form-control edit-select select-theme">
+                            <f:selectItems value="#{officeTypeList}" var="_type" itemLabel="#{_type.name}" itemValue="#{_type}"/>
+
+                        </h:selectOneMenu>
+                    </div>
+
+                    <b:commandButton look="success" action="#{paidProjectHome.saveOrUpdate}" value="保存">
+                   </b:commandButton>
                 </b:panel>
 
                 <h:outputScript>

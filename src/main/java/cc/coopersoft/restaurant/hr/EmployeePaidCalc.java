@@ -46,11 +46,11 @@ public class EmployeePaidCalc implements java.io.Serializable {
     @Inject
     private EmployeeRepository employeeRepository;
 
-    public Map<Employee,List<EmployeeAction>> actions;
+    private Map<Employee,List<EmployeeAction>> actions;
 
-    public Map<Employee,PaidBalance> paidBalanceMap;
+    private Map<Employee,PaidBalance> paidBalanceMap;
 
-    public Business business;
+    private Business business;
 
 
 
