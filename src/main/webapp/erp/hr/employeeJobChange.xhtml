@@ -25,7 +25,7 @@
         <h:outputScript library="floatThead" name="jquery.floatThead.min.js"/>
 
         <f:metadata>
-            <o:viewAction action="#{employeeOperation.beginChangeJob}" onPostback="false"/>
+            <o:viewAction action="#{jobChange.beginChangeJob}" onPostback="false"/>
             <o:viewParam name="employeeId" value="#{employeeHome.id}"/>
         </f:metadata>
 
@@ -35,102 +35,134 @@
     <b:messages globalOnly="false" styleClass="top-messages"/>
 
 
-    <o:form id="jobChange" includeViewParams="true" styleClass="page-form">
-
+    <o:form id="jobChange" includeViewParams="true"  styleClass="page-form">
         <b:row>
 
-        <b:column offsetLg="2" offsetMd="2" offsetSm="1" offsetXs="0" colLg="8" colMd="8" colSm="10" colXs="12">
-        <div class="subhead">
-            <h2 class="subhead-heading">工作调动</h2>
-            <p class="subhead-description">
-                员工调岗,升职,降职等操作,薪酬会根据调动日期重新计算.
-            </p>
-        </div>
+            <b:column offsetLg="2" offsetMd="2" offsetSm="1" offsetXs="0" colLg="8" colMd="8" colSm="10" colXs="12">
 
-            <b:inputText label="调动时间" renderLabel="true" required="true" value="#{employeeOperation.validTime}"
-                         styleClass="js-datetimepicker">
-                <f:convertDateTime pattern="yyyy-MM-dd hh:mm:ss"/>
-            </b:inputText>
-            <b:message/>
+                <div class="setup-header setup-gift">
+                    <h1 class="subhead-heading">工作调动</h1>
 
-            <p:outputPanel id="officeField">
-                <div class="form-group">
-                    <h:outputLabel for="office" value="工作地点" styleClass="bf-required"/>
-                    <h:selectOneMenu id="office" required="true" value="#{employeeOperation.jobInfo.office}"
-                                     pt:data-live-search="true" label="工作地点"
-                                     pt:data-header="请选择工作地点"
-                                     pt:data-size="auto" converter="erpEntityConvert"
-                                     styleClass="js-officeSelect form-control edit-select select-theme">
-                        <f:selectItem noSelectionOption="true" itemLabel="请选择工作地点" itemValue="#{null}"/>
-                        <c:forEach items="#{officeList}" var="_office">
-                            <f:selectItem itemLabel="#{_office.name}" itemValue="#{_office}"/>
-                        </c:forEach>
-                        <f:ajax execute="office" render="officeField jobField" event="valueChange"
-                                listener="#{employeeOperation.clearJob}"/>
-
-                    </h:selectOneMenu>
+                    <ol class="steps steps-4">
+                        <li class="current">
+                            <b:iconAwesome name="calculator" size="2x"/>
+                            <strong class="step">准备:</strong>
+                            开始工作调动
+                        </li>
+                        <li>
+                            <b:iconAwesome name="trophy" size="2x"/>
+                            <strong class="step">薪酬结算:</strong>
+                            员工出勤和绩效数据
+                        </li>
+                        <li>
+                            <b:iconAwesome name="print" size="2x"/>
+                            <strong class="step">完成:</strong>
+                            调动完成
+                        </li>
+                    </ol>
                 </div>
-                <b:message for="office"/>
+
+
+                <b:inputText label="调动时间" renderLabel="true" required="true" value="#{jobChange.changeTime}"
+                             styleClass="js-datetimepicker">
+                    <f:convertDateTime pattern="yyyy-MM-dd hh:mm:ss"/>
+                </b:inputText>
+                <b:message/>
+
+                <p:outputPanel id="officeField">
+                    <div class="form-group">
+                        <h:outputLabel for="office" value="工作地点" styleClass="bf-required"/>
+                        <h:selectOneMenu id="office" required="true" value="#{jobChange.jobInfo.office}"
+                                         pt:data-live-search="true" label="工作地点"
+                                         pt:data-header="请选择工作地点"
+                                         pt:data-size="auto" converter="erpEntityConvert"
+                                         styleClass="js-officeSelect form-control edit-select select-theme">
+                            <f:selectItem noSelectionOption="true" itemLabel="请选择工作地点" itemValue="#{null}"/>
+                            <c:forEach items="#{officeList}" var="_office">
+                                <f:selectItem itemLabel="#{_office.name}" itemValue="#{_office}"/>
+                            </c:forEach>
+                            <f:ajax execute="office" render="officeField jobField" event="valueChange"
+                                    listener="#{jobChange.clearJob}"/>
+
+                        </h:selectOneMenu>
+                    </div>
+                    <b:message for="office"/>
+                    <h:outputScript>
+                        $('.js-officeSelect').selectpicker();
+                    </h:outputScript>
+                </p:outputPanel>
+
+
+                <p:outputPanel id="jobField">
+                    <div class="form-group">
+                        <h:outputLabel for="jobInput" value="岗位" styleClass="bf-required"/>
+                        <h:selectOneMenu id="jobInput" required="true" value="#{jobChange.jobInfo.job}"
+                                         pt:data-header="#{empty jobChange.jobInfo.office ? '请先选择工作地点' : '请选择岗位'}"
+                                         pt:data-size="auto" converter="erpEntityConvert" label="岗位"
+                                         disabled="#{empty jobChange.jobInfo.office}"
+                                         styleClass="js-jobSelect form-control edit-select select-theme">
+                            <c:forEach items="#{jobChange.jobInfo.office.type.enableJobList}" var="_job">
+                                <f:selectItem itemLabel="#{_job.name}" itemValue="#{_job}"/>
+                            </c:forEach>
+                        </h:selectOneMenu>
+                    </div>
+                    <b:message for="jobInput"/>
+                    <h:outputScript>
+
+                        $('.js-jobSelect').selectpicker();
+                    </h:outputScript>
+                </p:outputPanel>
+
+
+                <b:selectOneMenu value="#{jobChange.jobInfo.level}" label="级别" renderLabel="true"
+                                 required="true">
+                    <f:selectItems value="#{dictionaryProducer.getDictionaries('hr.level')}" var="_level"
+                                   itemValue="#{_level.id}" itemLabel="#{_level.name}"/>
+                </b:selectOneMenu>
+
+                <b:inputText label="工作编号" renderLabel="true" value="#{jobChange.jobInfo.workCode}"/>
+                <b:message/>
+
+                <p:outputPanel id="paidProject">
+                    <div class="form-group">
+
+                        <h:outputLabel for="paidProjectInput" value="薪酬计算方案" styleClass="bf-required"/>
+                        <h:selectOneMenu id="paidProjectInput" value="#{paidProjectHome.id}"
+                                         pt:data-live-search="true" label="计算方案"
+                                         pt:data-header="请选择薪酬计算方案"
+                                         pt:data-size="auto"
+                                         styleClass="js-select form-control edit-select select-theme">
+                            <f:selectItems value="#{paidProjectManager.paidProjects}" var="_paidProject" itemLabel="#{_paidProject.name}"
+                                           itemValue="#{_paidProject.id}"/>
+                        </h:selectOneMenu>
+                    </div>
+                    <b:message for="paidProjectInput"/>
+                </p:outputPanel>
+
+
+                <b:fetchBeanInfos/>
                 <h:outputScript>
-                    $('.js-officeSelect').selectpicker();
+
+                    $('.js-datetimepicker').datetimepicker({
+                        language: "zh-CN",
+
+                        clearBtn: 1,
+                        weekStart: 1,
+                        todayBtn: 1,
+                        autoclose: 1,
+                        todayHighlight: 1,
+                        startView: 2,
+                        forceParse: 0,
+                        showMeridian: 1
+                    });
                 </h:outputScript>
-            </p:outputPanel>
 
 
-            <p:outputPanel id="jobField">
-                <div class="form-group">
-                    <h:outputLabel for="jobInput" value="岗位" styleClass="bf-required"/>
-                    <h:selectOneMenu id="jobInput" required="true" value="#{employeeOperation.jobInfo.job}"
-                                     pt:data-header="#{empty employeeOperation.jobInfo.office ? '请先选择工作地点' : '请选择岗位'}"
-                                     pt:data-size="auto" converter="erpEntityConvert" label="岗位"
-                                     disabled="#{empty employeeOperation.jobInfo.office}"
-                                     styleClass="js-jobSelect form-control edit-select select-theme">
-                        <c:forEach items="#{employeeOperation.jobInfo.office.type.enableJobList}" var="_job">
-                            <f:selectItem itemLabel="#{_job.name}" itemValue="#{_job}"/>
-                        </c:forEach>
-                    </h:selectOneMenu>
-                </div>
-                <b:message for="jobInput"/>
-                <h:outputScript>
+                <hr/>
 
-                    $('.js-jobSelect').selectpicker();
-                </h:outputScript>
-            </p:outputPanel>
+                <b:commandButton action="/erp/hr/jobChangeBalance.xhtml" look="success" value="调动工作"/>
 
-
-            <b:selectOneMenu value="#{employeeOperation.jobInfo.level}" label="级别" renderLabel="true"
-                             required="true">
-                <f:selectItems value="#{dictionaryProducer.getDictionaries('hr.level')}" var="_level"
-                               itemValue="#{_level.id}" itemLabel="#{_level.name}"/>
-            </b:selectOneMenu>
-
-            <b:inputText label="工作编号" renderLabel="true" value="#{employeeOperation.jobInfo.workCode}"/>
-            <b:message/>
-
-
-            <b:fetchBeanInfos/>
-            <h:outputScript>
-
-                $('.js-datetimepicker').datetimepicker({
-                    language: "zh-CN",
-
-                    clearBtn: 1,
-                    weekStart: 1,
-                    todayBtn:  1,
-                    autoclose: 1,
-                    todayHighlight: 1,
-                    startView: 2,
-                    forceParse: 0,
-                    showMeridian: 1
-                });
-            </h:outputScript>
-
-
-            <hr/>
-
-            <b:commandButton action="#{employeeOperation.jobChange}" look="success" value="调动工作"/>
-
-        </b:column>
+            </b:column>
         </b:row>
     </o:form>
 </ui:composition>

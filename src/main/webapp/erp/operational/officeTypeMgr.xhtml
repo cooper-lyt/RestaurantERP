@@ -10,6 +10,12 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets">
 
     <ui:define name="custom-header">
+
+
+        <h:outputStylesheet library="bootstrap-select" name="css/bootstrap-select.min.css"/>
+        <h:outputStylesheet library="bootstrap-select" name="css/bootstrap-select-plug.css"/>
+        <h:outputScript library="bootstrap-select" name="js/bootstrap-select.min.js"/>
+        <h:outputScript library="bootstrap-select" name="js/i18n/defaults-zh_CN.min.js"/>
         <f:metadata>
             <o:viewParam name="officeTypeId" value="#{officeTypeHome.id}"/>
         </f:metadata>
@@ -79,7 +85,8 @@
                         <b:message/>
 </span>
 
-                    <b:commandButton look="success" style="margin-top: 14px" action="#{officeTypeHome.saveOrUpdate}" value="保存">
+                    <b:commandButton look="success" style="margin-top: 14px" action="#{officeTypeHome.saveOrUpdate}"
+                                     value="保存">
 
                     </b:commandButton>
 
@@ -88,52 +95,127 @@
             </o:form>
             <o:form id="jobList" includeViewParams="true">
 
-            <b:panel rendered="#{officeTypeHome.idDefined}" collapsible="false" title="岗位" titleClass="header-sm">
-                <ui:repeat value="#{officeTypeHome.jobs}" var="_job">
-                    <b:inputText disabled="#{not _job.enable}" value="#{_job.name}">
+                <b:panel rendered="#{officeTypeHome.idDefined}" collapsible="false" title="岗位" titleClass="header-sm">
+                    <ui:repeat value="#{officeTypeOperation.jobs}" var="_job">
+                        <b:inputText disabled="#{not _job.enable}" value="#{_job.name}">
 
-                        <f:facet name="prepend">
+                            <f:facet name="prepend">
 
 
-                            <h:selectBooleanCheckbox value="#{_job.enable}">
-                                <f:ajax execute="@this" listener="#{officeTypeHome.saveOrUpdate}" render="jobList"/>
-                            </h:selectBooleanCheckbox>
-                        </f:facet>
+                                <h:selectBooleanCheckbox value="#{_job.enable}">
+                                    <f:ajax execute="@this" listener="#{officeTypeHome.saveOrUpdate}" render="jobList"/>
+                                </h:selectBooleanCheckbox>
+                            </f:facet>
+                            <f:facet name="append">
+
+
+                                <b:commandButton disabled="#{not _job.enable}" iconAwesome="save" ajax="true"
+                                                 process="@parent"
+                                                 action="#{officeTypeHome.saveOrUpdate}" update="@parent"/>
+
+                                <b:commandButton iconAwesome="arrow-up" ajax="true" process="@this"
+                                                 action="#{officeTypeOperation.upJob}" update="jobList">
+                                    <f:setPropertyActionListener value="#{_job.id}"
+                                                                 target="#{officeTypeOperation.selectJobId}"/>
+                                </b:commandButton>
+
+                                <b:commandButton iconAwesome="arrow-down" ajax="true" process="@this"
+                                                 action="#{officeTypeOperation.downJob}" update="jobList">
+                                    <f:setPropertyActionListener value="#{_job.id}"
+                                                                 target="#{officeTypeOperation.selectJobId}"/>
+                                </b:commandButton>
+                            </f:facet>
+                        </b:inputText>
+                        <b:message/>
+                    </ui:repeat>
+
+
+                    <b:inputText value="#{officeTypeOperation.newJobName}" label="岗位名称" renderLabel="false"
+                                 required="true" placeholder="增加一个新的岗位">
                         <f:facet name="append">
-
-
-                            <b:commandButton disabled="#{not _job.enable}" iconAwesome="save" ajax="true" process="@parent"
-                                             action="#{officeTypeHome.saveOrUpdate}" update="@parent"/>
-
-                            <b:commandButton iconAwesome="arrow-up" ajax="true" process="@this" action="#{officeTypeHome.upJob}" update="jobList">
-                                    <f:setPropertyActionListener value="#{_job.id}" target="#{officeTypeHome.selectJobId}"/>
-                            </b:commandButton>
-
-                            <b:commandButton iconAwesome="arrow-down" ajax="true" process="@this" action="#{officeTypeHome.downJob}" update="jobList">
-                                <f:setPropertyActionListener value="#{_job.id}" target="#{officeTypeHome.selectJobId}"/>
-                            </b:commandButton>
+                            <b:commandButton look="success" ajax="true" iconAwesome="plus"
+                                             process="@parent" update="jobList" action="#{officeTypeOperation.addJob}"/>
                         </f:facet>
                     </b:inputText>
                     <b:message/>
-                </ui:repeat>
+                </b:panel>
+
+                <p:outputPanel id="products">
+
+                <b:panel rendered="#{officeTypeHome.idDefined and officeTypeHome.instance.produce}" collapsible="false"
+                         title="产品" titleClass="header-sm">
+
+                    <h:dataTable rendered="#{not empty officeTypeOperation.produces}"
+                                 value="#{officeTypeOperation.produces}" var="_produce"
+                                 columnClasses="width-40percent,width-60percent,width-min"
+                                 styleClass="table table-striped table-hover">
+
+                        <h:column>
+                            #{_produce.id}
+                        </h:column>
+                        <h:column>
+                            #{_produce.name}
+                        </h:column>
+                        <h:column>
 
 
-                <b:inputText value="#{officeTypeHome.newJobName}" label="岗位名称" renderLabel="false"
-                             required="true" placeholder="增加一个新的岗位">
-                    <f:facet name="append">
-                        <b:commandButton look="success" ajax="true" iconAwesome="plus"
-                                         process="@parent" update="jobList" action="#{officeTypeHome.addJob}" />
-                    </f:facet>
-                </b:inputText>
-                <b:message/>
-            </b:panel>
+                            <div class="list-actions right" style="width: 35px">
 
 
-        </o:form>
+                            <b:commandButton styleClass="list-action" tooltip="删除" immediate="true"
+                                             action="#{officeTypeOperation.removeProduct}"
+                                             process="@this" ajax="true" icon="trash" look="link"
+                                             update="@form">
 
-    </b:column>
+                                <f:setPropertyActionListener value="#{_produce.id}" target="#{resHome.id}"/> </b:commandButton>
 
-</b:row>
+                            </div>
+                        </h:column>
+                    </h:dataTable>
 
 
-        </ui:composition>
+
+
+                    <b:row rendered="#{not empty officeTypeOperation.canAddResList}">
+                        <b:column colMd="9">
+                            <div class="form-group">
+                                <h:selectOneMenu id="newProduce" value="#{resHome.id}"
+                                                 pt:data-live-search="true" label="产品"
+                                                 pt:data-header="请选择要增加的产品"
+                                                 pt:data-size="auto"
+                                                 styleClass="js-select form-control edit-select select-theme">
+                                    <f:selectItems value="#{officeTypeOperation.canAddResList}" var="_produce"
+                                                   itemLabel="#{_produce.name}"
+                                                   itemValue="#{_produce.id}"/>
+                                </h:selectOneMenu>
+
+
+                            </div>
+                            <b:message for="newProduce"/>
+                            <h:outputScript>
+
+                                $('.js-select').selectpicker();
+                            </h:outputScript>
+
+                        </b:column>
+
+                        <b:column colMd="3">
+
+                            <b:commandButton value="增加" update="products" process="products"
+                                             action="#{officeTypeOperation.addProduct}" ajax="true">
+                            </b:commandButton>
+                        </b:column>
+                    </b:row>
+
+                </b:panel>
+
+                </p:outputPanel>
+            </o:form>
+
+
+        </b:column>
+
+    </b:row>
+
+
+</ui:composition>

@@ -22,6 +22,7 @@ public class OfficeType implements java.io.Serializable{
     private boolean enable;
 
     private Set<Job> jobs = new HashSet<Job>(0);
+    private Set<Res> products = new HashSet<Res>(0);
 
     public OfficeType(String id, Date botime, boolean enable) {
         this.id = id;
@@ -109,6 +110,16 @@ public class OfficeType implements java.io.Serializable{
 
     public void setJobs(Set<Job> jobs) {
         this.jobs = jobs;
+    }
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "OFFICE_PRODUCT",joinColumns=@JoinColumn(name="OFFICE"),inverseJoinColumns = @JoinColumn(name = "RES"))
+    public Set<Res> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Set<Res> products) {
+        this.products = products;
     }
 
     @Transient
