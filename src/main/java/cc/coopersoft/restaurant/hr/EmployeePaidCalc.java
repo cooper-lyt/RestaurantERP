@@ -66,7 +66,7 @@ public class EmployeePaidCalc implements java.io.Serializable {
 
                     if (curCode != null && curCode.equals(workCode) && date.before(ea.getValidTime())){
                         PaidBalance paidBalance = paidBalanceMap.get(ea.getEmployee());
-                        paidBalance.setWorkContentMoney(paidBalance.getWorkContentMoney().add(paidProjectHome.getInstance().getWorkContentMoney().multiply(new BigDecimal(count))));
+                        //paidBalance.setWorkContentMoney(paidBalance.getWorkContentMoney().add(paidProjectHome.getInstance().getWorkContentMoney().multiply(new BigDecimal(count))));
                         return;
                     }
 

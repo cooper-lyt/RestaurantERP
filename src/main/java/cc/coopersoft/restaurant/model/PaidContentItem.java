@@ -18,6 +18,16 @@ public class PaidContentItem implements java.io.Serializable {
     private PaidProject paidProject;
     private BigDecimal money;
 
+    public PaidContentItem() {
+    }
+
+    public PaidContentItem(String id, Res res, PaidProject paidProject, BigDecimal money) {
+        this.id = id;
+        this.res = res;
+        this.paidProject = paidProject;
+        this.money = money;
+    }
+
     @Id
     @Column(name = "ID", unique = true, nullable = false, length = 32)
     @NotNull

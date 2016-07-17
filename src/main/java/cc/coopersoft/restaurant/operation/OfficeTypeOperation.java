@@ -119,7 +119,12 @@ public class OfficeTypeOperation implements java.io.Serializable{
 
     public List<Res> getProduces() {
         if (produces == null){
-            produces = new ArrayList<Res>(officeTypeHome.getInstance().getProducts());
+            produces = new ArrayList<Res>();
+            for(Res res: officeTypeHome.getInstance().getProducts()){
+                if (res.isEnable()){
+                    produces.add(res);
+                }
+            }
             Collections.sort(produces);
         }
         return produces;

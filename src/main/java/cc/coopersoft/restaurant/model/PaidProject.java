@@ -19,10 +19,10 @@ public class PaidProject implements java.io.Serializable, Comparable<PaidProject
     private String name;
     private Date botime;
     private BigDecimal fullWorkMoney;
-    private BigDecimal workContentMoney;
 
     private OfficeType officeType;
     private Set<PaidItem> paidItems = new HashSet<PaidItem>(0);
+    private Set<PaidContentItem> paidContentItems = new HashSet<PaidContentItem>(0);
 
     public PaidProject() {
     }
@@ -96,14 +96,13 @@ public class PaidProject implements java.io.Serializable, Comparable<PaidProject
         this.fullWorkMoney = fullWorkMoney;
     }
 
-    @Column(name="WORK_CONTENT_MONEY",nullable = false)
-    @NotNull
-    public BigDecimal getWorkContentMoney() {
-        return workContentMoney;
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "paidProject",orphanRemoval = true,cascade = CascadeType.ALL)
+    public Set<PaidContentItem> getPaidContentItems() {
+        return paidContentItems;
     }
 
-    public void setWorkContentMoney(BigDecimal workContentMoney) {
-        this.workContentMoney = workContentMoney;
+    public void setPaidContentItems(Set<PaidContentItem> paidContentItems) {
+        this.paidContentItems = paidContentItems;
     }
 
     public int compareTo(PaidProject o) {

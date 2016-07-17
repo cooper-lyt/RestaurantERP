@@ -36,7 +36,7 @@
                     <ui:repeat value="#{paidProjectManager.paidProjects}" var="_paidProject">
                         <p:commandLink ajax="true" immediate="true"
                                        styleClass="menu-item #{paidProjectHome.id eq _paidProject.id ? 'selected' : ''}"
-                                       update="projects,projectDetails,items,newCategoryForm" process="@this"
+                                       update="projects,projectDetails,items,newCategoryForm,workContents" process="@this"
                                        value="#{_paidProject.name}">
                             <f:setPropertyActionListener value="#{_paidProject.id}" target="#{paidProjectHome.id}"/>
                         </p:commandLink>
@@ -44,7 +44,7 @@
 
                     <p:commandLink ajax="true" immediate="true"
                                    styleClass="menu-item #{paidProjectHome.idDefined ? '' : 'selected'}"
-                                   update="projects,projectDetails,items,newCategoryForm" process="@this"
+                                   update="projects,projectDetails,items,newCategoryForm,workContents" process="@this"
                                    value="新增方案">
                         <f:setPropertyActionListener value="" target="#{paidProjectHome.id}"/>
                     </p:commandLink>
@@ -55,16 +55,11 @@
         <b:column colMd="9">
             <o:form id="projectDetails" includeViewParams="true">
                 <b:panel collapsible="false" title="方案内容" titleClass="header-sm">
-                    <b:inputText label="名称" renderLabel="false" placeholder="方案名称" required="true" value="#{paidProjectHome.instance.name}">
+                    <b:inputText label="名称" placeholder="方案名称" required="true" value="#{paidProjectHome.instance.name}">
                     </b:inputText>
                     <b:message/>
 
                     <b:inputText label="满勤奖" required="true" value="#{paidProjectHome.instance.fullWorkMoney}">
-                        <f:convertNumber pattern="#0.00"/>
-                    </b:inputText>
-                    <b:message/>
-
-                    <b:inputText label="绩效工资" required="true" value="#{paidProjectHome.instance.workContentMoney}">
                         <f:convertNumber pattern="#0.00"/>
                     </b:inputText>
                     <b:message/>
@@ -90,6 +85,18 @@
                 </h:outputScript>
 
             </o:form>
+            <o:form id="workContents" includeViewParams="true" >
+                <b:panel title="绩效计算" titleClass="header-sm" rendered="#{paidProjectHome.idDefined and (not empty paidProjectHome.paidContentItems)}">
+                    <ui:repeat value="#{paidProjectHome.paidContentItems}" var="_contentItem">
+                        <b:inputText required="true" value="#{_contentItem.money}" renderLabel="true" label="#{_contentItem.res.name} (#{_contentItem.res.id})">
+                            <f:convertNumber pattern="#0.00"/>
+                            <f:ajax event="blur" execute="@this" render="@none" listener="#{paidProjectHome.saveOrUpdate}"/>
+                        </b:inputText>
+                        <b:message/>
+                    </ui:repeat>
+
+                </b:panel>
+            </o:form>
 
             <o:form id="items" includeViewParams="true">
                 <ui:repeat value="#{paidProjectHome.paidItems}" var="_itemEntry">
@@ -100,6 +107,7 @@
                                 <f:convertNumber pattern="#0.00"/>
                                 <f:ajax event="blur" execute="@this" render="@none" listener="#{paidProjectHome.saveOrUpdate}"/>
                             </b:inputText>
+                            <b:message/>
 
                         </ui:repeat>
 

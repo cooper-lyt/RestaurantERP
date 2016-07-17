@@ -2,9 +2,7 @@ package cc.coopersoft.restaurant.hr;
 
 import cc.coopersoft.common.EntityHome;
 import cc.coopersoft.restaurant.hr.repository.PaidProjectRepository;
-import cc.coopersoft.restaurant.model.Job;
-import cc.coopersoft.restaurant.model.PaidItem;
-import cc.coopersoft.restaurant.model.PaidProject;
+import cc.coopersoft.restaurant.model.*;
 import cc.coopersoft.system.DictionaryProducer;
 import cc.coopersoft.system.model.*;
 import cc.coopersoft.system.model.Dictionary;
@@ -56,9 +54,52 @@ public class PaidProjectHome  extends EntityHome<PaidProject,String>{
 
     private List<Map.Entry<String,List<PaidItem>>> paidItems;
 
+    private List<PaidContentItem> paidContentItems;
+
+    @Override
+    protected void initInstance(){
+        super.initInstance();
+        paidItems = null;
+        paidContentItems = null;
+    }
+
+
+    public List<PaidContentItem> getPaidContentItems(){
+        if (paidContentItems == null){
+            if (isIdDefined() && getInstance().getOfficeType().isProduce()){
+                Map<Res,PaidContentItem> exists = new HashMap<Res, PaidContentItem>();
+                for(PaidContentItem item: getInstance().getPaidContentItems()){
+                    exists.put(item.getRes(),item);
+                }
+
+                paidContentItems = new ArrayList<PaidContentItem>();
+                for(Res res: getInstance().getOfficeType().getProducts()){
+                    if (res.isEnable()) {
+                        PaidContentItem item = exists.get(res);
+                        if (item == null) {
+                            item = new PaidContentItem(UUID.randomUUID().toString().replace("-", ""), res, getInstance(), BigDecimal.ZERO);
+                            getInstance().getPaidContentItems().add(item);
+                        }
+                        System.out.println("add item:" + item.getRes().getName());
+                        paidContentItems.add(item);
+                    }
+                }
+
+                Collections.sort(paidContentItems, new Comparator<PaidContentItem>() {
+                    public int compare(PaidContentItem o1, PaidContentItem o2) {
+                        return o1.getRes().compareTo(o2.getRes());
+                    }
+                });
+            }else{
+                paidContentItems = new ArrayList<PaidContentItem>(0);
+            }
+        }
+        System.out.println("call getPaidContentItems:" + paidContentItems.size());
+        return paidContentItems;
+    }
 
     public List<Map.Entry<String,List<PaidItem>>> getPaidItems() {
-        if (paidItems == null || clearDirty()){
+        if (paidItems == null){
             Map<String,List<PaidItem>> itemMap = new HashMap<String, List<PaidItem>>();
             List<String> categories = paidProjectRepository.findCategoryByProject(getInstance().getId());
             for(String category: categories) {
