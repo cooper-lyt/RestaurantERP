@@ -80,7 +80,6 @@ public class PaidProjectHome  extends EntityHome<PaidProject,String>{
                             item = new PaidContentItem(UUID.randomUUID().toString().replace("-", ""), res, getInstance(), BigDecimal.ZERO);
                             getInstance().getPaidContentItems().add(item);
                         }
-                        System.out.println("add item:" + item.getRes().getName());
                         paidContentItems.add(item);
                     }
                 }
@@ -94,7 +93,6 @@ public class PaidProjectHome  extends EntityHome<PaidProject,String>{
                 paidContentItems = new ArrayList<PaidContentItem>(0);
             }
         }
-        System.out.println("call getPaidContentItems:" + paidContentItems.size());
         return paidContentItems;
     }
 

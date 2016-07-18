@@ -14,4 +14,7 @@ public interface Messages {
 
     @MessageTemplate("{primary_key_conflict}")
     String primaryKeyConflict();
+
+    @MessageTemplate("{employeeOperTimeBeforOfBalance}")
+    String employeeOperTimeBeforOfBalance();
 }

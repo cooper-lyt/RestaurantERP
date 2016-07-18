@@ -63,6 +63,7 @@
         <class>cc.coopersoft.restaurant.model.ResClass</class>
         <class>cc.coopersoft.restaurant.model.Res</class>
         <class>cc.coopersoft.restaurant.model.PaidContentItem</class>
+        <class>cc.coopersoft.restaurant.model.WorkContentMoney</class>
 
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>

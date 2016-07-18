@@ -22,6 +22,13 @@ public class BasicPaidItem implements java.io.Serializable {
     public BasicPaidItem() {
     }
 
+    public BasicPaidItem(String id, String category, BigDecimal money, PaidBalance paidBalance) {
+        this.id = id;
+        this.category = category;
+        this.money = money;
+        this.paidBalance = paidBalance;
+    }
+
     @Id
     @Column(name = "ID", unique = true, nullable = false, length = 32)
     @NotNull

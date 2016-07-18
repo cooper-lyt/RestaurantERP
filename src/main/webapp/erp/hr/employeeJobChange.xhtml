@@ -51,8 +51,8 @@
                         </li>
                         <li>
                             <b:iconAwesome name="trophy" size="2x"/>
-                            <strong class="step">薪酬结算:</strong>
-                            员工出勤和绩效数据
+                            <strong class="step">绩效结算:</strong>
+                            员工绩效数据
                         </li>
                         <li>
                             <b:iconAwesome name="print" size="2x"/>
@@ -123,6 +123,11 @@
                 <b:inputText label="工作编号" renderLabel="true" value="#{jobChange.jobInfo.workCode}"/>
                 <b:message/>
 
+                <b:inputText required="true" label="出勤天数" value="#{jobChange.employeeAction.paidBalance.workDay}">
+                    <f:converter converterId="javax.faces.BigDecimal"/>
+                </b:inputText>
+                <b:message/>
+
                 <p:outputPanel id="paidProject">
                     <div class="form-group">
 
@@ -137,6 +142,9 @@
                         </h:selectOneMenu>
                     </div>
                     <b:message for="paidProjectInput"/>
+                    <h:outputScript>
+                        $('.js-select').selectpicker();
+                    </h:outputScript>
                 </p:outputPanel>
 
 

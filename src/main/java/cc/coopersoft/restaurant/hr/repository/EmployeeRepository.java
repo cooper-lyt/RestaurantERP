@@ -4,6 +4,7 @@ import cc.coopersoft.restaurant.ErpEntityManagerResolver;
 import cc.coopersoft.restaurant.hr.repository.model.EmployeeOffice;
 import cc.coopersoft.restaurant.model.Employee;
 import cc.coopersoft.restaurant.model.EmployeeAction;
+import cc.coopersoft.restaurant.model.EmployeeGiftMoney;
 import org.apache.deltaspike.data.api.*;
 
 import javax.persistence.FlushModeType;
@@ -42,8 +43,11 @@ public interface EmployeeRepository extends EntityRepository<Employee,String> {
     @Query("select emp from Employee emp where emp.status = 'NORMAL' and emp.office.id = ?1 order by emp.joinDate")
     List<Employee> findByOfficeValid(String officeId);
 
-    @Query(value = "select empAction from EmployeeAction empAction left join fetch empAction.jobInfo left join fetch empAction.paidBalance left join fetch empAction.employeeGiftMoney where empAction.employee.id = ?1 and empAction.business.type = 'EMP_BALANCE' and empAction.business.status = 'COMPLETE' order by empAction.validTime desc", max = 1)
+    @Query(value = "select empAction from EmployeeAction empAction left join fetch empAction.jobInfo left join fetch empAction.paidBalance left join fetch empAction.employeeGiftMoney where empAction.employee.id = ?1 and (empAction.business.type = 'EMP_BALANCE' or empAction.business.type = 'EMP_JOIN' or empAction.business.type = 'EMP_JOB_CHANGE' or empAction.business.type = 'EMP_LEAVE') and empAction.business.status = 'COMPLETE' order by empAction.validTime desc", max = 1)
     EmployeeAction findLastBalance(String employeeId);
+
+    @Query("select egm from EmployeeGiftMoney egm left join fetch EmployeeAction ea where egm.employeeGiftBalance is null and ea.validTime > ?2 and ea.validTime < ?3 and ea.employee.id = ?1")
+    List<EmployeeGiftMoney> findGiftMoney(String employeeId, Date start, Date end);
 
     @Query("select empAction from EmployeeAction empAction left join fetch empAction.jobInfo left join fetch empAction.paidBalance left join fetch empAction.employeeGiftMoney where empAction.employee.id = :employeeId and (empAction.validTime >= :startDate or true = :all) and empAction.validTime <= :endDate and empAction.business.status = 'COMPLETE' order by empAction.validTime")
     List<EmployeeAction> findBalanceAction(@QueryParam("empId") String employeeId,

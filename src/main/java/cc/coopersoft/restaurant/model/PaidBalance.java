@@ -25,6 +25,7 @@ public class PaidBalance implements java.io.Serializable {
 
     private Set<BasicPaidItem> basicPaidItems = new HashSet<BasicPaidItem>(0);
     private Set<EmployeeGiftBalance> employeeGiftBalances = new HashSet<EmployeeGiftBalance>(0);
+    private Set<WorkContentMoney> workContentMoneys = new HashSet<WorkContentMoney>(0);
 
     public PaidBalance() {
     }
@@ -112,6 +113,15 @@ public class PaidBalance implements java.io.Serializable {
     @OneToMany(fetch = FetchType.LAZY,orphanRemoval = true,mappedBy = "paidBalance",cascade = CascadeType.ALL)
     public Set<EmployeeGiftBalance> getEmployeeGiftBalances() {
         return employeeGiftBalances;
+    }
+
+    @OneToMany(fetch = FetchType.LAZY,orphanRemoval = true,mappedBy = "paidBalance", cascade = CascadeType.ALL)
+    public Set<WorkContentMoney> getWorkContentMoneys() {
+        return workContentMoneys;
+    }
+
+    public void setWorkContentMoneys(Set<WorkContentMoney> workContentMoneys) {
+        this.workContentMoneys = workContentMoneys;
     }
 
     public void setEmployeeGiftBalances(Set<EmployeeGiftBalance> employeeGiftBalances) {

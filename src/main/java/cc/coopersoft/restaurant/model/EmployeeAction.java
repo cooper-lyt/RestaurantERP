@@ -32,6 +32,12 @@ public class EmployeeAction implements java.io.Serializable{
         this.business = business;
     }
 
+    public EmployeeAction(String id, Date validTime, Employee employee) {
+        this.id = id;
+        this.validTime = validTime;
+        this.employee = employee;
+    }
+
     @Id
     @Column(name = "ID", unique = true, nullable = false, length = 32)
     @NotNull

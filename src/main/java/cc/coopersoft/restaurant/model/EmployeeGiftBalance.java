@@ -25,9 +25,8 @@ public class EmployeeGiftBalance implements java.io.Serializable {
     public EmployeeGiftBalance() {
     }
 
-    public EmployeeGiftBalance(String id, BigDecimal money, String category, PaidBalance paidBalance) {
+    public EmployeeGiftBalance(String id, String category, PaidBalance paidBalance) {
         this.id = id;
-        this.money = money;
         this.category = category;
         this.paidBalance = paidBalance;
     }

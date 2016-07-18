@@ -1,10 +1,13 @@
 package cc.coopersoft.restaurant.hr;
 
 import cc.coopersoft.restaurant.BusinessHelper;
+import cc.coopersoft.restaurant.Messages;
 import cc.coopersoft.restaurant.model.Business;
 import cc.coopersoft.restaurant.model.EmployeeAction;
 import cc.coopersoft.restaurant.model.JobInfo;
+import cc.coopersoft.restaurant.model.PaidBalance;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
+import org.apache.deltaspike.jsf.api.message.JsfMessage;
 
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.Conversation;
@@ -14,6 +17,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by cooper on 7/17/16.
@@ -32,28 +36,41 @@ public class JobChange implements java.io.Serializable{
     @Inject
     private BusinessHelper businessHelper;
 
-    private Date changeTime;
+    @Inject
+    private PaidCalc paidCalc;
 
-    private JobInfo jobInfo;
+    //private Date changeTime;
+
+    //private JobInfo jobInfo;
+    private EmployeeAction employeeAction;
+
+    private Date lastBalanceTime;
 
     @Inject
     @Default
     private EntityManager entityManager;
 
+    @Inject
+    private JsfMessage<Messages> messages;
+
     public Date getChangeTime() {
-        return changeTime;
+        return employeeAction.getValidTime();
     }
 
     public void setChangeTime(Date changeTime) {
-        this.changeTime = changeTime;
+        this.employeeAction.setValidTime(changeTime);
     }
 
     public JobInfo getJobInfo() {
-        return jobInfo;
+        return employeeAction.getJobInfo();
     }
 
     public void clearJob(){
-        jobInfo.setJob(null);
+        employeeAction.getJobInfo().setJob(null);
+    }
+
+    public EmployeeAction getEmployeeAction() {
+        return employeeAction;
     }
 
     @Transactional
@@ -64,22 +81,37 @@ public class JobChange implements java.io.Serializable{
             conversation.begin();
             conversation.setTimeout(1200000);
         }
-        changeTime = new Date();
-        jobInfo = new JobInfo(employeeHome.getInstance().getWorkCode(),employeeHome.getInstance().getOffice(),employeeHome.getInstance().getJob(),employeeHome.getInstance().getLevel());
+        lastBalanceTime = paidCalc.getLastBalanceTime(employeeHome.getInstance().getId());
+        employeeAction = new EmployeeAction(UUID.randomUUID().toString().replace("-",""),new Date(),employeeHome.getInstance())
+        employeeAction.setJobInfo(new JobInfo(employeeHome.getInstance().getJob(),employeeHome.getInstance().getLevel(),employeeHome.getInstance().getWorkCode(),employeeHome.getInstance().getOffice(),employeeAction));
+        employeeAction.setPaidBalance(new PaidBalance(employeeAction));
+
     }
+
+    public String beginWorkContent(){
+
+        if (getChangeTime().before(lastBalanceTime)){
+            messages.addError().employeeOperTimeBeforOfBalance();
+            return null;
+        }
+
+        return "/erp/hr/jobChangeBalance.xhtml";
+    }
+
 
 
     @Transactional
     public String jobChange(){
+        paidCalc.calcBlance(employeeHome.getInstance(),employeeAction.getPaidBalance());
+
         Business business = businessHelper.createEmployeeBusiness(Business.Type.EMP_JOB_CHANGE);
-        EmployeeAction employeeAction = new EmployeeAction(business.getId(),changeTime,employeeHome.getInstance(),business);
-        jobInfo.setEmployeeAction(employeeAction);
-        employeeHome.getInstance().setOffice(jobInfo.getOffice());
-        employeeHome.getInstance().setJob(jobInfo.getJob());
-        employeeHome.getInstance().setWorkCode(jobInfo.getWorkCode());
-        employeeHome.getInstance().setLevel(jobInfo.getLevel());
-        employeeAction.setJobInfo(jobInfo);
+
+        employeeHome.getInstance().setOffice(getJobInfo().getOffice());
+        employeeHome.getInstance().setJob(getJobInfo().getJob());
+        employeeHome.getInstance().setWorkCode(getJobInfo().getWorkCode());
+        employeeHome.getInstance().setLevel(getJobInfo().getLevel());
         business.getEmployeeActions().add(employeeAction);
+
         entityManager.persist(business);
         entityManager.flush();
         endConversation();
