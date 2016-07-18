@@ -17,4 +17,10 @@ public interface Messages {
 
     @MessageTemplate("{employeeOperTimeBeforOfBalance}")
     String employeeOperTimeBeforOfBalance();
+
+    @MessageTemplate("{fileMustExcelFile}")
+    String fileMustExcelFile();
+
+    @MessageTemplate("{excelFileReadError}")
+    String excelFileReadError();
 }

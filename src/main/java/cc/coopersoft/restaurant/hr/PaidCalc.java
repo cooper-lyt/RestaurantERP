@@ -1,8 +1,10 @@
 package cc.coopersoft.restaurant.hr;
 
+import cc.coopersoft.restaurant.Messages;
 import cc.coopersoft.restaurant.hr.repository.EmployeeRepository;
 import cc.coopersoft.restaurant.model.*;
 import cc.coopersoft.restaurant.res.repository.ResRepository;
+import org.apache.deltaspike.jsf.api.message.JsfMessage;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -21,7 +23,7 @@ import java.util.*;
  */
 @Named
 @ConversationScoped
-public class PaidCalc implements java.io.Serializable{
+public class PaidCalc implements java.io.Serializable {
 
     @Inject
     private PaidProjectHome paidProjectHome;
@@ -32,20 +34,23 @@ public class PaidCalc implements java.io.Serializable{
     @Inject
     private ResRepository resRepository;
 
-    private Map<String,List<WorkContentMoney>> workContentData;
+    @Inject
+    private JsfMessage<Messages> messages;
+
+    private Map<String, List<WorkContentMoney>> workContentData;
 
     public Map<String, List<WorkContentMoney>> getWorkContentData() {
         return workContentData;
     }
 
 
-    public void calcBlance(Employee emp, PaidBalance paidBalance){
+    public void calcBlance(Employee emp, PaidBalance paidBalance) {
         //基本工资部分
-        for(Map.Entry<String,List<PaidItem>> entry: paidProjectHome.getPaidItems()){
-            for(PaidItem paidItem: entry.getValue()){
-                if (emp.getJob().equals(paidItem.getJob()) && emp.getLevel().equals(paidItem.getLevel())){
+        for (Map.Entry<String, List<PaidItem>> entry : paidProjectHome.getPaidItems()) {
+            for (PaidItem paidItem : entry.getValue()) {
+                if (emp.getJob().equals(paidItem.getJob()) && emp.getLevel().equals(paidItem.getLevel())) {
                     paidBalance.getBasicPaidItems().add(
-                        new BasicPaidItem(UUID.randomUUID().toString().replace("-",""),entry.getKey(),paidBalance.getWorkDay().multiply(paidItem.getMoney()),paidBalance));
+                            new BasicPaidItem(UUID.randomUUID().toString().replace("-", ""), entry.getKey(), paidBalance.getWorkDay().multiply(paidItem.getMoney()), paidBalance));
                     break;
                 }
             }
@@ -53,23 +58,23 @@ public class PaidCalc implements java.io.Serializable{
 
         //奖励部分
 
-        List<EmployeeGiftMoney> employeeGiftMoneys = employeeRepository.findGiftMoney(emp.getId(),getLastBalanceTime(emp.getId()),paidBalance.getEmployeeAction().getValidTime());
-        Map<String,List<EmployeeGiftMoney>> giftBalances = new HashMap<String, List<EmployeeGiftMoney>>();
-        for(EmployeeGiftMoney egm: employeeGiftMoneys){
-            List<EmployeeGiftMoney> egbs =  giftBalances.get(egm.getCategory());
-            if (egbs == null){
+        List<EmployeeGiftMoney> employeeGiftMoneys = employeeRepository.findGiftMoney(emp.getId(), getLastBalanceTime(emp.getId()), paidBalance.getEmployeeAction().getValidTime());
+        Map<String, List<EmployeeGiftMoney>> giftBalances = new HashMap<String, List<EmployeeGiftMoney>>();
+        for (EmployeeGiftMoney egm : employeeGiftMoneys) {
+            List<EmployeeGiftMoney> egbs = giftBalances.get(egm.getCategory());
+            if (egbs == null) {
                 egbs = new ArrayList<EmployeeGiftMoney>();
-                giftBalances.put(egm.getCategory(),egbs);
+                giftBalances.put(egm.getCategory(), egbs);
             }
             egbs.add(egm);
         }
 
         //BigDecimal giftMoney = BigDecimal.ZERO;
-        for(Map.Entry<String,List<EmployeeGiftMoney>> entry: giftBalances.entrySet()){
-            EmployeeGiftBalance egb = new EmployeeGiftBalance(UUID.randomUUID().toString().replace("-",""),entry.getKey(),paidBalance);
+        for (Map.Entry<String, List<EmployeeGiftMoney>> entry : giftBalances.entrySet()) {
+            EmployeeGiftBalance egb = new EmployeeGiftBalance(UUID.randomUUID().toString().replace("-", ""), entry.getKey(), paidBalance);
 
             BigDecimal money = BigDecimal.ZERO;
-            for(EmployeeGiftMoney egm: entry.getValue()){
+            for (EmployeeGiftMoney egm : entry.getValue()) {
                 money = money.add(egm.getMoney());
                 egm.setEmployeeGiftBalance(egb);
                 egb.getEmployeeGiftMoneys().add(egm);
@@ -82,19 +87,15 @@ public class PaidCalc implements java.io.Serializable{
 
         //绩效
 
-        if (workContentData != null){
-            List<WorkContentMoney> contentMoneys = workContentData.get(emp.getId());
+        if (workContentData != null) {
+            List<WorkContentMoney> contentMoneys = workContentData.get(emp.getWorkCode());
             BigDecimal content = BigDecimal.ZERO;
-            for(WorkContentMoney contentMoney: contentMoneys){
+            for (WorkContentMoney contentMoney : contentMoneys) {
 
-                for(PaidContentItem pci: paidProjectHome.getPaidContentItems()) {
-                    if (pci.getRes().equals(contentMoney.getRes())){
-                        contentMoney.setMoney(contentMoney.getCount().multiply(pci.getMoney()));
-                        content = content.add(contentMoney.getMoney());
-                        paidBalance.getWorkContentMoneys().add(contentMoney);
-                        contentMoney.setPaidBalance(paidBalance);
-                    }
-                }
+                content = content.add(contentMoney.getMoney());
+                paidBalance.getWorkContentMoneys().add(contentMoney);
+                contentMoney.setPaidBalance(paidBalance);
+
             }
 
             paidBalance.setWorkContentMoney(content);
@@ -103,12 +104,12 @@ public class PaidCalc implements java.io.Serializable{
     }
 
 
-    public Date getLastBalanceTime(String employeeId){
+    public Date getLastBalanceTime(String employeeId) {
         EmployeeAction employeeAction = employeeRepository.findLastBalance(employeeId);
         return employeeAction.getValidTime();
     }
 
-    public void clearFile(){
+    public void clearFile() {
         workContentData = null;
     }
 
@@ -122,7 +123,7 @@ public class PaidCalc implements java.io.Serializable{
             } else if (file.getFileName().endsWith(".xlsx")) {
                 workbook = new XSSFWorkbook(file.getInputstream());
             } else {
-                //TODO messages
+                messages.addError().fileMustExcelFile();
                 return;
             }
 
@@ -134,66 +135,93 @@ public class PaidCalc implements java.io.Serializable{
 
                 int minRowIx = sheet.getFirstRowNum();
                 int maxRowIx = sheet.getLastRowNum();
+
                 for (int rowIx = minRowIx; rowIx <= maxRowIx; rowIx++) {
                     Row row = sheet.getRow(rowIx);
 
+                    short minColIx = row.getFirstCellNum();
 
-                    String workCode = null;
-                    Cell cell = row.getCell(0);
+                    String workCode;
+                    Cell cell = row.getCell(minColIx);
                     CellValue cellValue = evaluator.evaluate(cell);
-                    if (cellValue != null && Cell.CELL_TYPE_STRING == cellValue.getCellType()){
-                        workCode = cell.getStringCellValue();
-                    }else{
-                        continue;
-                    }
 
-                    cell = row.getCell(1);
-                    cellValue = evaluator.evaluate(cell);
-                    WorkContentMoney item = new WorkContentMoney(UUID.randomUUID().toString().replace("-",""));
-                    if (cellValue != null && Cell.CELL_TYPE_STRING == cellValue.getCellType()){
-                        Res res =resRepository.findBy(cell.getStringCellValue());
-                        if (res != null){
-                            item.setRes(res);
+
+                    if (cellValue != null) {
+                        if (Cell.CELL_TYPE_STRING == cellValue.getCellType()){
+                            workCode = cell.getStringCellValue();
+                        }else if (Cell.CELL_TYPE_NUMERIC == cellValue.getCellType()){
+                            workCode = new java.text.DecimalFormat("#0").format(cell.getNumericCellValue());
                         }else{
                             continue;
                         }
-                    }else{
+
+                    } else {
                         continue;
                     }
 
-                    cell = row.getCell(2);
+
+                    cell = row.getCell(minColIx+1);
                     cellValue = evaluator.evaluate(cell);
-                    if (cellValue != null){
+                    WorkContentMoney item = new WorkContentMoney(UUID.randomUUID().toString().replace("-", ""));
+                    if (cellValue != null ) {
+                        String resId;
+                        if (Cell.CELL_TYPE_STRING == cellValue.getCellType()){
+                            resId = cellValue.getStringValue();
+                        }else if (Cell.CELL_TYPE_NUMERIC == cellValue.getCellType()){
+                            resId = new java.text.DecimalFormat("#0").format(cellValue.getNumberValue());
+                        }else{
+                           continue;
+                        }
+
+                        Res res = resRepository.findBy(resId);
+                        if (res != null) {
+                            item.setRes(res);
+                        } else {
+                            continue;
+                        }
+                    } else {
+                        continue;
+                    }
+
+                    cell = row.getCell(minColIx+2);
+                    cellValue = evaluator.evaluate(cell);
+                    if (cellValue != null) {
                         if (Cell.CELL_TYPE_NUMERIC == cellValue.getCellType()) {
                             item.setCount(new BigDecimal(cellValue.getNumberValue()));
-                        }else if (Cell.CELL_TYPE_STRING == cellValue.getCellType()){
+                        } else if (Cell.CELL_TYPE_STRING == cellValue.getCellType()) {
                             try {
                                 item.setCount(new BigDecimal(cellValue.getStringValue()));
-                            }catch (NumberFormatException e){
+                            } catch (NumberFormatException e) {
                                 item.setCount(BigDecimal.ZERO);
                             }
                         }
                     }
 
-                    cell = row.getCell(3);
+                    cell = row.getCell(minColIx+3);
                     cellValue = evaluator.evaluate(cell);
 
-                    if (cellValue != null){
+                    if (cellValue != null) {
                         if (Cell.CELL_TYPE_NUMERIC == cellValue.getCellType()) {
                             item.setPrice(new BigDecimal(cellValue.getNumberValue()));
-                        }else if (Cell.CELL_TYPE_STRING == cellValue.getCellType()){
+                        } else if (Cell.CELL_TYPE_STRING == cellValue.getCellType()) {
                             try {
                                 item.setPrice(new BigDecimal(cellValue.getStringValue()));
-                            }catch (NumberFormatException e){
+                            } catch (NumberFormatException e) {
                                 item.setPrice(BigDecimal.ZERO);
                             }
                         }
                     }
 
+                    for (PaidContentItem pci : paidProjectHome.getPaidContentItems()) {
+                        if (pci.getRes().equals(item.getRes())) {
+                            item.setMoney(item.getCount().multiply(pci.getMoney()));
+                        }
+                    }
+
                     List<WorkContentMoney> moneys = workContentData.get(workCode);
-                    if (moneys == null){
+                    if (moneys == null) {
                         moneys = new ArrayList<WorkContentMoney>();
-                        workContentData.put(workCode,moneys);
+                        workContentData.put(workCode, moneys);
                     }
                     moneys.add(item);
 
@@ -202,7 +230,7 @@ public class PaidCalc implements java.io.Serializable{
 
 
         } catch (IOException e) {
-            e.printStackTrace();
+            messages.addError().excelFileReadError();
         }
 
     }

@@ -11,8 +11,8 @@
 	</page_setting>
 	<category_index>0</category_index>
 	<zoom>1.0</zoom>
-	<x>-246</x>
-	<y>405</y>
+	<x>-425</x>
+	<y>365</y>
 	<default_color>
 		<r>128</r>
 		<g>128</g>
@@ -135,7 +135,7 @@
 			</connections>
 			<display>false</display>
 			<creation_date>2016-06-05 23:29:37</creation_date>
-			<updated_date>2016-07-18 15:03:19</updated_date>
+			<updated_date>2016-07-18 17:18:10</updated_date>
 			<model_property>
 				<name>Project Name</name>
 				<value></value>

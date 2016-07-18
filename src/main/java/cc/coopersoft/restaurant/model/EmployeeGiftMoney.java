@@ -18,7 +18,7 @@ public class EmployeeGiftMoney implements java.io.Serializable {
 
     private EmployeeGiftBalance employeeGiftBalance;
 
-
+    private EmployeeAction employeeAction;
 
     public EmployeeGiftMoney() {
     }
@@ -65,4 +65,19 @@ public class EmployeeGiftMoney implements java.io.Serializable {
         this.employeeGiftBalance = employeeGiftBalance;
     }
 
+    @OneToOne(fetch = FetchType.LAZY,mappedBy = "employeeGiftMoney",optional = false)
+    @PrimaryKeyJoinColumn
+    @NotNull
+    public EmployeeAction getEmployeeAction() {
+        return employeeAction;
+    }
+
+    public void setEmployeeAction(EmployeeAction employeeAction) {
+        this.employeeAction = employeeAction;
+    }
+
+    @PrePersist
+    public void ensureId(){
+        this.id = getEmployeeAction().getId();
+    }
 }

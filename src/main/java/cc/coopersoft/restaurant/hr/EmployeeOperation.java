@@ -128,8 +128,10 @@ public class EmployeeOperation implements java.io.Serializable{
     private void createGift(Business business, Employee employee){
         EmployeeAction employeeAction = new EmployeeAction(UUID.randomUUID().toString().replace("-",""),validTime,employee,business);
 
-        getEmployeeGiftMoney().setId(employeeAction.getId());
+        //getEmployeeGiftMoney().setId(employeeAction.getId());
+        getEmployeeGiftMoney().setEmployeeAction(employeeAction);
         employeeAction.setEmployeeGiftMoney(getEmployeeGiftMoney());
+
 
         business.getEmployeeActions().add(employeeAction);
     }

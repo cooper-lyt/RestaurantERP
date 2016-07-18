@@ -12,14 +12,55 @@
         <f:metadata>
             <o:viewParam name="employeeId" value="#{employeeHome.id}"/>
         </f:metadata>
-            </ui:define>
+    </ui:define>
 
-    <b:jumbotron style="margin-top: 20px;">
-        <h1>工作调动完成!</h1>
-        <p>员工 <span class="important-text">#{employeeHome.instance.name}</span>  于 <h:outputText styleClass="important-text" value="#{employeeOperation.validTime}"><f:convertDateTime pattern="yyyy年MM月dd日"/></h:outputText> 被调动到 <span class="important-text">#{employeeHome.instance.office.name}</span> 岗位 <span class="important-text">#{employeeHome.instance.job.name}</span> 级别为 <span class="important-text">#{dictionaryProducer.getDictionaryValue(employeeHome.instance.level)}</span>, 新的工作编号为 <span class="important-text">#{employeeHome.instance.workCode}</span>.</p>
 
-        <p><h:outputLink value="#{request.contextPath}/erp/hr/employeeList.xhtml" styleClass="btn btn-primary btn-lg">返回员工管理</h:outputLink> </p>
+    <div class="page-form">
+        <b:row>
 
-    </b:jumbotron>
+            <b:column offsetLg="2" offsetMd="2" offsetSm="1" offsetXs="0" colLg="8" colMd="8" colSm="10" colXs="12">
+
+                <div class="setup-header setup-gift">
+                    <h1 class="subhead-heading">工作调动</h1>
+
+                    <ol class="steps steps-4">
+                        <li class="complete">
+                            <b:iconAwesome name="check" size="2x"/>
+                            <strong class="step">准备:</strong>
+                            开始工作调动
+                        </li>
+                        <li class="complete">
+                            <b:iconAwesome name="check" size="2x"/>
+                            <strong class="step">绩效结算:</strong>
+                            员工绩效数据
+                        </li>
+                        <li class="current">
+                            <b:iconAwesome name="street-view" size="2x"/>
+                            <strong class="step">完成:</strong>
+                            调动完成
+                        </li>
+                    </ol>
+                </div>
+
+                <b:jumbotron>
+                    <h1>工作调动完成!</h1>
+                    <p>员工 <span class="important-text">#{employeeHome.instance.name}</span> 于 <h:outputText
+                            styleClass="important-text" value="#{employeeOperation.validTime}"><f:convertDateTime
+                            pattern="yyyy年MM月dd日"/></h:outputText> 被调动到 <span
+                            class="important-text">#{employeeHome.instance.office.name}</span> 岗位 <span
+                            class="important-text">#{employeeHome.instance.job.name}</span> 级别为 <span
+                            class="important-text">#{dictionaryProducer.getDictionaryValue(employeeHome.instance.level)}</span>, 新的工作编号为
+                        <span class="important-text">#{employeeHome.instance.workCode}</span>.</p>
+
+                    <p><h:outputLink value="#{request.contextPath}/erp/hr/employeeList.xhtml"
+                                     styleClass="btn btn-primary btn-lg">返回员工管理</h:outputLink></p>
+
+                </b:jumbotron>
+            </b:column>
+
+        </b:row>
+
+    </div>
+
 
 </ui:composition>

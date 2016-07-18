@@ -2,10 +2,7 @@ package cc.coopersoft.restaurant.hr;
 
 import cc.coopersoft.restaurant.BusinessHelper;
 import cc.coopersoft.restaurant.Messages;
-import cc.coopersoft.restaurant.model.Business;
-import cc.coopersoft.restaurant.model.EmployeeAction;
-import cc.coopersoft.restaurant.model.JobInfo;
-import cc.coopersoft.restaurant.model.PaidBalance;
+import cc.coopersoft.restaurant.model.*;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.apache.deltaspike.jsf.api.message.JsfMessage;
 
@@ -16,7 +13,9 @@ import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -82,12 +81,13 @@ public class JobChange implements java.io.Serializable{
             conversation.setTimeout(1200000);
         }
         lastBalanceTime = paidCalc.getLastBalanceTime(employeeHome.getInstance().getId());
-        employeeAction = new EmployeeAction(UUID.randomUUID().toString().replace("-",""),new Date(),employeeHome.getInstance())
+        employeeAction = new EmployeeAction(UUID.randomUUID().toString().replace("-",""),new Date(),employeeHome.getInstance());
         employeeAction.setJobInfo(new JobInfo(employeeHome.getInstance().getJob(),employeeHome.getInstance().getLevel(),employeeHome.getInstance().getWorkCode(),employeeHome.getInstance().getOffice(),employeeAction));
         employeeAction.setPaidBalance(new PaidBalance(employeeAction));
 
     }
 
+    @Transactional
     public String beginWorkContent(){
 
         if (getChangeTime().before(lastBalanceTime)){
@@ -95,10 +95,20 @@ public class JobChange implements java.io.Serializable{
             return null;
         }
 
+        if(employeeHome.getInstance().getWorkCode() == null || employeeHome.getInstance().getWorkCode().trim().equals("")){
+            return jobChange();
+        }
+
         return "/erp/hr/jobChangeBalance.xhtml";
     }
 
 
+    public List<WorkContentMoney> getWorkContentMoneys(){
+        if (paidCalc.getWorkContentData() == null){
+            return new ArrayList<WorkContentMoney>(0);
+        }
+        return paidCalc.getWorkContentData().get(employeeHome.getInstance().getWorkCode());
+    }
 
     @Transactional
     public String jobChange(){
@@ -106,6 +116,7 @@ public class JobChange implements java.io.Serializable{
 
         Business business = businessHelper.createEmployeeBusiness(Business.Type.EMP_JOB_CHANGE);
 
+        employeeAction.setBusiness(business);
         employeeHome.getInstance().setOffice(getJobInfo().getOffice());
         employeeHome.getInstance().setJob(getJobInfo().getJob());
         employeeHome.getInstance().setWorkCode(getJobInfo().getWorkCode());

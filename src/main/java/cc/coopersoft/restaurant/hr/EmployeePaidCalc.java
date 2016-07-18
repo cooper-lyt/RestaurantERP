@@ -119,8 +119,8 @@ public class EmployeePaidCalc implements java.io.Serializable {
                 for(EmployeeGiftMoney egm: giftMoneys){
                     EmployeeGiftBalance egb = giftBalanceMap.get(egm.getCategory());
                     if (egb == null){
-                        egb = new EmployeeGiftBalance(UUID.randomUUID().toString().replace("-",""),
-                                BigDecimal.ZERO,egm.getCategory(),ea.getPaidBalance());
+//                        egb = new EmployeeGiftBalance(UUID.randomUUID().toString().replace("-",""),
+//                                BigDecimal.ZERO,egm.getCategory(),ea.getPaidBalance());
                         giftBalanceMap.put(egm.getCategory(),egb);
                     }
                     egb.setMoney(egb.getMoney().add(egm.getMoney()));

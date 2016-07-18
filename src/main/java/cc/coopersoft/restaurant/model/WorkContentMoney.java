@@ -9,7 +9,7 @@ import java.math.BigDecimal;
  * Created by cooper on 7/18/16.
  */
 @Entity
-@Table(name = "RES_CLASS",catalog = "RESTAURANT")
+@Table(name = "WORK_CONTENT_MONEY",catalog = "RESTAURANT")
 public class WorkContentMoney implements java.io.Serializable {
 
     private String id;
