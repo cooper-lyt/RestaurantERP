@@ -45,12 +45,17 @@ public class PaidCalc implements java.io.Serializable {
 
 
     public void calcBlance(Employee emp, PaidBalance paidBalance) {
+        BigDecimal totalMoney = BigDecimal.ZERO;
+
         //基本工资部分
         for (Map.Entry<String, List<PaidItem>> entry : paidProjectHome.getPaidItems()) {
             for (PaidItem paidItem : entry.getValue()) {
                 if (emp.getJob().equals(paidItem.getJob()) && emp.getLevel().equals(paidItem.getLevel())) {
-                    paidBalance.getBasicPaidItems().add(
-                            new BasicPaidItem(UUID.randomUUID().toString().replace("-", ""), entry.getKey(), paidBalance.getWorkDay().multiply(paidItem.getMoney()), paidBalance));
+
+                    BasicPaidItem basicPaidItem =
+                            new BasicPaidItem(UUID.randomUUID().toString().replace("-", ""), entry.getKey(), paidBalance.getWorkDay().multiply(paidItem.getMoney()), paidBalance);
+                    paidBalance.getBasicPaidItems().add(basicPaidItem);
+                    totalMoney = totalMoney.add(basicPaidItem.getMoney());
                     break;
                 }
             }
@@ -81,6 +86,7 @@ public class PaidCalc implements java.io.Serializable {
             }
             egb.setMoney(money);
             //giftMoney = giftMoney.add(money);
+            totalMoney = totalMoney.add(money);
             paidBalance.getEmployeeGiftBalances().add(egb);
         }
         //paidBalance.setWorkContentMoney(giftMoney);
@@ -99,7 +105,11 @@ public class PaidCalc implements java.io.Serializable {
             }
 
             paidBalance.setWorkContentMoney(content);
+            totalMoney = totalMoney.add(content);
         }
+
+
+        paidBalance.setTotalMoney(totalMoney);
 
     }
 
