@@ -17,7 +17,7 @@ public class I18n implements java.io.Serializable{
 
     @PostConstruct
     public void initParam(){
-        locale = Locale.CHINESE;
+        locale = Locale.CHINA;
     }
 
 

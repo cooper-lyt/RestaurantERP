@@ -7,10 +7,43 @@
                 xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
                 xmlns:ui="http://java.sun.com/jsf/facelets">
 
-    <b:jumbotron>
-        <h1>coming soon!</h1>
-        <p>此功能正在开发中.</p>
 
-    </b:jumbotron>
+    <b:messages globalOnly="false" styleClass="top-messages"/>
+
+    <div class="page-form">
+     <div class="setup-header setup-gift">
+                    <h1 class="subhead-heading">薪酬结算</h1>
+
+                    <ol class="steps steps-4">
+                        <li class="complete">
+                            <b:iconAwesome name="check" size="2x"/>
+                            <strong class="step">准备:</strong>
+                            准备结算
+                        </li>
+                        <li  class="complete" >
+                            <b:iconAwesome name="calendar" size="2x"/>
+                            <strong class="step">出勤:</strong>
+                            出勤数据
+                        </li>
+                        <li class="complete">
+                            <b:iconAwesome name="trophy" size="2x"/>
+                            <strong class="step">绩效:</strong>
+                            绩效数据
+                        </li>
+                        <li class="current">
+                            <b:iconAwesome name="print" size="2x"/>
+                            <strong class="step">完成:</strong>
+                            完成结算
+                        </li>
+                    </ol>
+                </div>
+
+
+                <ui:include src="/erp/hr/frame/paidTable.xhtml">
+                </ui:include>
+
+
+    </div>
+
 
 </ui:composition>

@@ -43,11 +43,21 @@ public class PaidCalc implements java.io.Serializable {
         return workContentData;
     }
 
-    public void balanceAndPaid(Employee emp, PaidBalance paidBalance, boolean fullWork){
-        List<PaidBalance> balances = employeeRepository.findNoPaidBalance(emp.getId(),employeeRepository.findLastPaidTime(emp.getId()));
-        if (fullWork){
-            paidBalance.setWorkFullMoney(paidProjectHome.getInstance().getFullWorkMoney());
+    public List<Map.Entry<String, List<WorkContentMoney>>> getWorkContentList(){
+        if (workContentData == null){
+            return new ArrayList<Map.Entry<String, List<WorkContentMoney>>>(0);
         }
+        List<Map.Entry<String, List<WorkContentMoney>>> result = new ArrayList<Map.Entry<String, List<WorkContentMoney>>>(getWorkContentData().entrySet());
+        Collections.sort(result, new Comparator<Map.Entry<String, List<WorkContentMoney>>>() {
+            public int compare(Map.Entry<String, List<WorkContentMoney>> o1, Map.Entry<String, List<WorkContentMoney>> o2) {
+                return o1.getKey().compareTo(o2.getKey());
+            }
+        });
+        return result;
+    }
+
+    public void balanceAndPaid(Employee emp, PaidBalance paidBalance){
+        List<PaidBalance> balances = employeeRepository.findNoPaidBalance(emp.getId(),employeeRepository.findLastPaidTime(emp.getId()));
         calcBalance(emp,paidBalance);
         balances.add(paidBalance);
         EmployeePaid employeePaid = new EmployeePaid(paidBalance.getEmployeeAction());
@@ -60,6 +70,13 @@ public class PaidCalc implements java.io.Serializable {
         }
         employeePaid.setTotalMoney(money);
         paidBalance.getEmployeeAction().setEmployeePaid(employeePaid);
+    }
+
+    public void balanceAndPaid(Employee emp, PaidBalance paidBalance, boolean fullWork){
+
+        paidBalance.setWorkFullMoney(fullWork ? paidProjectHome.getInstance().getFullWorkMoney() : BigDecimal.ZERO);
+
+        balanceAndPaid(emp,paidBalance);
     }
 
 
@@ -114,15 +131,17 @@ public class PaidCalc implements java.io.Serializable {
 
         //绩效
 
-        if (workContentData != null) {
+        if (workContentData != null && emp.getWorkCode() != null && !emp.getWorkCode().trim().equals("")) {
             List<WorkContentMoney> contentMoneys = workContentData.get(emp.getWorkCode());
             BigDecimal content = BigDecimal.ZERO;
-            for (WorkContentMoney contentMoney : contentMoneys) {
+            if (contentMoneys != null) {
+                for (WorkContentMoney contentMoney : contentMoneys) {
 
-                content = content.add(contentMoney.getMoney());
-                paidBalance.getWorkContentMoneys().add(contentMoney);
-                contentMoney.setPaidBalance(paidBalance);
+                    content = content.add(contentMoney.getMoney());
+                    paidBalance.getWorkContentMoneys().add(contentMoney);
+                    contentMoney.setPaidBalance(paidBalance);
 
+                }
             }
 
             paidBalance.setWorkContentMoney(content);
@@ -193,7 +212,7 @@ public class PaidCalc implements java.io.Serializable {
 
                     cell = row.getCell(minColIx+1);
                     cellValue = evaluator.evaluate(cell);
-                    WorkContentMoney item = new WorkContentMoney(UUID.randomUUID().toString().replace("-", ""));
+                    WorkContentMoney item = new WorkContentMoney(UUID.randomUUID().toString().replace("-", ""),workCode);
                     if (cellValue != null ) {
                         String resId;
                         if (Cell.CELL_TYPE_STRING == cellValue.getCellType()){

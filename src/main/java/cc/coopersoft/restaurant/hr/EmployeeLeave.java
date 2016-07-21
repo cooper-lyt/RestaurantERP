@@ -1,7 +1,6 @@
 package cc.coopersoft.restaurant.hr;
 
 import cc.coopersoft.common.I18n;
-import cc.coopersoft.common.util.DataHelper;
 import cc.coopersoft.restaurant.BusinessHelper;
 import cc.coopersoft.restaurant.Messages;
 import cc.coopersoft.restaurant.model.*;
@@ -51,13 +50,14 @@ public class EmployeeLeave implements java.io.Serializable{
     @Inject
     private JsfMessage<Messages> messages;
 
+    @Inject
+    private PaidBusinessHome paidBusinessHome;
+
     private Date lastBalanceTime;
 
     private EmployeeAction employeeAction;
 
     private boolean fullWork;
-
-    private PaidTable paidTable;
 
     public EmployeeAction getEmployeeAction() {
         return employeeAction;
@@ -77,10 +77,6 @@ public class EmployeeLeave implements java.io.Serializable{
 
     public void setFullWork(boolean fullWork) {
         this.fullWork = fullWork;
-    }
-
-    public PaidTable getPaidTable() {
-        return paidTable;
     }
 
     public Date getLastBalanceTime() {
@@ -124,21 +120,19 @@ public class EmployeeLeave implements java.io.Serializable{
     }
 
 
-    @Inject
-    private DictionaryProducer dictionaryProducer;
+
 
     @Transactional
     public String leave(){
 
         paidCalc.balanceAndPaid(employeeHome.getInstance(),employeeAction.getPaidBalance(),fullWork);
-
-        paidTable = new PaidTable(employeeAction.getEmployeePaid().getPaidBalances(),dictionaryProducer);
         Business business = businessHelper.createEmployeeBusiness(Business.Type.EMP_LEAVE);
         employeeAction.setBusiness(business);
         business.getEmployeeActions().add(employeeAction);
         employeeHome.getInstance().setStatus(Employee.Status.LEAVE);
         entityManager.persist(business);
         entityManager.flush();
+        paidBusinessHome.setId(business.getId());
         endConversation();
         return "/erp/hr/LeavePaid.xhtml";
     }

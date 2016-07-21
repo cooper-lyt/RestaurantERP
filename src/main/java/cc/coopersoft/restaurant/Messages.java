@@ -23,4 +23,7 @@ public interface Messages {
 
     @MessageTemplate("{excelFileReadError}")
     String excelFileReadError();
+
+    @MessageTemplate("{excelExportError}")
+    String excelExportError();
 }

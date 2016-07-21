@@ -18,12 +18,12 @@
                 <h1 class="subhead-heading">薪酬结算</h1>
 
                 <ol class="steps steps-4">
-                    <li class="current">
-                        <b:iconAwesome name="calculator" size="2x"/>
+                    <li class="complete">
+                        <b:iconAwesome name="check" size="2x"/>
                         <strong class="step">准备:</strong>
                         准备结算
                     </li>
-                    <li>
+                    <li class="current">
                         <b:iconAwesome name="calendar" size="2x"/>
                         <strong class="step">出勤:</strong>
                         出勤数据
@@ -41,8 +41,14 @@
                 </ol>
             </div>
 
+            <h:outputStylesheet>
+                .input-width{
+                    width: 120px;
+                }
+            </h:outputStylesheet>
 
-            <h:dataTable styleClass="table" value="#{employeePaidCalc.workTimeInfos}" var="_timeInfo">
+            <h:dataTable styleClass="table" columnClasses=",,,,input-width"
+                         value="#{employeePaidCalc.workTimeInfos}" var="_timeInfo">
 
                 <h:column>
                     <f:facet name="header">
@@ -76,25 +82,24 @@
                     </h:outputText>
                 </h:column>
 
-                <h:column rendered="#{paidProjectHome.instance.haveFullWorkMoney}">
-                    <f:facet name="header">
-                        满勤
-                    </f:facet>
-                    <b:selectBooleanCheckbox value="#{_timeInfo.fullWork}"/>
-                </h:column>
+
 
                 <h:column >
                     <f:facet name="header">
-                        出勤
+                        满勤/出勤
                     </f:facet>
-                    <b:inputText label="出勤天数" renderLabel="false" value="#{_timeInfo.paidBalance.workDay}">
+                    <b:inputText size="5" label="出勤天数" renderLabel="false" value="#{_timeInfo.paidBalance.workDay}">
                         <f:converter converterId="javax.faces.BigDecimal"/>
+                        <f:facet name="prepend">
+                            <h:selectBooleanCheckbox value="#{_timeInfo.fullWork}"/>
+                                </f:facet>
                     </b:inputText>
                     <b:message/>
                 </h:column>
 
             </h:dataTable>
                 <hr/>
+            <b:commandButton action="#{employeePaidCalc.beginWorkContent}" look="success" value="继续"/>
 
         </b:column>
 

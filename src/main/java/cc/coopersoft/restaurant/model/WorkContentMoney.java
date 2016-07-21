@@ -24,13 +24,16 @@ public class WorkContentMoney implements java.io.Serializable {
 
     private BigDecimal price;
 
+    private String workCode;
+
     public WorkContentMoney() {
     }
 
-    public WorkContentMoney(String id) {
+    public WorkContentMoney(String id, String workCode) {
         this.id = id;
         this.count = BigDecimal.ZERO;
         this.price = BigDecimal.ZERO;
+        this.workCode = workCode;
     }
 
     @Id
@@ -92,5 +95,16 @@ public class WorkContentMoney implements java.io.Serializable {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    @Column(name = "WORK_CODE", nullable = false, length = 32)
+    @Size(max = 32)
+    @NotNull
+    public String getWorkCode() {
+        return workCode;
+    }
+
+    public void setWorkCode(String workCode) {
+        this.workCode = workCode;
     }
 }

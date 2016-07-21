@@ -23,6 +23,10 @@ public class EmployeeGiftMoney implements java.io.Serializable {
     public EmployeeGiftMoney() {
     }
 
+    public EmployeeGiftMoney(EmployeeAction employeeAction) {
+        this.employeeAction = employeeAction;
+    }
+
     @Id
     @Column(name = "ID", unique = true, nullable = false, length = 32)
     @NotNull

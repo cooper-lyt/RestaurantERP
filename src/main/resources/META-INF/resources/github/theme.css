@@ -850,6 +850,9 @@ table.floatThead-table {
     display: block;
 }
 
+.table .form-group{
+    margin: 0;
+}
 
 
 

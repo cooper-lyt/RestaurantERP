@@ -1,16 +1,12 @@
 package cc.coopersoft.restaurant.hr;
 
 import cc.coopersoft.common.I18n;
-import cc.coopersoft.common.util.DataHelper;
 import cc.coopersoft.restaurant.BusinessHelper;
 import cc.coopersoft.restaurant.hr.repository.EmployeeRepository;
 import cc.coopersoft.restaurant.model.*;
 import cc.coopersoft.restaurant.operation.OfficeHome;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.primefaces.event.FileUploadEvent;
-import org.primefaces.model.UploadedFile;
+import cc.coopersoft.system.DictionaryProducer;
+import org.apache.deltaspike.jpa.api.transaction.Transactional;
 
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.Conversation;
@@ -18,13 +14,9 @@ import javax.enterprise.context.ConversationScoped;
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.inject.Named;
-import java.io.IOException;
+import javax.persistence.EntityManager;
 import java.math.BigDecimal;
 import java.util.*;
-
-import static cc.coopersoft.restaurant.model.Business.Type.EMP_BALANCE;
-import static cc.coopersoft.restaurant.model.Business.Type.EMP_JOB_CHANGE;
-import static cc.coopersoft.restaurant.model.Business.Type.EMP_JOIN;
 
 /**
  * Created by cooper on 7/6/16.
@@ -57,7 +49,15 @@ public class EmployeePaidCalc implements java.io.Serializable {
     @Inject
     private I18n i18n;
 
+    @Inject
+    private PaidBusinessHome paidBusinessHome;
+
+    @Inject
+    @Default
+    private EntityManager entityManager;
+
     private Business business;
+
 
     private List<EmployeeWorkTimeInfo> workTimeInfos;
 
@@ -86,6 +86,29 @@ public class EmployeePaidCalc implements java.io.Serializable {
         }
 
         return "/erp/hr/PaidCalcWorkTime.xhtml";
+    }
+
+    public String beginWorkContent(){
+
+        return "/erp/hr/PaidCalcWorkContext.xhtml";
+    }
+
+    @Transactional
+    public String paidBalance(){
+        List<PaidBalance> paidBalanceList = new ArrayList<PaidBalance>();
+
+        for(EmployeeAction ea: business.getEmployeeActions()){
+
+            paidCalc.balanceAndPaid(ea.getEmployee(),ea.getPaidBalance());
+            paidBalanceList.addAll(ea.getPaidBalance().getEmployeePaid().getPaidBalances());
+
+        }
+
+        entityManager.persist(business);
+        entityManager.flush();
+        paidBusinessHome.setId(business.getId());
+        endConversation();
+        return "/erp/hr/PaidCalcWell.xhtml";
     }
 
     @PreDestroy
