@@ -1,6 +1,8 @@
 package cc.coopersoft.restaurant.hr;
 
+import cc.coopersoft.common.I18n;
 import cc.coopersoft.common.util.DataHelper;
+import cc.coopersoft.restaurant.BusinessHelper;
 import cc.coopersoft.restaurant.hr.repository.EmployeeRepository;
 import cc.coopersoft.restaurant.model.*;
 import cc.coopersoft.restaurant.operation.OfficeHome;
@@ -41,99 +43,41 @@ public class EmployeePaidCalc implements java.io.Serializable {
     private PaidProjectHome paidProjectHome;
 
     @Inject
+    private BusinessHelper businessHelper;
+
+    @Inject
     private OfficeHome officeHome;
 
     @Inject
     private EmployeeRepository employeeRepository;
 
-    private Map<Employee,List<EmployeeAction>> actions;
+    @Inject
+    private PaidCalc paidCalc;
 
-    private Map<Employee,PaidBalance> paidBalanceMap;
+    @Inject
+    private I18n i18n;
 
     private Business business;
 
+    private List<EmployeeWorkTimeInfo> workTimeInfos;
 
-
-    //private Business business;
-
-    private void putWorkContent(Date date, String workCode, double count, String commodityCode, String commodityName) {
-
-        for(List<EmployeeAction> eavs : actions.values()){
-            String curCode = null;
-            for(EmployeeAction ea: eavs){
-
-                if (EnumSet.of(EMP_BALANCE,EMP_JOIN,EMP_JOB_CHANGE).contains(ea.getBusiness().getType())){
-
-                    if (curCode != null && curCode.equals(workCode) && date.before(ea.getValidTime())){
-                        PaidBalance paidBalance = paidBalanceMap.get(ea.getEmployee());
-                        //paidBalance.setWorkContentMoney(paidBalance.getWorkContentMoney().add(paidProjectHome.getInstance().getWorkContentMoney().multiply(new BigDecimal(count))));
-                        return;
-                    }
-
-                    curCode = ea.getJobInfo().getWorkCode().trim();
-                    if (curCode != null && curCode.trim().equals("")){
-                        curCode = null;
-                    }
-
-                }
-            }
-        }
+    public List<EmployeeWorkTimeInfo> getWorkTimeInfos() {
+        return workTimeInfos;
     }
 
-
-
     public String beginCalc() {
-        business = new Business(UUID.randomUUID().toString().replace("-",""),
-                Business.Type.EMP_BALANCE,Business.Status.COMPLETE,new Date());
+        business = businessHelper.createEmployeeBusiness(Business.Type.EMP_BALANCE);
 
         List<Employee> emps = employeeRepository.findByOfficeValid(officeHome.getInstance().getId());
-        actions = new HashMap<Employee, List<EmployeeAction>>();
-        paidBalanceMap = new HashMap<Employee, PaidBalance>();
+        workTimeInfos = new ArrayList<EmployeeWorkTimeInfo>(emps.size());
+
         for(Employee emp: emps ){
-            EmployeeAction lastBalance = employeeRepository.findLastBalance(emp.getId());
-            Date startDate = (lastBalance == null) ? null : lastBalance.getValidTime();
-            List<EmployeeAction> eas = employeeRepository.findBalanceAction(emp.getId(),startDate, DataHelper.getDayEndTime(calcDate),(lastBalance == null));
-            actions.put(emp,eas);
-
-
-
-            EmployeeAction ea = new EmployeeAction(UUID.randomUUID().toString().replace("-",""),
-                    DataHelper.getDayEndTime(calcDate),emp,business);
-            business.getEmployeeActions().add(ea);
+            EmployeeAction ea = new EmployeeAction(UUID.randomUUID().toString().replace("-",""),calcDate,emp,business);
             ea.setPaidBalance(new PaidBalance(ea));
+            ea.setJobInfo(new JobInfo(employeeRepository.findJobInfoWithTime(emp.getId(),calcDate),ea));
+            business.getEmployeeActions().add(ea);
 
-            List<EmployeeGiftMoney> giftMoneys = new ArrayList<EmployeeGiftMoney>();
-            JobInfo lastJobInfo = null;
-            for (EmployeeAction oea : eas){
-                if (Business.Type.EMP_GIFT.equals(oea.getBusiness().getType())){
-                    if (oea.getEmployeeGiftMoney().getEmployeeGiftBalance() == null)
-                        giftMoneys.add(oea.getEmployeeGiftMoney());
-                }
-                if (oea.getJobInfo() != null){
-                    lastJobInfo = oea.getJobInfo();
-                }
-            }
-
-            if (!giftMoneys.isEmpty()){
-                Map<String,EmployeeGiftBalance> giftBalanceMap = new HashMap<String, EmployeeGiftBalance>();
-                for(EmployeeGiftMoney egm: giftMoneys){
-                    EmployeeGiftBalance egb = giftBalanceMap.get(egm.getCategory());
-                    if (egb == null){
-//                        egb = new EmployeeGiftBalance(UUID.randomUUID().toString().replace("-",""),
-//                                BigDecimal.ZERO,egm.getCategory(),ea.getPaidBalance());
-                        giftBalanceMap.put(egm.getCategory(),egb);
-                    }
-                    egb.setMoney(egb.getMoney().add(egm.getMoney()));
-                    egb.getEmployeeGiftMoneys().add(egm);
-                    egm.setEmployeeGiftBalance(egb);
-                }
-
-                ea.getPaidBalance().getEmployeeGiftBalances().addAll(giftBalanceMap.values());
-            }
-
-            ea.setJobInfo(new JobInfo(lastJobInfo,ea));
-            paidBalanceMap.put(emp,ea.getPaidBalance());
-
+            workTimeInfos.add(new EmployeeWorkTimeInfo(ea.getPaidBalance(),employeeRepository.findLastPaidTime(emp.getId()),employeeRepository.findLastBalance(emp.getId()).getValidTime(),paidProjectHome.getInstance().getFullWorkMoney()));
         }
 
         if (conversation.isTransient()) {
@@ -141,7 +85,7 @@ public class EmployeePaidCalc implements java.io.Serializable {
             conversation.setTimeout(800000);
         }
 
-        return "/erp/hr/PaidCalcWorkContext.xhtml";
+        return "/erp/hr/PaidCalcWorkTime.xhtml";
     }
 
     @PreDestroy
@@ -156,6 +100,49 @@ public class EmployeePaidCalc implements java.io.Serializable {
     }
 
     public void setCalcDate(Date calcDate) {
-        this.calcDate = calcDate;
+        this.calcDate = i18n.getDayEndTime(calcDate);
+    }
+
+
+    public class EmployeeWorkTimeInfo{
+
+        private PaidBalance paidBalance;
+
+        private Date paidTime;
+
+        private Date balanceTime;
+
+        private BigDecimal fullWorkMoney;
+
+        public EmployeeWorkTimeInfo(PaidBalance paidBalance, Date paidTime, Date balanceTime, BigDecimal fullWorkMoney) {
+            this.paidBalance = paidBalance;
+            this.paidTime = paidTime;
+            this.balanceTime = balanceTime;
+            this.fullWorkMoney = fullWorkMoney;
+        }
+
+        public PaidBalance getPaidBalance() {
+            return paidBalance;
+        }
+
+        public Date getPaidTime() {
+            return paidTime;
+        }
+
+        public Date getBalanceTime() {
+            return balanceTime;
+        }
+
+        public boolean isFullWork(){
+            return ! BigDecimal.ZERO.equals(paidBalance.getWorkFullMoney());
+        }
+
+        public void setFullWork(boolean fullWork){
+            if (fullWork){
+                paidBalance.setWorkFullMoney(fullWorkMoney);
+            }else{
+                paidBalance.setWorkFullMoney(BigDecimal.ZERO);
+            }
+        }
     }
 }

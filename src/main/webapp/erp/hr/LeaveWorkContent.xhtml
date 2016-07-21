@@ -73,7 +73,7 @@
                                     绩效
                                 </f:facet>
                                 <h:outputText value="#{_content.money}">
-                                    <f:convertNumber type="currency" groupingUsed="true"/>
+                                    <f:convertNumber locale="#{i18n.locale}" type="currency" groupingUsed="true"/>
                                 </h:outputText>
                             </h:column>
                         </h:dataTable>

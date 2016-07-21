@@ -2,10 +2,7 @@ package cc.coopersoft.restaurant.hr.repository;
 
 import cc.coopersoft.restaurant.ErpEntityManagerResolver;
 import cc.coopersoft.restaurant.hr.repository.model.EmployeeOffice;
-import cc.coopersoft.restaurant.model.Employee;
-import cc.coopersoft.restaurant.model.EmployeeAction;
-import cc.coopersoft.restaurant.model.EmployeeGiftMoney;
-import cc.coopersoft.restaurant.model.PaidBalance;
+import cc.coopersoft.restaurant.model.*;
 import org.apache.deltaspike.data.api.*;
 
 import javax.persistence.FlushModeType;
@@ -61,5 +58,8 @@ public interface EmployeeRepository extends EntityRepository<Employee,String> {
 
     @Query(value = "select ea.validTime from EmployeeAction ea where ea.employee.id = ?1 and (ea.business.type = 'EMP_JOIN' or ea.business.type = 'EMP_BALANCE') order by ea.validTime desc" ,max = 1)
     Date findLastPaidTime(String employeeId);
+
+    @Query(value = "select ji from JobInfo ji left join fetch ji.employeeAction ea  where ea.business.status = 'COMPLETE' and ea.employee.id = ?1 and ea.validTime <= ?2 order by ea.validTime desc", max = 1)
+    JobInfo findJobInfoWithTime(String employeeId,Date time);
 
 }

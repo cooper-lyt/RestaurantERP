@@ -16,7 +16,7 @@
 
     <b:jumbotron style="margin-top: 20px;">
         <h1>员工已离职!</h1>
-        <p>员工 <span class="important-text">#{employeeHome.instance.name}</span>  于 <h:outputText styleClass="important-text" value="#{employeeOperation.validTime}"><f:convertDateTime pattern="yyyy年MM月dd日"/></h:outputText> 已离职</p>
+        <p>员工 <span class="important-text">#{employeeHome.instance.name}</span>  于 <h:outputText styleClass="important-text" value="#{employeeOperation.validTime}"><f:convertDateTime timeZone="#{i18n.timeZone}" locale="#{i18n.locale}" pattern="yyyy年MM月dd日"/></h:outputText> 已离职</p>
 
         <p><h:outputLink value="#{request.contextPath}/erp/hr/employeeList.xhtml" styleClass="btn btn-primary btn-lg">返回员工管理</h:outputLink>  </p>
 

@@ -1,6 +1,7 @@
 package cc.coopersoft.restaurant.hr;
 
 import cc.coopersoft.common.BatchData;
+import cc.coopersoft.common.I18n;
 import cc.coopersoft.common.util.DataHelper;
 import cc.coopersoft.restaurant.BusinessHelper;
 import cc.coopersoft.restaurant.hr.repository.EmployeeRepository;
@@ -41,6 +42,9 @@ public class EmployeeOperation implements java.io.Serializable{
 
     @Inject
     private Logger logger;
+
+    @Inject
+    private I18n i18n;
 
 
     private Date validTime;
@@ -149,8 +153,9 @@ public class EmployeeOperation implements java.io.Serializable{
     public String join(){
 
         Business business = businessHelper.createEmployeeBusiness(Business.Type.EMP_JOIN);
-        EmployeeAction employeeAction = new EmployeeAction(business.getId(), DataHelper.getDayBeginTime(employeeHome.getInstance().getJoinDate()),employeeHome.getInstance(),business);
+        EmployeeAction employeeAction = new EmployeeAction(business.getId(), i18n.getDayBeginTime(employeeHome.getInstance().getJoinDate()),employeeHome.getInstance(),business);
         employeeAction.setJobInfo(new JobInfo(employeeHome.getInstance().getJob(),employeeHome.getInstance().getLevel(),employeeHome.getInstance().getWorkCode(),employeeHome.getInstance().getOffice(),employeeAction));
+        employeeHome.getInstance().setJoinDate(employeeAction.getValidTime());
         business.getEmployeeActions().add(employeeAction);
         entityManager.persist(business);
         entityManager.flush();

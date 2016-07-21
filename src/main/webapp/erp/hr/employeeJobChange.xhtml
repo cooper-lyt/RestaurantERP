@@ -65,7 +65,7 @@
 
                 <b:inputText label="调动时间" renderLabel="true" required="true" value="#{jobChange.changeTime}"
                              styleClass="js-datetimepicker">
-                    <f:convertDateTime pattern="yyyy-MM-dd hh:mm:ss"/>
+                    <f:convertDateTime timeZone="#{i18n.timeZone}" locale="#{i18n.locale}" pattern="yyyy-MM-dd HH:mm:ss"/>
                 </b:inputText>
                 <b:message/>
 
@@ -127,7 +127,7 @@
                 <p>
                     上次结算日期为:
                     <h:outputText value="#{jobChange.lastBalanceTime}">
-                        <f:convertDateTime pattern="yyyy年MM月dd日 hh:mm:ss"/>
+                        <f:convertDateTime timeZone="#{i18n.timeZone}" locale="#{i18n.locale}" pattern="yyyy年MM月dd日 HH:mm:ss"/>
                     </h:outputText> , 以下为结算上次结算时间至本次工作调动之间的工资.
                 </p>
 

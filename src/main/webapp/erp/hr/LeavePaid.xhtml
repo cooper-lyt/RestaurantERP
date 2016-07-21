@@ -101,20 +101,20 @@
                     <c:forEach items="#{employeeLeave.paidTable.basePaidCategoryList}" var="_base">
                         <td>
                             <h:outputText value="#{_item.getBasicParam(_base.id)}">
-                                <f:convertNumber type="currency"/>
+                                <f:convertNumber locale="#{i18n.locale}" type="currency"/>
                             </h:outputText>
                         </td>
                     </c:forEach>
 
                     <td>
                         <h:outputText value="#{_item.dayPaid}">
-                            <f:convertNumber type="currency"/>
+                            <f:convertNumber locale="#{i18n.locale}" type="currency"/>
                         </h:outputText>
                     </td>
 
                     <td>
                         <h:outputText value="#{_item.paidBalance.workContentMoney}">
-                            <f:convertNumber type="currency"/>
+                            <f:convertNumber locale="#{i18n.locale}" type="currency"/>
                         </h:outputText>
                     </td>
                     <td>
@@ -124,20 +124,20 @@
                     </td>
                     <td>
                         <h:outputText value="#{_item.paidBalance.workFullMoney}">
-                            <f:convertNumber type="currency"/>
+                            <f:convertNumber locale="#{i18n.locale}" type="currency"/>
                         </h:outputText>
                     </td>
                     <c:forEach items="#{employeeLeave.paidTable.giftPaidCategoryList}" var="_gift">
                         <td>
                             <h:outputText value="#{_item.getGiftMoney(_gift.id)}">
-                                <f:convertNumber type="currency"/>
+                                <f:convertNumber locale="#{i18n.locale}" type="currency"/>
                             </h:outputText>
                         </td>
                     </c:forEach>
 
                     <td>
                         <h:outputText value="#{_item.paidBalance.totalMoney}">
-                            <f:convertNumber type="currency"/>
+                            <f:convertNumber locale="#{i18n.locale}" type="currency"/>
                         </h:outputText>
 
                     </td>
@@ -152,7 +152,7 @@
                     </td>
                     <td>
                         <h:outputText value="#{employeeLeave.paidTable.allTotalMoney}">
-                            <f:convertNumber type="currency"/>
+                            <f:convertNumber locale="#{i18n.locale}" type="currency"/>
                         </h:outputText>
                     </td>
                 </tr>

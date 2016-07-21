@@ -54,17 +54,17 @@
                         <li class="current">
                             <b:iconAwesome name="calculator" size="2x"/>
                             <strong class="step">准备:</strong>
-                            开始薪酬结算
-                        </li>
-                        <li>
-                            <b:iconAwesome name="trophy" size="2x"/>
-                            <strong class="step">绩效:</strong>
-                            员工绩效数据
+                            准备结算
                         </li>
                         <li>
                             <b:iconAwesome name="calendar" size="2x"/>
                             <strong class="step">出勤:</strong>
-                            员工的出勤数据
+                            出勤数据
+                        </li>
+                        <li>
+                            <b:iconAwesome name="trophy" size="2x"/>
+                            <strong class="step">绩效:</strong>
+                            绩效数据
                         </li>
                         <li>
                             <b:iconAwesome name="print" size="2x"/>
@@ -77,7 +77,7 @@
 
 
                 <b:inputText label="结算日期" required="true" value="#{employeePaidCalc.calcDate}" styleClass="js-datepicker">
-                    <f:convertDateTime pattern="yyyy-MM-dd"/>
+                    <f:convertDateTime timeZone="#{i18n.timeZone}" locale="#{i18n.locale}" pattern="yyyy-MM-dd"/>
                 </b:inputText>
                 <b:message/>
 

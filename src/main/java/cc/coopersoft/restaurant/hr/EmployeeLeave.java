@@ -1,5 +1,6 @@
 package cc.coopersoft.restaurant.hr;
 
+import cc.coopersoft.common.I18n;
 import cc.coopersoft.common.util.DataHelper;
 import cc.coopersoft.restaurant.BusinessHelper;
 import cc.coopersoft.restaurant.Messages;
@@ -45,6 +46,9 @@ public class EmployeeLeave implements java.io.Serializable{
     private PaidCalc paidCalc;
 
     @Inject
+    private I18n i18n;
+
+    @Inject
     private JsfMessage<Messages> messages;
 
     private Date lastBalanceTime;
@@ -64,7 +68,7 @@ public class EmployeeLeave implements java.io.Serializable{
     }
 
     public void setLeaveDate(Date date){
-        employeeAction.setValidTime(DataHelper.getDayEndTime(date));
+        employeeAction.setValidTime(i18n.getDayEndTime(date));
     }
 
     public boolean isFullWork() {

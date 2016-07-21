@@ -45,7 +45,7 @@
                 <b:jumbotron>
                     <h1>工作调动完成!</h1>
                     <p>员工 <span class="important-text">#{employeeHome.instance.name}</span> 于 <h:outputText
-                            styleClass="important-text" value="#{employeeOperation.validTime}"><f:convertDateTime
+                            styleClass="important-text" value="#{employeeOperation.validTime}"><f:convertDateTime timeZone="#{i18n.timeZone}" locale="#{i18n.locale}"
                             pattern="yyyy年MM月dd日"/></h:outputText> 被调动到 <span
                             class="important-text">#{employeeHome.instance.office.name}</span> 岗位 <span
                             class="important-text">#{employeeHome.instance.job.name}</span> 级别为 <span

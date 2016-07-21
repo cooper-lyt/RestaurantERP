@@ -79,7 +79,7 @@
 
                     <span class="info-value-block" id="joinDate">
                         <h:outputText value="#{employeeHome.instance.joinDate}">
-                            <f:convertDateTime pattern="yyyy年mm月dd日"/>
+                            <f:convertDateTime timeZone="#{i18n.timeZone}" locale="#{i18n.locale}" pattern="yyyy年mm月dd日"/>
                         </h:outputText>
 
                     </span>

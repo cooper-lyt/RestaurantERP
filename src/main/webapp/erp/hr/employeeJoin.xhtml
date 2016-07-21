@@ -67,7 +67,7 @@
                     <b:column colMd="6">
                         <b:inputText label="入职时间" renderLabel="true" required="true"
                                      value="#{employeeHome.instance.joinDate}" styleClass="js-datepicker">
-                            <f:convertDateTime pattern="yyyy-MM-dd"/>
+                            <f:convertDateTime timeZone="#{i18n.timeZone}" locale="#{i18n.locale}" pattern="yyyy-MM-dd"/>
                         </b:inputText>
                         <b:message/>
                     </b:column>

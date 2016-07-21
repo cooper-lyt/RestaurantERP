@@ -39,7 +39,7 @@
             <p:outputPanel id="leaveInputs">
                 <b:inputText label="离职时间" renderLabel="true" required="true"
                              value="#{employeeOperation.validTime}" styleClass="js-datepicker">
-                    <f:convertDateTime pattern="yyyy-MM-dd"/>
+                    <f:convertDateTime timeZone="#{i18n.timeZone}" locale="#{i18n.locale}" pattern="yyyy-MM-dd"/>
                 </b:inputText>
                 <b:message/>
                 <b:fetchBeanInfos/>

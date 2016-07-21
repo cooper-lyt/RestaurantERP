@@ -124,4 +124,9 @@ public class PaidProject implements java.io.Serializable, Comparable<PaidProject
     public int hashCode() {
         return getId() != null ? getId().hashCode() : 0;
     }
+
+    @Transient
+    public boolean isHaveFullWorkMoney(){
+        return getFullWorkMoney() != null && !BigDecimal.ZERO.equals(getFullWorkMoney());
+    }
 }
