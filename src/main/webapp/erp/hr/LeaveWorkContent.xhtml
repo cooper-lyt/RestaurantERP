@@ -33,11 +33,6 @@
                         </li>
                         <li>
                             <b:iconAwesome name="print" size="2x"/>
-                            <strong class="step">结算:</strong>
-                            工资结算
-                        </li>
-                        <li>
-                            <b:iconAwesome name="user-times" size="2x"/>
                             <strong class="step">完成:</strong>
                             离职完成
                         </li>
@@ -90,7 +85,7 @@
 
                 <hr/>
                 <o:form includeViewParams="true">
-                    <b:commandButton action="#{employeeLeave.beginPaidBalance}" look="success" value="计算工资"/>
+                    <b:commandButton action="#{employeeLeave.leave}" look="success" value="离职"/>
                 </o:form>
             </b:column>
 

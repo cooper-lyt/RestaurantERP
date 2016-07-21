@@ -89,6 +89,14 @@ public class PaidTable {
         return result;
     }
 
+    public BigDecimal getAllTotalMoney(){
+        BigDecimal result = BigDecimal.ZERO;
+        for(PaidTableItem item: items){
+            result = result.add(item.getPaidBalance().getTotalMoney());
+        }
+        return result;
+    }
+
 
     public PaidTable(Collection<PaidBalance> paidBalances, DictionaryProducer dictionaryProducer) {
         for(PaidBalance pb: paidBalances){

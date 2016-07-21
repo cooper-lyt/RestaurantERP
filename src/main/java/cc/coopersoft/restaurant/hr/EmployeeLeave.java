@@ -8,6 +8,7 @@ import cc.coopersoft.system.DictionaryProducer;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.apache.deltaspike.jsf.api.message.JsfMessage;
 
+import javax.annotation.PreDestroy;
 import javax.enterprise.context.Conversation;
 import javax.enterprise.context.ConversationScoped;
 import javax.enterprise.inject.Default;
@@ -112,7 +113,7 @@ public class EmployeeLeave implements java.io.Serializable{
         }
 
         if(employeeHome.getInstance().getWorkCode() == null || employeeHome.getInstance().getWorkCode().trim().equals("")){
-            return beginPaidBalance();
+            return leave();
         }
 
         return "/erp/hr/LeaveWorkContent.xhtml";
@@ -122,24 +123,29 @@ public class EmployeeLeave implements java.io.Serializable{
     @Inject
     private DictionaryProducer dictionaryProducer;
 
-    public String beginPaidBalance(){
+    @Transactional
+    public String leave(){
 
         paidCalc.balanceAndPaid(employeeHome.getInstance(),employeeAction.getPaidBalance(),fullWork);
 
         paidTable = new PaidTable(employeeAction.getEmployeePaid().getPaidBalances(),dictionaryProducer);
-
-        return "/erp/hr/LeavePaid.xhtml";
-    }
-
-    @Transactional
-    public String leave(){
         Business business = businessHelper.createEmployeeBusiness(Business.Type.EMP_LEAVE);
-
+        employeeAction.setBusiness(business);
         business.getEmployeeActions().add(employeeAction);
         employeeHome.getInstance().setStatus(Employee.Status.LEAVE);
         entityManager.persist(business);
         entityManager.flush();
-        return "/erp/hr/EmployeeLeaveWell.xhtml";
+        endConversation();
+        return "/erp/hr/LeavePaid.xhtml";
     }
+
+    @PreDestroy
+    public void endConversation() {
+        if ( !conversation.isTransient() )
+        {
+            conversation.end();
+        }
+    }
+
 
 }
