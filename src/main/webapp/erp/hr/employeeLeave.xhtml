@@ -46,7 +46,7 @@
 
                     <ol class="steps steps-4">
                         <li class="current">
-                            <b:iconAwesome name="street-view" size="2x"/>
+                            <b:iconAwesome name="user-times" size="2x"/>
                             <strong class="step">准备:</strong>
                             开始离职
                         </li>
@@ -57,16 +57,13 @@
                         </li>
                         <li>
                             <b:iconAwesome name="print" size="2x"/>
-                            <strong class="step">结算:</strong>
-                            工资结算
-                        </li>
-                        <li>
-                            <b:iconAwesome name="user-times" size="2x"/>
                             <strong class="step">完成:</strong>
                             离职完成
                         </li>
                     </ol>
                 </div>
+
+
 
 
                 <b:inputText label="离职时间" renderLabel="true" required="true" value="#{employeeLeave.leaveDate}"
@@ -75,9 +72,19 @@
                 </b:inputText>
                 <b:message/>
 
+                <hr/>
+                <p>
+                    上次结算日期为:
+                    <h:outputText value="#{employeeLeave.lastBalanceTime}">
+                        <f:convertDateTime pattern="yyyy年MM月dd日 hh:mm:ss"/>
+                    </h:outputText> , 以下为结算上次结算时间至离职其间的工资.
+                </p>
 
-                <b:inputText required="true" label="出勤天数" value="#{employeeLeave.employeeAction.paidBalance.workDay}">
+                <b:inputText required="true" label="是否满勤/出勤天数" value="#{employeeLeave.employeeAction.paidBalance.workDay}">
                     <f:converter converterId="javax.faces.BigDecimal"/>
+                    <f:facet name="prepend">
+                        <h:selectBooleanCheckbox value="#{employeeLeave.fullWork}"/>
+                    </f:facet>
                 </b:inputText>
                 <b:message/>
 

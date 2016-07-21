@@ -123,6 +123,14 @@
                 <b:inputText label="工作编号" renderLabel="true" value="#{jobChange.jobInfo.workCode}"/>
                 <b:message/>
 
+                <hr/>
+                <p>
+                    上次结算日期为:
+                    <h:outputText value="#{jobChange.lastBalanceTime}">
+                        <f:convertDateTime pattern="yyyy年MM月dd日 hh:mm:ss"/>
+                    </h:outputText> , 以下为结算上次结算时间至本次工作调动之间的工资.
+                </p>
+
                 <b:inputText required="true" label="出勤天数" value="#{jobChange.employeeAction.paidBalance.workDay}">
                     <f:converter converterId="javax.faces.BigDecimal"/>
                 </b:inputText>

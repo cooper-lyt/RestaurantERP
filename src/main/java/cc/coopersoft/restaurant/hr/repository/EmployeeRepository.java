@@ -56,7 +56,7 @@ public interface EmployeeRepository extends EntityRepository<Employee,String> {
                                            @QueryParam("endDate") Date endDate,
                                            @QueryParam("all") boolean all);
 
-    @Query("select pb from PaidBalance pb where pb.employeePaid is null and pb.employeeAction.validTime > ?1")
+    @Query("select pb from PaidBalance pb where pb.employeePaid is null and pb.employeeAction.employee.id = ?1 and pb.employeeAction.validTime > ?2")
     List<PaidBalance> findNoPaidBalance(String employeeId, Date startDate);
 
     @Query(value = "select ea.validTime from EmployeeAction ea where ea.employee.id = ?1 and (ea.business.type = 'EMP_JOIN' or ea.business.type = 'EMP_BALANCE') order by ea.validTime desc" ,max = 1)

@@ -72,6 +72,10 @@ public class JobChange implements java.io.Serializable{
         return employeeAction;
     }
 
+    public Date getLastBalanceTime() {
+        return lastBalanceTime;
+    }
+
     @Transactional
     public void beginChangeJob(){
         //logger.config("call begin change job:" + employeeHome.getInstance().getOffice().getName());

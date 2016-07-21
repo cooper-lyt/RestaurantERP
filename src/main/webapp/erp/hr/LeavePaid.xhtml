@@ -1,12 +1,168 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html
-        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-    <title>Title</title>
-</head>
-<body>
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:composition template="/applayout/pageTemplate.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
 
-</body>
-</html>
+    <b:messages globalOnly="false" styleClass="top-messages"/>
+
+
+    <div class="page-form">
+        <b:row>
+
+            <b:column offsetLg="2" offsetMd="2" offsetSm="1" offsetXs="0" colLg="8" colMd="8" colSm="10" colXs="12">
+
+                <div class="setup-header setup-gift">
+                    <h1 class="subhead-heading">员工离职</h1>
+
+                    <ol class="steps steps-4">
+                        <li class="complete">
+                            <b:iconAwesome name="check" size="2x"/>
+                            <strong class="step">准备:</strong>
+                            开始离职
+                        </li>
+                        <li class="complete">
+                            <b:iconAwesome name="check" size="2x"/>
+                            <strong class="step">绩效:</strong>
+                            绩效数据
+                        </li>
+                        <li class="current">
+                            <b:iconAwesome name="print" size="2x"/>
+                            <strong class="step">结算:</strong>
+                            工资结算
+                        </li>
+                        <li>
+                            <b:iconAwesome name="user-times" size="2x"/>
+                            <strong class="step">完成:</strong>
+                            离职完成
+                        </li>
+                    </ol>
+                </div>
+
+
+                <table class="table">
+
+                    <thead>
+                        <tr>
+                            <td>
+                                序号
+                            </td>
+                            <td>
+                                姓名
+                            </td>
+                            <td>
+                                职位
+                            </td>
+                            <td>
+                                技能等级
+                            </td>
+
+                            <c:forEach items="#{employeeLeave.paidTable.basePaidCategoryList}" var="_base">
+                                <td>
+                                    #{_base.name}
+                                </td>
+                            </c:forEach>
+                            <td>
+                                日工资总计
+                            </td>
+                            <td>
+                                绩效
+                            </td>
+                            <td>
+                                出勤
+                            </td>
+                            <td>
+                                满勤奖
+                            </td>
+                            <c:forEach items="#{employeeLeave.paidTable.giftPaidCategoryList}" var="_gift">
+                                <td>
+                                    #{_gift.name}
+                                </td>
+                            </c:forEach>
+                            <td>
+                                工资合计
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach items="#{employeeLeave.paidTable.items}" varStatus="_varStatus" var="_item">
+                            <tr>
+                                <td>
+                                    #{_varStatus.count}
+                                </td>
+                                <td>
+                                    #{_item.paidBalance.employeeAction.employee.name}
+                                </td>
+                                <td>
+                                    #{_item.paidBalance.employeeAction.employee.job.name}
+                                </td>
+                                <td>
+                                    #{dictionaryProducer.getDictionaryValue(_item.paidBalance.employeeAction.employee.level)}
+                                </td>
+
+                                <c:forEach items="#{employeeLeave.paidTable.basePaidCategoryList}" var="_base">
+                                    <td>
+                                        <h:outputText value="#{_item.getBasicParam(_base.id)}">
+                                            <f:convertNumber type="currency"/>
+                                        </h:outputText>
+                                    </td>
+                                </c:forEach>
+
+                                <td>
+                                    <h:outputText value="#{_item.dayPaid}">
+                                        <f:convertNumber type="currency"/>
+                                    </h:outputText>
+                                </td>
+
+                                <td>
+                                    <h:outputText value="#{_item.paidBalance.workContentMoney}">
+                                        <f:convertNumber type="currency"/>
+                                    </h:outputText>
+                                </td>
+                                <td>
+                                    <h:outputText value="#{_item.paidBalance.workDay}">
+                                        <f:convertNumber pattern="#0.#"/>
+                                    </h:outputText>
+                                </td>
+                                <td>
+                                    <h:outputText value="#{_item.paidBalance.workFullMoney}">
+                                        <f:convertNumber type="currency"/>
+                                    </h:outputText>
+                                </td>
+                                <c:forEach items="#{employeeLeave.paidTable.giftPaidCategoryList}" var="_gift">
+                                    <td>
+                                        <h:outputText value="#{_item.getGiftMoney(_gift.id)}">
+                                            <f:convertNumber type="currency"/>
+                                        </h:outputText>
+                                    </td>
+                                </c:forEach>
+
+                                <td>
+                                    <h:outputText value="#{_item.paidBalance.totalMoney}">
+                                        <f:convertNumber type="currency"/>
+                                    </h:outputText>
+
+                                </td>
+
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+                <hr/>
+                <o:form includeViewParams="true">
+
+                    <b:commandButton action="/erp/hr/LeavePaid.xhtml" look="success" value="计算工资"/>
+                </o:form>
+            </b:column>
+
+        </b:row>
+    </div>
+
+
+</ui:composition>

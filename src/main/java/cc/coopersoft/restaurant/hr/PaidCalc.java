@@ -43,8 +43,11 @@ public class PaidCalc implements java.io.Serializable {
         return workContentData;
     }
 
-    public void balanceAndPaid(Employee emp, PaidBalance paidBalance){
+    public void balanceAndPaid(Employee emp, PaidBalance paidBalance, boolean fullWork){
         List<PaidBalance> balances = employeeRepository.findNoPaidBalance(emp.getId(),employeeRepository.findLastPaidTime(emp.getId()));
+        if (fullWork){
+            paidBalance.setWorkFullMoney(paidProjectHome.getInstance().getFullWorkMoney());
+        }
         calcBalance(emp,paidBalance);
         balances.add(paidBalance);
         EmployeePaid employeePaid = new EmployeePaid(paidBalance.getEmployeeAction());
@@ -56,9 +59,10 @@ public class PaidCalc implements java.io.Serializable {
             money = money.add(pb.getTotalMoney());
         }
         employeePaid.setTotalMoney(money);
-        employeePaid.setPaidMoney(money);
         paidBalance.getEmployeeAction().setEmployeePaid(employeePaid);
     }
+
+
 
 
     public void calcBalance(Employee emp, PaidBalance paidBalance) {
@@ -70,7 +74,7 @@ public class PaidCalc implements java.io.Serializable {
                 if (emp.getJob().equals(paidItem.getJob()) && emp.getLevel().equals(paidItem.getLevel())) {
 
                     BasicPaidItem basicPaidItem =
-                            new BasicPaidItem(UUID.randomUUID().toString().replace("-", ""), entry.getKey(), paidBalance.getWorkDay().multiply(paidItem.getMoney()), paidBalance);
+                            new BasicPaidItem(UUID.randomUUID().toString().replace("-", ""), entry.getKey(),paidItem.getMoney(), paidBalance.getWorkDay().multiply(paidItem.getMoney()), paidBalance);
                     paidBalance.getBasicPaidItems().add(basicPaidItem);
                     totalMoney = totalMoney.add(basicPaidItem.getMoney());
                     break;
@@ -126,7 +130,7 @@ public class PaidCalc implements java.io.Serializable {
         }
 
 
-        paidBalance.setTotalMoney(totalMoney);
+        paidBalance.setTotalMoney(totalMoney.add(paidBalance.getWorkFullMoney()));
 
     }
 

@@ -80,4 +80,20 @@ public class Dictionary implements java.io.Serializable, Comparable<Dictionary> 
     public int compareTo(Dictionary o) {
         return Integer.valueOf(getPri()).compareTo(o.getPri());
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || !(o instanceof Dictionary)) return false;
+
+        Dictionary that = (Dictionary) o;
+
+        return getId() != null ? getId().equals(that.getId()) : that.getId() == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return getId() != null ? getId().hashCode() : 0;
+    }
 }

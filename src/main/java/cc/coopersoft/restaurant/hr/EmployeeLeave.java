@@ -4,6 +4,7 @@ import cc.coopersoft.common.util.DataHelper;
 import cc.coopersoft.restaurant.BusinessHelper;
 import cc.coopersoft.restaurant.Messages;
 import cc.coopersoft.restaurant.model.*;
+import cc.coopersoft.system.DictionaryProducer;
 import org.apache.deltaspike.jpa.api.transaction.Transactional;
 import org.apache.deltaspike.jsf.api.message.JsfMessage;
 
@@ -49,6 +50,10 @@ public class EmployeeLeave implements java.io.Serializable{
 
     private EmployeeAction employeeAction;
 
+    private boolean fullWork;
+
+    private PaidTable paidTable;
+
     public EmployeeAction getEmployeeAction() {
         return employeeAction;
     }
@@ -59,6 +64,22 @@ public class EmployeeLeave implements java.io.Serializable{
 
     public void setLeaveDate(Date date){
         employeeAction.setValidTime(DataHelper.getDayEndTime(date));
+    }
+
+    public boolean isFullWork() {
+        return fullWork;
+    }
+
+    public void setFullWork(boolean fullWork) {
+        this.fullWork = fullWork;
+    }
+
+    public PaidTable getPaidTable() {
+        return paidTable;
+    }
+
+    public Date getLastBalanceTime() {
+        return lastBalanceTime;
     }
 
     public List<WorkContentMoney> getWorkContentMoneys(){
@@ -97,11 +118,15 @@ public class EmployeeLeave implements java.io.Serializable{
         return "/erp/hr/LeaveWorkContent.xhtml";
     }
 
-    @Transactional
+
+    @Inject
+    private DictionaryProducer dictionaryProducer;
+
     public String beginPaidBalance(){
 
-        paidCalc.balanceAndPaid(employeeHome.getInstance(),employeeAction.getPaidBalance());
+        paidCalc.balanceAndPaid(employeeHome.getInstance(),employeeAction.getPaidBalance(),fullWork);
 
+        paidTable = new PaidTable(employeeAction.getEmployeePaid().getPaidBalances(),dictionaryProducer);
 
         return "/erp/hr/LeavePaid.xhtml";
     }

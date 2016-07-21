@@ -11,7 +11,7 @@ import java.util.Set;
  * Created by cooper on 7/20/16.
  */
 @Entity
-@Table(name = "EMPLOYEE_MONEY_GIFT",catalog = "RESTAURANT")
+@Table(name = "EMPLOYEE_PAID",catalog = "RESTAURANT")
 public class EmployeePaid implements java.io.Serializable {
 
     private String id;
@@ -26,6 +26,7 @@ public class EmployeePaid implements java.io.Serializable {
 
     public EmployeePaid(EmployeeAction employeeAction) {
         this.employeeAction = employeeAction;
+        paidMoney = BigDecimal.ZERO;
     }
 
     @Id

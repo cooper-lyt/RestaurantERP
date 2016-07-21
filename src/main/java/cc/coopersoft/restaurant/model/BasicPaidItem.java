@@ -16,17 +16,19 @@ public class BasicPaidItem implements java.io.Serializable {
     private String id;
     private String category;
     private BigDecimal money;
+    private BigDecimal calcParam;
 
     private PaidBalance paidBalance;
 
     public BasicPaidItem() {
     }
 
-    public BasicPaidItem(String id, String category, BigDecimal money, PaidBalance paidBalance) {
+    public BasicPaidItem(String id, String category, BigDecimal calcParam, BigDecimal money, PaidBalance paidBalance) {
         this.id = id;
         this.category = category;
         this.money = money;
         this.paidBalance = paidBalance;
+        this.calcParam = calcParam;
     }
 
     @Id
@@ -70,5 +72,15 @@ public class BasicPaidItem implements java.io.Serializable {
 
     public void setPaidBalance(PaidBalance paidBalance) {
         this.paidBalance = paidBalance;
+    }
+
+    @Column(name = "CALC_PARAM", nullable = false)
+    @NotNull
+    public BigDecimal getCalcParam() {
+        return calcParam;
+    }
+
+    public void setCalcParam(BigDecimal calcParam) {
+        this.calcParam = calcParam;
     }
 }
