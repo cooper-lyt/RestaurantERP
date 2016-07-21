@@ -134,7 +134,9 @@ public class EmployeeOperation implements java.io.Serializable{
 
         //getEmployeeGiftMoney().setId(employeeAction.getId());
         getEmployeeGiftMoney().setEmployeeAction(employeeAction);
-        employeeAction.setEmployeeGiftMoney(getEmployeeGiftMoney());
+
+        EmployeeGiftMoney egm = new EmployeeGiftMoney(getEmployeeGiftMoney().getMoney(),getEmployeeGiftMoney().getCategory(),employeeAction);
+        employeeAction.setEmployeeGiftMoney(egm);
 
 
         business.getEmployeeActions().add(employeeAction);

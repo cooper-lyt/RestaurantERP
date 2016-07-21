@@ -5,7 +5,16 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:b="http://bootsfaces.net/ui"
                 xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:o="http://omnifaces.org/ui"
                 xmlns:ui="http://java.sun.com/jsf/facelets">
+
+
+            <o:form includeViewParams="true">
+            <div>
+                <b:commandButton action="#{paidBusinessHome.exportToExcel}" iconAwesome="sign-out" styleClass="right">
+                </b:commandButton>
+            </div>
+            </o:form>
 
 
     <table class="table">

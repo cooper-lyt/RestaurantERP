@@ -23,7 +23,10 @@ public class EmployeeGiftMoney implements java.io.Serializable {
     public EmployeeGiftMoney() {
     }
 
-    public EmployeeGiftMoney(EmployeeAction employeeAction) {
+    public EmployeeGiftMoney(BigDecimal money, String category, EmployeeAction employeeAction) {
+
+        this.money = money;
+        this.category = category;
         this.employeeAction = employeeAction;
     }
 

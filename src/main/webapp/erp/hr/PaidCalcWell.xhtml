@@ -4,9 +4,15 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:b="http://bootsfaces.net/ui"
+                xmlns:o="http://omnifaces.org/ui"
                 xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
                 xmlns:ui="http://java.sun.com/jsf/facelets">
 
+    <ui:define name="custom-header">
+        <f:metadata>
+            <o:viewParam name="paidBusinessId" value="#{paidBusinessHome.id}"/>
+        </f:metadata>
+    </ui:define>
 
     <b:messages globalOnly="false" styleClass="top-messages"/>
 
@@ -21,12 +27,12 @@
                             准备结算
                         </li>
                         <li  class="complete" >
-                            <b:iconAwesome name="calendar" size="2x"/>
+                            <b:iconAwesome name="check" size="2x"/>
                             <strong class="step">出勤:</strong>
                             出勤数据
                         </li>
                         <li class="complete">
-                            <b:iconAwesome name="trophy" size="2x"/>
+                            <b:iconAwesome name="check" size="2x"/>
                             <strong class="step">绩效:</strong>
                             绩效数据
                         </li>

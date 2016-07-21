@@ -17,6 +17,7 @@ import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Default;
 import javax.faces.context.ExternalContext;
@@ -34,7 +35,7 @@ import java.util.*;
  */
 @Named
 @RequestScoped
-public class PaidBusinessHome extends EntityHome<Business,String>{
+public class PaidBusinessHome extends EntityHome<Business, String> {
 
     @Inject
     @Default
@@ -65,21 +66,21 @@ public class PaidBusinessHome extends EntityHome<Business,String>{
     }
 
 
-    public static class PaidTableItem{
+    public static class PaidTableItem {
 
-        private Map<String,BasicPaidItem> baseMoney = new HashMap<String, BasicPaidItem>();
+        private Map<String, BasicPaidItem> baseMoney = new HashMap<String, BasicPaidItem>();
 
-        private Map<String,EmployeeGiftBalance> giftMoney = new HashMap<String, EmployeeGiftBalance>();
+        private Map<String, EmployeeGiftBalance> giftMoney = new HashMap<String, EmployeeGiftBalance>();
 
         private PaidBalance paidBalance;
 
         public PaidTableItem(PaidBalance paidBalance) {
             this.paidBalance = paidBalance;
-            for(BasicPaidItem basicPaidItem: paidBalance.getBasicPaidItems()){
-                baseMoney.put(basicPaidItem.getCategory(),basicPaidItem);
+            for (BasicPaidItem basicPaidItem : paidBalance.getBasicPaidItems()) {
+                baseMoney.put(basicPaidItem.getCategory(), basicPaidItem);
             }
-            for(EmployeeGiftBalance giftBalance: paidBalance.getEmployeeGiftBalances()){
-                giftMoney.put(giftBalance.getCategory(),giftBalance);
+            for (EmployeeGiftBalance giftBalance : paidBalance.getEmployeeGiftBalances()) {
+                giftMoney.put(giftBalance.getCategory(), giftBalance);
             }
         }
 
@@ -88,98 +89,129 @@ public class PaidBusinessHome extends EntityHome<Business,String>{
         }
 
 
-
-        public BigDecimal getBasicParam(String category){
+        public BigDecimal getBasicParam(String category) {
             BasicPaidItem result = baseMoney.get(category);
-            if (result == null){
+            if (result == null) {
                 return BigDecimal.ZERO;
-            }else{
+            } else {
                 return result.getCalcParam();
             }
         }
 
-        public BigDecimal getGiftMoney(String category){
+        public BigDecimal getGiftMoney(String category) {
             EmployeeGiftBalance result = giftMoney.get(category);
-            if (result == null){
+            if (result == null) {
                 return BigDecimal.ZERO;
-            }else{
+            } else {
                 return result.getMoney();
             }
         }
 
-        public BigDecimal getDayPaid(){
+        public BigDecimal getDayPaid() {
             BigDecimal result = BigDecimal.ZERO;
-            for(BasicPaidItem bpi: paidBalance.getBasicPaidItems()){
+            for (BasicPaidItem bpi : paidBalance.getBasicPaidItems()) {
                 result = result.add(bpi.getCalcParam());
             }
             return result;
         }
     }
 
-    private Set<Dictionary> basePaidCategories = new HashSet<Dictionary>();
+    private Set<Dictionary> basePaidCategories;
 
-    private Set<Dictionary> giftPaidCategories = new HashSet<Dictionary>();
+    private Set<Dictionary> giftPaidCategories;
 
-    private List<PaidTableItem> items = new ArrayList<PaidTableItem>();
+    private List<PaidTableItem> items;
 
     public List<PaidTableItem> getItems() {
+        initPaidTable();
         return items;
     }
 
-    public List<Dictionary> getBasePaidCategoryList(){
-        getInstance();
+    public List<Dictionary> getBasePaidCategoryList() {
+        initPaidTable();
         List<Dictionary> result = new ArrayList<Dictionary>(basePaidCategories);
         Collections.sort(result);
         return result;
     }
 
-    public List<Dictionary> getGiftPaidCategoryList(){
-        getInstance();
+    public List<Dictionary> getGiftPaidCategoryList() {
+        initPaidTable();
         List<Dictionary> result = new ArrayList<Dictionary>(giftPaidCategories);
         Collections.sort(result);
         return result;
     }
 
-    public BigDecimal getAllTotalMoney(){
-        getInstance();
+    public BigDecimal getAllTotalMoney() {
+        initPaidTable();
         BigDecimal result = BigDecimal.ZERO;
-        for(PaidTableItem item: items){
+        for (PaidTableItem item : items) {
             result = result.add(item.getPaidBalance().getTotalMoney());
         }
         return result;
     }
 
-    @Override
-    protected void initInstance(){
-        super.initInstance();
-        for(EmployeeAction ea: getInstance().getEmployeeActions()){
-            for(PaidBalance pb: ea.getEmployeePaid().getPaidBalances()){
-                items.add(new PaidTableItem(pb));
-                for(EmployeeGiftBalance egf: pb.getEmployeeGiftBalances()){
-                    giftPaidCategories.add(dictionaryProducer.getDictionary(egf.getCategory()));
-                }
-                for(BasicPaidItem bpi: pb.getBasicPaidItems()){
-                    basePaidCategories.add(dictionaryProducer.getDictionary(bpi.getCategory()));
-                }
-            }
-        }
 
-        Collections.sort(items, new Comparator<PaidTableItem>() {
-            public int compare(PaidTableItem o1, PaidTableItem o2) {
-                if ( o1.getPaidBalance().getEmployeeAction().getEmployee().equals(o2.getPaidBalance().getEmployeeAction().getEmployee())){
-                    return o1.getPaidBalance().getEmployeeAction().getValidTime().compareTo(o2.getPaidBalance().getEmployeeAction().getValidTime());
-                }else{
-                    return o1.getPaidBalance().getEmployeeAction().getEmployee().getJoinDate().compareTo(o2.getPaidBalance().getEmployeeAction().getEmployee().getJoinDate());
-                }
-            }
-        });
+    @Override
+    protected void clearDirtyInstance(){
+        super.clearDirtyInstance();
+        items = null;
+        basePaidCategories = null;
+        giftPaidCategories = null;
+    }
+
+    @Override
+    protected String getInstaceId() {
+        return getInstance().getId();
+    }
+
+    @PostConstruct
+    public void initParam(){
+        setId(facesContext.getExternalContext().getRequestParameterMap().get("paidBusinessId"));
+        logger.config("set Business Home ID form param:" + getId());
     }
 
 
-    public void exportToExcel(){
-        getInstance();
+    private void initPaidTable() {
+
+        if (giftPaidCategories == null || basePaidCategories == null || items == null) {
+            giftPaidCategories = new HashSet<Dictionary>();
+            basePaidCategories = new HashSet<Dictionary>();
+
+            items = new ArrayList<PaidTableItem>();
+
+            System.out.println("1C:" + getInstance().getEmployeeActions().size());
+            for (EmployeeAction ea : getInstance().getEmployeeActions()) {
+
+                System.out.println("2C:" + ea.getEmployeePaid().getPaidBalances().size());
+                for (PaidBalance pb : ea.getEmployeePaid().getPaidBalances()) {
+                    System.out.println("3C:" + pb);
+                    items.add(new PaidTableItem(pb));
+                    for (EmployeeGiftBalance egf : pb.getEmployeeGiftBalances()) {
+                        giftPaidCategories.add(dictionaryProducer.getDictionary(egf.getCategory()));
+                    }
+                    for (BasicPaidItem bpi : pb.getBasicPaidItems()) {
+                        basePaidCategories.add(dictionaryProducer.getDictionary(bpi.getCategory()));
+                    }
+                }
+            }
+
+            Collections.sort(items, new Comparator<PaidTableItem>() {
+                public int compare(PaidTableItem o1, PaidTableItem o2) {
+                    if (o1.getPaidBalance().getEmployeeAction().getEmployee().equals(o2.getPaidBalance().getEmployeeAction().getEmployee())) {
+                        return o1.getPaidBalance().getEmployeeAction().getValidTime().compareTo(o2.getPaidBalance().getEmployeeAction().getValidTime());
+                    } else {
+                        return o1.getPaidBalance().getEmployeeAction().getEmployee().getJoinDate().compareTo(o2.getPaidBalance().getEmployeeAction().getEmployee().getJoinDate());
+                    }
+                }
+            });
+        }
+    }
+
+
+    public void exportToExcel() {
+        initPaidTable();
         XSSFWorkbook workbook = new XSSFWorkbook();
-        XSSFCellStyle headCellStyle  = workbook.createCellStyle();
+        XSSFCellStyle headCellStyle = workbook.createCellStyle();
 
         //标题一格式
         headCellStyle.setAlignment(XSSFCellStyle.ALIGN_CENTER);//水平居中
@@ -189,9 +221,7 @@ public class PaidBusinessHome extends EntityHome<Business,String>{
         headCellStyle.setFont(font);
 
 
-
-
-        int i  =0;
+        int i = 0;
         int j = 0;
 
         XSSFSheet sheet = workbook.createSheet("工资报表");
@@ -217,13 +247,12 @@ public class PaidBusinessHome extends EntityHome<Business,String>{
         cell.setCellValue("技能等级");
 
 
-        for(Dictionary d: getBasePaidCategoryList()){
+        for (Dictionary d : getBasePaidCategoryList()) {
             cell = row.createCell(j++);
             cell.setCellStyle(headCellStyle);
             cell.setCellType(Cell.CELL_TYPE_STRING);
             cell.setCellValue(d.getName());
         }
-
 
 
         cell = row.createCell(j++);
@@ -247,7 +276,7 @@ public class PaidBusinessHome extends EntityHome<Business,String>{
         cell.setCellValue("满勤奖");
 
 
-        for(Dictionary d: getGiftPaidCategoryList()){
+        for (Dictionary d : getGiftPaidCategoryList()) {
             cell = row.createCell(j++);
             cell.setCellStyle(headCellStyle);
             cell.setCellType(Cell.CELL_TYPE_STRING);
@@ -260,8 +289,7 @@ public class PaidBusinessHome extends EntityHome<Business,String>{
         cell.setCellValue("工资合计");
 
 
-
-        for(PaidTableItem item: getItems()){
+        for (PaidTableItem item : getItems()) {
             j = 0;
             row = sheet.createRow(i++);
 
@@ -284,7 +312,7 @@ public class PaidBusinessHome extends EntityHome<Business,String>{
             cell.setCellType(Cell.CELL_TYPE_STRING);
             cell.setCellValue(dictionaryProducer.getDictionaryValue(item.getPaidBalance().getEmployeeAction().getEmployee().getLevel()));
 
-            for(Dictionary d: getBasePaidCategoryList()){
+            for (Dictionary d : getBasePaidCategoryList()) {
                 cell = row.createCell(j++);
                 cell.setCellType(Cell.CELL_TYPE_NUMERIC);
                 cell.setCellValue(item.getBasicParam(d.getId()).doubleValue());
@@ -308,7 +336,7 @@ public class PaidBusinessHome extends EntityHome<Business,String>{
             cell.setCellValue(item.getPaidBalance().getWorkFullMoney().doubleValue());
 
 
-            for(Dictionary d: getGiftPaidCategoryList()){
+            for (Dictionary d : getGiftPaidCategoryList()) {
                 cell = row.createCell(j++);
                 cell.setCellType(Cell.CELL_TYPE_NUMERIC);
                 cell.setCellValue(item.getGiftMoney(d.getId()).doubleValue());
@@ -317,7 +345,6 @@ public class PaidBusinessHome extends EntityHome<Business,String>{
             cell = row.createCell(j++);
             cell.setCellType(Cell.CELL_TYPE_NUMERIC);
             cell.setCellValue(item.getPaidBalance().getTotalMoney().doubleValue());
-
 
 
         }
@@ -334,9 +361,6 @@ public class PaidBusinessHome extends EntityHome<Business,String>{
             messages.addError().excelExportError();
         }
     }
-
-
-
 
 
 }

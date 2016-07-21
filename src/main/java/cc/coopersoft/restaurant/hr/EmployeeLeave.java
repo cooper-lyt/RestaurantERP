@@ -130,9 +130,12 @@ public class EmployeeLeave implements java.io.Serializable{
         employeeAction.setBusiness(business);
         business.getEmployeeActions().add(employeeAction);
         employeeHome.getInstance().setStatus(Employee.Status.LEAVE);
-        entityManager.persist(business);
-        entityManager.flush();
-        paidBusinessHome.setId(business.getId());
+
+        paidBusinessHome.setInstance(business);
+        paidBusinessHome.saveOrUpdate();
+//        entityManager.persist(business);
+//        entityManager.flush();
+//        paidBusinessHome.setId(business.getId());
         endConversation();
         return "/erp/hr/LeavePaid.xhtml";
     }

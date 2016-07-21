@@ -42,6 +42,6 @@ public class I18n implements java.io.Serializable{
     }
 
     public Date getDayEndTime(Date value){
-        return new Date(getDayBeginTime(value).getTime() + 24 * 60 * 60 * 1000 - 1);
+        return new Date(getDayBeginTime(value).getTime() + 24 * 60 * 60 * 1000 - 1000);
     }
 }

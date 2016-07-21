@@ -20,16 +20,17 @@
         <h:outputScript>
 
             $(document).ready(function () {
-                $('.js-datepicker').datetimepicker({
+                $('.js-datetimepicker').datetimepicker({
                     language: "zh-CN",
-                    format: 'yyyy-mm-dd',
+
+                    clearBtn: 1,
                     weekStart: 1,
                     todayBtn: 1,
                     autoclose: 1,
                     todayHighlight: 1,
                     startView: 2,
-                    minView: 2,
-                    forceParse: 0
+                    forceParse: 0,
+                    showMeridian: 1
                 });
 
             });
@@ -72,8 +73,8 @@
                 </b:selectOneMenu>
                 <b:message/>
 
-                <b:inputText label="奖惩时间" required="true" value="#{employeeOperation.validTime}" styleClass="js-datepicker">
-                    <f:convertDateTime timeZone="#{i18n.timeZone}" locale="#{i18n.locale}" pattern="yyyy-MM-dd"/>
+                <b:inputText label="奖惩时间" required="true" value="#{employeeOperation.validTime}" styleClass="js-datetimepicker">
+                    <f:convertDateTime timeZone="#{i18n.timeZone}" locale="#{i18n.locale}" pattern="yyyy-MM-dd HH:mm"/>
                 </b:inputText>
                 <b:message/>
 

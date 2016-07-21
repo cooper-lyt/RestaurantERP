@@ -106,10 +106,13 @@ public abstract class EntityHome<E, PK extends Serializable> extends MutableCont
      */
     public void setId(PK id)
     {
-        if ( setDirty(this.id, id) ) setInstance(null);
+        if ( setDirty(this.id, id) )clearDirtyInstance();
         this.id = id;
     }
 
+    protected void clearDirtyInstance(){
+        setInstance(null);
+    }
 
     /**
      * Returns true if the id of the object managed is known.

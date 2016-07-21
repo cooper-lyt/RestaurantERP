@@ -104,9 +104,12 @@ public class EmployeePaidCalc implements java.io.Serializable {
 
         }
 
-        entityManager.persist(business);
-        entityManager.flush();
-        paidBusinessHome.setId(business.getId());
+        paidBusinessHome.setInstance(business);
+        paidBusinessHome.saveOrUpdate();
+
+//        entityManager.persist(business);
+//        entityManager.flush();
+//        paidBusinessHome.setId(business.getId());
         endConversation();
         return "/erp/hr/PaidCalcWell.xhtml";
     }
