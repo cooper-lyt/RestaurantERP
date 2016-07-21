@@ -158,15 +158,6 @@ public class EmployeeOperation implements java.io.Serializable{
         return "/erp/hr/EmployeeJoinWell.xhtml";
     }
 
-    @Transactional
-    public void leave(){
-        Business business = businessHelper.createEmployeeBusiness(Business.Type.EMP_LEAVE);
-        EmployeeAction employeeAction = new EmployeeAction(business.getId(),DataHelper.getDayEndTime(validTime),employeeHome.getInstance(),business);
-        business.getEmployeeActions().add(employeeAction);
-        employeeHome.getInstance().setStatus(Employee.Status.LEAVE);
-        entityManager.persist(business);
-        entityManager.flush();
-      //  return "/erp/hr/EmployeeLeaveWell.xhtml";
-    }
+
 
 }

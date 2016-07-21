@@ -205,11 +205,11 @@
                                 <f:setPropertyActionListener value="#{_emp.data.id}" target="#{employeeHome.id}"/>
                             </b:commandButton>
 
-                            <b:commandButton styleClass="list-action" tooltip="离职" immediate="true"
-                                             process="@this" ajax="true"  iconAwesome="user-times" look="link"
-                                             oncomplete="$('.leaveModal').modal();" update="leave">
-                                <f:setPropertyActionListener value="#{_emp.data.id}" target="#{employeeHome.id}"/>
-                            </b:commandButton>
+
+                            <b:button value="" tooltip="离职" outcome="/erp/hr/employeeLeave.xhtml"
+                                      styleClass="list-action" iconAwesome="user-times" look="link">
+                                <f:param name="employeeId" value="#{_emp.data.id}"/>
+                            </b:button>
 
                             <b:button value="" tooltip="工作调动" outcome="/erp/hr/employeeJobChange.xhtml" styleClass="list-action" iconAwesome="exchange" look="link">
                                 <f:param name="employeeId" value="#{_emp.data.id}"/>

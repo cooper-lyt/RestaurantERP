@@ -4,13 +4,127 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:b="http://bootsfaces.net/ui"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jstl/core"
                 xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
                 xmlns:ui="http://java.sun.com/jsf/facelets">
 
-    <b:jumbotron>
-        <h1>coming soon!</h1>
-        <p>此功能正在开发中.</p>
 
-    </b:jumbotron>
+
+    <ui:define name="custom-header">
+        <h:outputStylesheet library="bootstrap-datepicker" name="css/bootstrap-datetimepicker.min.css"/>
+        <h:outputScript library="bootstrap-datepicker" name="js/bootstrap-datetimepicker.min.js"/>
+        <h:outputScript library="bootstrap-datepicker" name="js/locales/bootstrap-datetimepicker.zh-CN.js"/>
+
+
+        <h:outputStylesheet library="bootstrap-select" name="css/bootstrap-select.min.css"/>
+        <h:outputStylesheet library="bootstrap-select" name="css/bootstrap-select-plug.css"/>
+        <h:outputScript library="bootstrap-select" name="js/bootstrap-select.min.js"/>
+        <h:outputScript library="bootstrap-select" name="js/i18n/defaults-zh_CN.min.js"/>
+
+        <h:outputScript library="floatThead" name="jquery.floatThead.min.js"/>
+
+        <f:metadata>
+            <o:viewAction action="#{employeeLeave.begin}" onPostback="false"/>
+            <o:viewParam name="employeeId" value="#{employeeHome.id}"/>
+        </f:metadata>
+
+    </ui:define>
+
+
+    <b:messages globalOnly="false" styleClass="top-messages"/>
+
+
+    <o:form id="jobChange" includeViewParams="true"  styleClass="page-form">
+        <b:row>
+
+            <b:column offsetLg="2" offsetMd="2" offsetSm="1" offsetXs="0" colLg="8" colMd="8" colSm="10" colXs="12">
+
+                <div class="setup-header setup-gift">
+                    <h1 class="subhead-heading">员工离职</h1>
+
+                    <ol class="steps steps-4">
+                        <li class="current">
+                            <b:iconAwesome name="street-view" size="2x"/>
+                            <strong class="step">准备:</strong>
+                            开始离职
+                        </li>
+                        <li>
+                            <b:iconAwesome name="trophy" size="2x"/>
+                            <strong class="step">绩效:</strong>
+                            绩效数据
+                        </li>
+                        <li>
+                            <b:iconAwesome name="print" size="2x"/>
+                            <strong class="step">结算:</strong>
+                            工资结算
+                        </li>
+                        <li>
+                            <b:iconAwesome name="user-times" size="2x"/>
+                            <strong class="step">完成:</strong>
+                            离职完成
+                        </li>
+                    </ol>
+                </div>
+
+
+                <b:inputText label="离职时间" renderLabel="true" required="true" value="#{employeeLeave.leaveDate}"
+                             styleClass="js-datetimepicker">
+                    <f:convertDateTime pattern="yyyy-MM-dd"/>
+                </b:inputText>
+                <b:message/>
+
+
+                <b:inputText required="true" label="出勤天数" value="#{employeeLeave.employeeAction.paidBalance.workDay}">
+                    <f:converter converterId="javax.faces.BigDecimal"/>
+                </b:inputText>
+                <b:message/>
+
+                <p:outputPanel id="paidProject">
+                    <div class="form-group">
+
+                        <h:outputLabel for="paidProjectInput" value="薪酬计算方案" styleClass="bf-required"/>
+                        <h:selectOneMenu id="paidProjectInput" value="#{paidProjectHome.id}"
+                                         pt:data-live-search="true" label="计算方案"
+                                         pt:data-header="请选择薪酬计算方案"
+                                         pt:data-size="auto"
+                                         styleClass="js-select form-control edit-select select-theme">
+                            <f:selectItems value="#{paidProjectManager.paidProjects}" var="_paidProject" itemLabel="#{_paidProject.name}"
+                                           itemValue="#{_paidProject.id}"/>
+                        </h:selectOneMenu>
+                    </div>
+                    <b:message for="paidProjectInput"/>
+                    <h:outputScript>
+                        $('.js-select').selectpicker();
+                    </h:outputScript>
+                </p:outputPanel>
+
+
+                <b:fetchBeanInfos/>
+                <h:outputScript>
+
+                    $('.js-datetimepicker').datetimepicker({
+                    language: "zh-CN",
+
+                    clearBtn: 1,
+                    weekStart: 1,
+                    todayBtn: 1,
+                    autoclose: 1,
+                    todayHighlight: 1,
+                    startView: 2,
+                    forceParse: 0,
+                    showMeridian: 1
+                    });
+                </h:outputScript>
+
+
+                <hr/>
+
+                <b:commandButton action="#{employeeLeave.beginWorkContent}" look="success" value="离职"/>
+
+            </b:column>
+        </b:row>
+    </o:form>
 
 </ui:composition>

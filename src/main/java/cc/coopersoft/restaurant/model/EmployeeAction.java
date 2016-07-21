@@ -21,6 +21,7 @@ public class EmployeeAction implements java.io.Serializable{
     private JobInfo jobInfo;
     private PaidBalance paidBalance;
     private EmployeeGiftMoney employeeGiftMoney;
+    private EmployeePaid employeePaid;
 
     public EmployeeAction() {
     }
@@ -110,5 +111,15 @@ public class EmployeeAction implements java.io.Serializable{
 
     public void setEmployeeGiftMoney(EmployeeGiftMoney employeeGiftMoney) {
         this.employeeGiftMoney = employeeGiftMoney;
+    }
+
+    @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
+    public EmployeePaid getEmployeePaid() {
+        return employeePaid;
+    }
+
+    public void setEmployeePaid(EmployeePaid employeePaid) {
+        this.employeePaid = employeePaid;
     }
 }

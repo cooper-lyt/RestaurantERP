@@ -5,6 +5,7 @@ import cc.coopersoft.restaurant.hr.repository.model.EmployeeOffice;
 import cc.coopersoft.restaurant.model.Employee;
 import cc.coopersoft.restaurant.model.EmployeeAction;
 import cc.coopersoft.restaurant.model.EmployeeGiftMoney;
+import cc.coopersoft.restaurant.model.PaidBalance;
 import org.apache.deltaspike.data.api.*;
 
 import javax.persistence.FlushModeType;
@@ -54,5 +55,11 @@ public interface EmployeeRepository extends EntityRepository<Employee,String> {
                                            @QueryParam("startDate") Date startDate,
                                            @QueryParam("endDate") Date endDate,
                                            @QueryParam("all") boolean all);
+
+    @Query("select pb from PaidBalance pb where pb.employeePaid is null and pb.employeeAction.validTime > ?1")
+    List<PaidBalance> findNoPaidBalance(String employeeId, Date startDate);
+
+    @Query(value = "select ea.validTime from EmployeeAction ea where ea.employee.id = ?1 and (ea.business.type = 'EMP_JOIN' or ea.business.type = 'EMP_BALANCE') order by ea.validTime desc" ,max = 1)
+    Date findLastPaidTime(String employeeId);
 
 }

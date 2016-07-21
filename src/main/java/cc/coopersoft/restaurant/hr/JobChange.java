@@ -112,7 +112,7 @@ public class JobChange implements java.io.Serializable{
 
     @Transactional
     public String jobChange(){
-        paidCalc.calcBlance(employeeHome.getInstance(),employeeAction.getPaidBalance());
+        paidCalc.calcBalance(employeeHome.getInstance(),employeeAction.getPaidBalance());
 
         Business business = businessHelper.createEmployeeBusiness(Business.Type.EMP_JOB_CHANGE);
 

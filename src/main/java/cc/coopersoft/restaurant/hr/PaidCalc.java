@@ -43,8 +43,25 @@ public class PaidCalc implements java.io.Serializable {
         return workContentData;
     }
 
+    public void balanceAndPaid(Employee emp, PaidBalance paidBalance){
+        List<PaidBalance> balances = employeeRepository.findNoPaidBalance(emp.getId(),employeeRepository.findLastPaidTime(emp.getId()));
+        calcBalance(emp,paidBalance);
+        balances.add(paidBalance);
+        EmployeePaid employeePaid = new EmployeePaid(paidBalance.getEmployeeAction());
+        BigDecimal money = BigDecimal.ZERO;
+        for(PaidBalance pb: balances){
+            pb.setEmployeePaid(employeePaid);
+            employeePaid.getPaidBalances().add(pb);
 
-    public void calcBlance(Employee emp, PaidBalance paidBalance) {
+            money = money.add(pb.getTotalMoney());
+        }
+        employeePaid.setTotalMoney(money);
+        employeePaid.setPaidMoney(money);
+        paidBalance.getEmployeeAction().setEmployeePaid(employeePaid);
+    }
+
+
+    public void calcBalance(Employee emp, PaidBalance paidBalance) {
         BigDecimal totalMoney = BigDecimal.ZERO;
 
         //基本工资部分

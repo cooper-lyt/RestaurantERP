@@ -22,10 +22,12 @@ public class PaidBalance implements java.io.Serializable {
     private BigDecimal totalMoney;
 
     private EmployeeAction employeeAction;
+    private EmployeePaid employeePaid;
 
     private Set<BasicPaidItem> basicPaidItems = new HashSet<BasicPaidItem>(0);
     private Set<EmployeeGiftBalance> employeeGiftBalances = new HashSet<EmployeeGiftBalance>(0);
     private Set<WorkContentMoney> workContentMoneys = new HashSet<WorkContentMoney>(0);
+
 
     public PaidBalance() {
     }
@@ -115,6 +117,10 @@ public class PaidBalance implements java.io.Serializable {
         return employeeGiftBalances;
     }
 
+    public void setEmployeeGiftBalances(Set<EmployeeGiftBalance> employeeGiftBalances) {
+        this.employeeGiftBalances = employeeGiftBalances;
+    }
+
     @OneToMany(fetch = FetchType.LAZY,orphanRemoval = true,mappedBy = "paidBalance", cascade = CascadeType.ALL)
     public Set<WorkContentMoney> getWorkContentMoneys() {
         return workContentMoneys;
@@ -124,10 +130,15 @@ public class PaidBalance implements java.io.Serializable {
         this.workContentMoneys = workContentMoneys;
     }
 
-    public void setEmployeeGiftBalances(Set<EmployeeGiftBalance> employeeGiftBalances) {
-        this.employeeGiftBalances = employeeGiftBalances;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PAID",nullable = true)
+    public EmployeePaid getEmployeePaid() {
+        return employeePaid;
     }
 
+    public void setEmployeePaid(EmployeePaid employeePaid) {
+        this.employeePaid = employeePaid;
+    }
 
     @PrePersist
     public void ensureId(){

@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:composition template="/applayout/pageTemplate.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <b:messages globalOnly="false" styleClass="top-messages"/>
+
+
+    <div class="page-form">
+        <b:row>
+
+            <b:column offsetLg="2" offsetMd="2" offsetSm="1" offsetXs="0" colLg="8" colMd="8" colSm="10" colXs="12">
+
+                <div class="setup-header setup-gift">
+                    <h1 class="subhead-heading">员工离职</h1>
+
+                    <ol class="steps steps-4">
+                        <li class="complete">
+                            <b:iconAwesome name="check" size="2x"/>
+                            <strong class="step">准备:</strong>
+                            开始离职
+                        </li>
+                        <li class="current">
+                            <b:iconAwesome name="trophy" size="2x"/>
+                            <strong class="step">绩效:</strong>
+                            绩效数据
+                        </li>
+                        <li>
+                            <b:iconAwesome name="print" size="2x"/>
+                            <strong class="step">结算:</strong>
+                            工资结算
+                        </li>
+                        <li>
+                            <b:iconAwesome name="user-times" size="2x"/>
+                            <strong class="step">完成:</strong>
+                            离职完成
+                        </li>
+                    </ol>
+                </div>
+
+
+                <h:form enctype="multipart/form-data">
+
+                    <p:fileUpload fileUploadListener="#{paidCalc.workContentFileUpload}"
+                                  label="上传绩效数据"
+                                  allowTypes="/(\.|\/)(xls|xlsx)$/" auto="true" update="workContent"/>
+
+                </h:form>
+
+                <p:outputPanel id="workContent" style="margin-top: 10px">
+
+                    <p:outputPanel styleClass="panel panel-default" rendered="#{not empty employeeLeave.workContentMoneys}">
+
+                        <h:dataTable value="#{employeeLeave.workContentMoneys}" var="_content"
+                                     styleClass="table table-hover">
+
+                            <h:column>
+                                <f:facet name="header">
+                                    名称
+                                </f:facet>
+                                #{_content.res.name}
+                            </h:column>
+
+                            <h:column>
+                                <f:facet name="header">
+                                    数量
+                                </f:facet>
+                                #{_content.count}
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    绩效
+                                </f:facet>
+                                <h:outputText value="#{_content.money}">
+                                    <f:convertNumber type="currency" groupingUsed="true"/>
+                                </h:outputText>
+                            </h:column>
+                        </h:dataTable>
+                    </p:outputPanel>
+
+                </p:outputPanel>
+
+
+
+                <hr/>
+                <o:form includeViewParams="true">
+                    <b:commandButton action="/erp/hr/LeavePaid.xhtml" look="success" value="计算工资"/>
+                </o:form>
+            </b:column>
+
+        </b:row>
+    </div>
+
+
+</ui:composition>
