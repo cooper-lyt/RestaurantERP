@@ -38,7 +38,7 @@
         <b:modal id="leaveModal" title="#{employeeHome.id}" styleClass="leaveModal">
             <p:outputPanel id="leaveInputs">
                 <b:inputText label="离职时间" renderLabel="true" required="true"
-                             value="#{employeeOperation.validTime}" styleClass="js-datepicker">
+                             value="#{employeeGift.validTime}" styleClass="js-datepicker">
                     <f:convertDateTime timeZone="#{i18n.timeZone}" locale="#{i18n.locale}" pattern="yyyy-MM-dd"/>
                 </b:inputText>
                 <b:message/>
@@ -68,7 +68,7 @@
 
                 <b:commandButton ajax="true" value="离职"
                                  oncomplete="if(!validationFailed &amp;&amp; noFailedMessages) $('.leaveModal').modal('hide');"
-                                 action="#{employeeOperation.leave}" look="success" update="leaveInputs,employees">
+                                 action="#{employeeGift.leave}" look="success" update="leaveInputs,employees">
                 </b:commandButton>
             </f:facet>
         </b:modal>
@@ -175,7 +175,7 @@
                             岗位
                         </f:facet>
 
-                        <h:outputText style="white-space:nowrap;" value="#{_emp.data.job.name}"/>
+                        <h:outputText style="white-space:nowrap;" value="#{_emp.data.jobInfo.job.name}"/>
 
                     </h:column>
                     <h:column>
@@ -184,7 +184,7 @@
                         </f:facet>
 
                         <h:outputText style="white-space:nowrap;"
-                                      value="#{dictionaryProducer.getDictionaryValue(_emp.data.level)}"/>
+                                      value="#{dictionaryProducer.getDictionaryValue(_emp.data.jobInfo.level)}"/>
 
                     </h:column>
                     <h:column>

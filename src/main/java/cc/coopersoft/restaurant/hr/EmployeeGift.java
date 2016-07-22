@@ -28,7 +28,7 @@ import java.util.logging.Logger;
  */
 @Named
 @ConversationScoped
-public class EmployeeOperation implements java.io.Serializable{
+public class EmployeeGift implements java.io.Serializable{
 
     @Inject
     private EmployeeHome employeeHome;
@@ -45,6 +45,26 @@ public class EmployeeOperation implements java.io.Serializable{
 
     @Inject
     private I18n i18n;
+
+    @Inject
+    private OfficeHome officeHome;
+
+    @Inject
+    private EmployeeRepository employeeRepository;
+
+    @Inject
+    private EmployeeChoice employeeChoice;
+
+    @Inject @Default
+    private Conversation conversation;
+
+    public void beginConversation(){
+        if ( conversation.isTransient() )
+        {
+            conversation.begin();
+            conversation.setTimeout(600000);
+        }
+    }
 
 
     private Date validTime;
@@ -68,29 +88,8 @@ public class EmployeeOperation implements java.io.Serializable{
         return employeeGiftMoney;
     }
 
-    @Inject @Default
-    private Conversation conversation;
-
-    public void beginConversation(){
-        if ( conversation.isTransient() )
-        {
-            conversation.begin();
-            conversation.setTimeout(600000);
-        }
-    }
-
-    public void beginJoin() {
-        beginConversation();
-        employeeHome.clearInstance();
-    }
 
 
-
-    @Inject
-    private OfficeHome officeHome;
-
-    @Inject
-    private EmployeeRepository employeeRepository;
 
     @Transactional
     public String beginGift(){
@@ -111,8 +110,6 @@ public class EmployeeOperation implements java.io.Serializable{
     }
 
 
-    @Inject
-    private EmployeeChoice employeeChoice;
 
     @Transactional
     public String createGift(){
@@ -151,19 +148,7 @@ public class EmployeeOperation implements java.io.Serializable{
         }
     }
 
-    @Transactional
-    public String join(){
 
-        Business business = businessHelper.createEmployeeBusiness(Business.Type.EMP_JOIN);
-        EmployeeAction employeeAction = new EmployeeAction(business.getId(), i18n.getDayBeginTime(employeeHome.getInstance().getJoinDate()),employeeHome.getInstance(),business);
-        employeeAction.setJobInfo(new JobInfo(employeeHome.getInstance().getJob(),employeeHome.getInstance().getLevel(),employeeHome.getInstance().getWorkCode(),employeeHome.getInstance().getOffice(),employeeAction));
-        employeeHome.getInstance().setJoinDate(employeeAction.getValidTime());
-        business.getEmployeeActions().add(employeeAction);
-        entityManager.persist(business);
-        entityManager.flush();
-        endConversation();
-        return "/erp/hr/EmployeeJoinWell.xhtml";
-    }
 
 
 

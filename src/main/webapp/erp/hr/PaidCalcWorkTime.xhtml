@@ -44,6 +44,8 @@
             <h:outputStylesheet>
                 .input-width{
                     width: 120px;
+                    padding-top: 2px !important;
+                    padding-bottom: 2px !important;
                 }
             </h:outputStylesheet>
 
@@ -69,7 +71,7 @@
                         上次发放日期
                     </f:facet>
 
-                    <h:outputText value="#{_timeInfo.paidTime}">
+                    <h:outputText value="#{_timeInfo.paidTime}" styleClass="#{_timeInfo.paidTimeError ? 'text-danger' : ''}">
                         <f:convertDateTime timeZone="#{i18n.timeZone}" locale="#{i18n.locale}" pattern="yyyy年MM月dd日"/>
                     </h:outputText>
                 </h:column>
@@ -77,7 +79,7 @@
                     <f:facet name="header">
                         上次结算日期
                     </f:facet>
-                    <h:outputText value="#{_timeInfo.balanceTime}">
+                    <h:outputText value="#{_timeInfo.balanceTime}" styleClass="#{_timeInfo.balanceTimeError ? 'text-danger' : ''}">
                         <f:convertDateTime timeZone="#{i18n.timeZone}" locale="#{i18n.locale}"  pattern="yyyy年MM月dd日 HH:mm:ss"/>
                     </h:outputText>
                 </h:column>
@@ -99,7 +101,7 @@
 
             </h:dataTable>
                 <hr/>
-            <b:commandButton action="#{employeePaidCalc.beginWorkContent}" look="success" value="继续"/>
+            <b:commandButton disabled="#{not employeePaidCalc.canPaid}" action="#{employeePaidCalc.beginWorkContent}" look="success" value="继续"/>
 
         </b:column>
 

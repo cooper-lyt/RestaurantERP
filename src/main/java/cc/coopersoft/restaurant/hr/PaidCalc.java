@@ -88,7 +88,7 @@ public class PaidCalc implements java.io.Serializable {
         //基本工资部分
         for (Map.Entry<String, List<PaidItem>> entry : paidProjectHome.getPaidItems()) {
             for (PaidItem paidItem : entry.getValue()) {
-                if (emp.getJob().equals(paidItem.getJob()) && emp.getLevel().equals(paidItem.getLevel())) {
+                if (emp.getJobInfo().getJob().equals(paidItem.getJob()) && emp.getJobInfo().getLevel().equals(paidItem.getLevel())) {
 
                     BasicPaidItem basicPaidItem =
                             new BasicPaidItem(UUID.randomUUID().toString().replace("-", ""), entry.getKey(),paidItem.getMoney(), paidBalance.getWorkDay().multiply(paidItem.getMoney()), paidBalance);
@@ -131,15 +131,16 @@ public class PaidCalc implements java.io.Serializable {
 
         //绩效
 
-        if (workContentData != null && emp.getWorkCode() != null && !emp.getWorkCode().trim().equals("")) {
-            List<WorkContentMoney> contentMoneys = workContentData.get(emp.getWorkCode());
+        if (workContentData != null && emp.getJobInfo().getWorkCode() != null && !emp.getJobInfo().getWorkCode().trim().equals("")) {
+            List<WorkContentMoney> contentMoneys = workContentData.get(emp.getJobInfo().getWorkCode());
             BigDecimal content = BigDecimal.ZERO;
             if (contentMoneys != null) {
                 for (WorkContentMoney contentMoney : contentMoneys) {
-
-                    content = content.add(contentMoney.getMoney());
-                    paidBalance.getWorkContentMoneys().add(contentMoney);
-                    contentMoney.setPaidBalance(paidBalance);
+                    if (contentMoney.getMoney() != null && !BigDecimal.ZERO.equals(contentMoney.getMoney())) {
+                        content = content.add(contentMoney.getMoney());
+                        paidBalance.getWorkContentMoneys().add(contentMoney);
+                        contentMoney.setPaidBalance(paidBalance);
+                    }
 
                 }
             }
@@ -198,7 +199,7 @@ public class PaidCalc implements java.io.Serializable {
 
                     if (cellValue != null) {
                         if (Cell.CELL_TYPE_STRING == cellValue.getCellType()){
-                            workCode = cell.getStringCellValue();
+                            workCode = cell.getStringCellValue().trim();
                         }else if (Cell.CELL_TYPE_NUMERIC == cellValue.getCellType()){
                             workCode = new java.text.DecimalFormat("#0").format(cell.getNumericCellValue());
                         }else{
@@ -216,7 +217,7 @@ public class PaidCalc implements java.io.Serializable {
                     if (cellValue != null ) {
                         String resId;
                         if (Cell.CELL_TYPE_STRING == cellValue.getCellType()){
-                            resId = cellValue.getStringValue();
+                            resId = cellValue.getStringValue().trim();
                         }else if (Cell.CELL_TYPE_NUMERIC == cellValue.getCellType()){
                             resId = new java.text.DecimalFormat("#0").format(cellValue.getNumberValue());
                         }else{

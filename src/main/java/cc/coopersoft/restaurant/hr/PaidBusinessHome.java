@@ -305,12 +305,12 @@ public class PaidBusinessHome extends EntityHome<Business, String> {
 
             cell = row.createCell(j++);
             cell.setCellType(Cell.CELL_TYPE_STRING);
-            cell.setCellValue(item.getPaidBalance().getEmployeeAction().getEmployee().getJob().getName());
+            cell.setCellValue(item.getPaidBalance().getEmployeeAction().getJobInfo().getJob().getName());
 
 
             cell = row.createCell(j++);
             cell.setCellType(Cell.CELL_TYPE_STRING);
-            cell.setCellValue(dictionaryProducer.getDictionaryValue(item.getPaidBalance().getEmployeeAction().getEmployee().getLevel()));
+            cell.setCellValue(dictionaryProducer.getDictionaryValue(item.getPaidBalance().getEmployeeAction().getJobInfo().getLevel()));
 
             for (Dictionary d : getBasePaidCategoryList()) {
                 cell = row.createCell(j++);

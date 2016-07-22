@@ -68,7 +68,7 @@
                        </b:column>
                        <b:column colMd="4">
                             <p:outputPanel autoUpdate="true">
-                            <b:commandButton action="#{employeeOperation.createGift}" styleClass="btn-sm right"
+                            <b:commandButton action="#{employeeGift.createGift}" styleClass="btn-sm right"
                                              value="发放奖励" look="success" disabled="#{not employeeChoice.anySelected}"/>
                             </p:outputPanel>
                        </b:column>
@@ -113,13 +113,13 @@
                                 <f:facet name="header">
                                     岗位
                                 </f:facet>
-                                #{_emp.data.job.name}
+                                #{_emp.data.jobInfo.job.name}
                             </h:column>
                             <h:column>
                                 <f:facet name="header">
                                     级别
                                 </f:facet>
-                                #{dictionaryProducer.getDictionaryValue(_emp.data.level)}
+                                #{dictionaryProducer.getDictionaryValue(_emp.data.jobInfo.level)}
                             </h:column>
                         </h:dataTable>
 </div>

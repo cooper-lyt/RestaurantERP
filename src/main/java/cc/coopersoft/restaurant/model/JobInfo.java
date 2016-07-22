@@ -15,27 +15,22 @@ public class JobInfo {
     private String workCode;
 
     private Office office;
-    private EmployeeAction employeeAction;
     private Job job;
     private String level;
 
     public JobInfo() {
     }
 
-    public JobInfo(Job job, String level, String workCode, Office office, EmployeeAction employeeAction) {
-        this.job = job;
-        this.level = level;
-        this.workCode = workCode;
-        this.office = office;
-        this.employeeAction = employeeAction;
+    public JobInfo(String id) {
+        this.id = id;
     }
 
-    public JobInfo(JobInfo jobInfo, EmployeeAction employeeAction){
+    public JobInfo(String id, JobInfo jobInfo){
+        this.id = id;
         this.workCode = jobInfo.getWorkCode();
         this.office = jobInfo.getOffice();
         this.job = jobInfo.getJob();
         this.level = jobInfo.getLevel();
-        this.employeeAction = employeeAction;
     }
 
     @Id
@@ -94,20 +89,4 @@ public class JobInfo {
         this.office = office;
     }
 
-
-    @OneToOne(fetch = FetchType.LAZY,mappedBy = "jobInfo",optional = false)
-    @PrimaryKeyJoinColumn
-    @NotNull
-    public EmployeeAction getEmployeeAction() {
-        return employeeAction;
-    }
-
-    public void setEmployeeAction(EmployeeAction employeeAction) {
-        this.employeeAction = employeeAction;
-    }
-
-    @PrePersist
-    public void ensureId(){
-        this.id = getEmployeeAction().getId();
-    }
 }

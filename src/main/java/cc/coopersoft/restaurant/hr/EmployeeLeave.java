@@ -87,7 +87,7 @@ public class EmployeeLeave implements java.io.Serializable{
         if (paidCalc.getWorkContentData() == null){
             return new ArrayList<WorkContentMoney>(0);
         }
-        return paidCalc.getWorkContentData().get(employeeHome.getInstance().getWorkCode());
+        return paidCalc.getWorkContentData().get(employeeHome.getInstance().getJobInfo().getWorkCode());
     }
 
     @Transactional
@@ -112,7 +112,7 @@ public class EmployeeLeave implements java.io.Serializable{
             return null;
         }
 
-        if(employeeHome.getInstance().getWorkCode() == null || employeeHome.getInstance().getWorkCode().trim().equals("")){
+        if(employeeHome.getInstance().getJobInfo().getWorkCode() == null || employeeHome.getInstance().getJobInfo().getWorkCode().trim().equals("")){
             return leave();
         }
 

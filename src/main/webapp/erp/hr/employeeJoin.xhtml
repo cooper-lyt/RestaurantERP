@@ -39,7 +39,7 @@
         </h:outputScript>
 
         <f:metadata>
-            <o:viewAction action="#{employeeOperation.beginJoin}" onPostback="false"/>
+            <o:viewAction action="#{employeeJoin.beginJoin}" onPostback="false"/>
         </f:metadata>
     </ui:define>
     <b:messages globalOnly="false" styleClass="top-messages"/>
@@ -66,7 +66,7 @@
 
                     <b:column colMd="6">
                         <b:inputText label="入职时间" renderLabel="true" required="true"
-                                     value="#{employeeHome.instance.joinDate}" styleClass="js-datepicker">
+                                     value="#{employeeJoin.joinTime}" styleClass="js-datepicker">
                             <f:convertDateTime timeZone="#{i18n.timeZone}" locale="#{i18n.locale}" pattern="yyyy-MM-dd"/>
                         </b:inputText>
                         <b:message/>
@@ -78,7 +78,7 @@
                     <b:column id="officeInputs" colMd="6">
                         <div class="form-group">
                             <h:outputLabel for="office" value="工作地点" styleClass="bf-required"/>
-                            <h:selectOneMenu id="office" required="true" value="#{employeeHome.instance.office}"
+                            <h:selectOneMenu id="office" required="true" value="#{employeeJoin.jobInfo.office}"
                                              pt:data-live-search="true"
                                              pt:data-header="请选择工作地点"
                                              label="工作地点"
@@ -91,7 +91,7 @@
                                                   pt:data-tokens="#{_office.name}"/>
                                 </c:forEach>
                                 <f:ajax execute="office" render="job officeInputs" event="valueChange"
-                                        listener="#{employeeHome.clearJob}"/>
+                                        listener="#{employeeJoin.clearJob}"/>
                             </h:selectOneMenu>
 
                         </div>
@@ -106,12 +106,12 @@
 
                         <div class="form-group">
                             <h:outputLabel for="jobInput" value="岗位" styleClass="bf-required"/>
-                            <h:selectOneMenu id="jobInput" required="true" value="#{employeeHome.instance.job}"
-                                             pt:data-header="#{empty employeeHome.instance.office ? '请先选择工作地点' : '请选择岗位'}"
+                            <h:selectOneMenu id="jobInput" required="true" value="#{employeeJoin.jobInfo.job}"
+                                             pt:data-header="#{empty employeeJoin.jobInfo.office ? '请先选择工作地点' : '请选择岗位'}"
                                              pt:data-size="auto" converter="erpEntityConvert" label="岗位"
-                                             disabled="#{empty employeeHome.instance.office}"
+                                             disabled="#{empty employeeJoin.jobInfo.office}"
                                              styleClass="js-jobSelect form-control edit-select select-theme">
-                                <c:forEach items="#{employeeHome.instance.office.type.enableJobList}" var="_job">
+                                <c:forEach items="#{employeeJoin.jobInfo.office.type.enableJobList}" var="_job">
                                     <f:selectItem itemLabel="#{_job.name}" itemValue="#{_job}"/>
                                 </c:forEach>
                             </h:selectOneMenu>
@@ -128,14 +128,14 @@
 
                 <b:row>
                     <b:column colMd="6">
-                        <b:selectOneMenu value="#{employeeHome.instance.level}" label="级别" renderLabel="true"
+                        <b:selectOneMenu value="#{employeeJoin.jobInfo.level}" label="级别" renderLabel="true"
                                          required="true">
                             <f:selectItems value="#{dictionaryProducer.getDictionaries('hr.level')}" var="_level"
                                            itemValue="#{_level.id}" itemLabel="#{_level.name}"/>
                         </b:selectOneMenu>
                     </b:column>
                     <b:column colMd="6">
-                        <b:inputText label="工作编号" renderLabel="true" value="#{employeeHome.instance.workCode}"/>
+                        <b:inputText label="工作编号" renderLabel="true" value="#{employeeJoin.jobInfo.workCode}"/>
                         <b:message/>
                     </b:column>
                 </b:row>
@@ -155,7 +155,7 @@
 
                 <hr/>
 
-                <b:commandButton action="#{employeeOperation.join}" look="success" value="员工入职"/>
+                <b:commandButton action="#{employeeJoin.join}" look="success" value="员工入职"/>
 
             </b:column>
         </b:row>

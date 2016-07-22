@@ -65,6 +65,18 @@ public class EmployeePaidCalc implements java.io.Serializable {
         return workTimeInfos;
     }
 
+    public boolean isCanPaid(){
+        if (getWorkTimeInfos() == null || getWorkTimeInfos().isEmpty()){
+            return false;
+        }
+        for (EmployeeWorkTimeInfo info: getWorkTimeInfos()){
+            if (info.isBalanceTimeError() || info.isPaidTimeError()){
+                return false;
+            }
+        }
+        return true;
+    }
+
     public String beginCalc() {
         business = businessHelper.createEmployeeBusiness(Business.Type.EMP_BALANCE);
 
@@ -74,10 +86,13 @@ public class EmployeePaidCalc implements java.io.Serializable {
         for(Employee emp: emps ){
             EmployeeAction ea = new EmployeeAction(UUID.randomUUID().toString().replace("-",""),calcDate,emp,business);
             ea.setPaidBalance(new PaidBalance(ea));
-            ea.setJobInfo(new JobInfo(employeeRepository.findJobInfoWithTime(emp.getId(),calcDate),ea));
             business.getEmployeeActions().add(ea);
 
-            workTimeInfos.add(new EmployeeWorkTimeInfo(ea.getPaidBalance(),employeeRepository.findLastPaidTime(emp.getId()),employeeRepository.findLastBalance(emp.getId()).getValidTime(),paidProjectHome.getInstance().getFullWorkMoney()));
+            workTimeInfos.add(new EmployeeWorkTimeInfo(ea.getPaidBalance(),
+                    employeeRepository.findLastPaidTime(emp.getId()),
+                    employeeRepository.findLastBalance(emp.getId()).getValidTime(),
+                    paidProjectHome.getInstance().getFullWorkMoney(),
+                    calcDate));
         }
 
         if (conversation.isTransient()) {
@@ -140,11 +155,14 @@ public class EmployeePaidCalc implements java.io.Serializable {
 
         private BigDecimal fullWorkMoney;
 
-        public EmployeeWorkTimeInfo(PaidBalance paidBalance, Date paidTime, Date balanceTime, BigDecimal fullWorkMoney) {
+        private Date operTime;
+
+        public EmployeeWorkTimeInfo(PaidBalance paidBalance, Date paidTime, Date balanceTime, BigDecimal fullWorkMoney,Date operTime) {
             this.paidBalance = paidBalance;
             this.paidTime = paidTime;
             this.balanceTime = balanceTime;
             this.fullWorkMoney = fullWorkMoney;
+            this.operTime = operTime;
         }
 
         public PaidBalance getPaidBalance() {
@@ -155,8 +173,16 @@ public class EmployeePaidCalc implements java.io.Serializable {
             return paidTime;
         }
 
+        public boolean isPaidTimeError(){
+            return (operTime.before(paidTime));
+        }
+
         public Date getBalanceTime() {
             return balanceTime;
+        }
+
+        public boolean isBalanceTimeError(){
+            return (operTime.before(balanceTime));
         }
 
         public boolean isFullWork(){

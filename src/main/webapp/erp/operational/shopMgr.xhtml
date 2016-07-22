@@ -62,13 +62,10 @@
                              label="编号" renderLabel="true" />
 
 
-                <b:inputText id="name" value="#{officeHome.instance.name}"
-                             label="名称" renderLabel="true" required="true"/>
-
-            <div class="form-group">
+                <div class="form-group">
                     <h:outputLabel for="officeTypeInput" value="营业类型" styleClass="bf-required"/>
                     <h:selectOneMenu id="officeTypeInput" required="true" value="#{officeHome.instance.type}"
-                                     pt:data-header="请选择营业类型" label="营业类型"
+                                     pt:data-header="请选择营业类型" label="营业类型" disabled="#{officeHome.managed}"
                                      pt:data-size="auto" converter="erpEntityConvert"
                                      styleClass="js-selectpicker form-control edit-select select-theme"  >
                         <c:forEach items="#{officeTypeList}" var="_type">
@@ -80,6 +77,10 @@
                 <h:outputScript>
                     $('.js-selectpicker').selectpicker();
                 </h:outputScript>
+
+                <b:inputText id="name" value="#{officeHome.instance.name}"
+                             label="名称" renderLabel="true" required="true"/>
+
 
 
                 <co:selectOneMenu label="状态" renderLabel="true" required="true" value="#{officeHome.instance.status}" converter="omnifaces.GenericEnumConverter">

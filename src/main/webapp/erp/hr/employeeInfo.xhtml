@@ -20,7 +20,7 @@
             <label for="workCode">工作编号</label>
 
                     <span class="info-value-block" id="workCode">
-                        #{employeeHome.instance.workCode}
+                        #{employeeHome.instance.jobInfo.workCode}
 
                     </span>
         </div>
@@ -37,7 +37,7 @@
             <label for="job">岗位</label>
 
                     <span class="info-value-block" id="job">
-                        #{employeeHome.instance.job.name}
+                        #{employeeHome.instance.jobInfo.job.name}
                     </span>
         </div>
 
@@ -45,7 +45,7 @@
             <label for="level">级别</label>
 
                     <span class="info-value-block" id="level">
-                        #{dictionaryProducer.getDictionaryValue(employeeHome.instance.level)}
+                        #{dictionaryProducer.getDictionaryValue(employeeHome.instance.jobInfo.level)}
                     </span>
         </div>
 
@@ -69,7 +69,7 @@
             <label for="office">工作地点</label>
 
                     <span class="info-value-block" id="office">
-                        #{employeeHome.instance.office.name}
+                        #{employeeHome.instance.jobInfo.office.name}
                     </span>
         </div>
 

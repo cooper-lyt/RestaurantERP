@@ -61,11 +61,11 @@ public class JobChange implements java.io.Serializable{
     }
 
     public JobInfo getJobInfo() {
-        return employeeAction.getJobInfo();
+        return employeeAction.getNewJob();
     }
 
     public void clearJob(){
-        employeeAction.getJobInfo().setJob(null);
+        employeeAction.getNewJob().setJob(null);
     }
 
     public EmployeeAction getEmployeeAction() {
@@ -86,7 +86,7 @@ public class JobChange implements java.io.Serializable{
         }
         lastBalanceTime = paidCalc.getLastBalanceTime(employeeHome.getInstance().getId());
         employeeAction = new EmployeeAction(UUID.randomUUID().toString().replace("-",""),new Date(),employeeHome.getInstance());
-        employeeAction.setJobInfo(new JobInfo(employeeHome.getInstance().getJob(),employeeHome.getInstance().getLevel(),employeeHome.getInstance().getWorkCode(),employeeHome.getInstance().getOffice(),employeeAction));
+        employeeAction.setNewJob(new JobInfo(UUID.randomUUID().toString().replace("-",""),employeeHome.getInstance().getJobInfo()));
         employeeAction.setPaidBalance(new PaidBalance(employeeAction));
 
     }
@@ -99,7 +99,7 @@ public class JobChange implements java.io.Serializable{
             return null;
         }
 
-        if(employeeHome.getInstance().getWorkCode() == null || employeeHome.getInstance().getWorkCode().trim().equals("")){
+        if(employeeHome.getInstance().getJobInfo().getWorkCode() == null || employeeHome.getInstance().getJobInfo().getWorkCode().trim().equals("")){
             return jobChange();
         }
 
@@ -111,7 +111,7 @@ public class JobChange implements java.io.Serializable{
         if (paidCalc.getWorkContentData() == null){
             return new ArrayList<WorkContentMoney>(0);
         }
-        return paidCalc.getWorkContentData().get(employeeHome.getInstance().getWorkCode());
+        return paidCalc.getWorkContentData().get(employeeHome.getInstance().getJobInfo().getWorkCode());
     }
 
     @Transactional
@@ -121,10 +121,7 @@ public class JobChange implements java.io.Serializable{
         Business business = businessHelper.createEmployeeBusiness(Business.Type.EMP_JOB_CHANGE);
 
         employeeAction.setBusiness(business);
-        employeeHome.getInstance().setOffice(getJobInfo().getOffice());
-        employeeHome.getInstance().setJob(getJobInfo().getJob());
-        employeeHome.getInstance().setWorkCode(getJobInfo().getWorkCode());
-        employeeHome.getInstance().setLevel(getJobInfo().getLevel());
+        employeeHome.getInstance().setJobInfo(employeeAction.getNewJob());
         business.getEmployeeActions().add(employeeAction);
 
         entityManager.persist(business);

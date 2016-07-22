@@ -21,12 +21,9 @@ public class Employee implements java.io.Serializable , Comparable<Employee>{
     private String phone;
     private Status status;
     private Date joinDate;
-    private String workCode;
 
-    private Job job;
-    private String level;
+    private JobInfo jobInfo;
 
-    private Office office;
 
     public Employee() {
     }
@@ -91,47 +88,15 @@ public class Employee implements java.io.Serializable , Comparable<Employee>{
         this.joinDate = joinDate;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY,optional = false)
-    @JoinColumn(name = "OFFICE", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "JOB_INFO",nullable = false)
     @NotNull
-    public Office getOffice() {
-        return office;
+    public JobInfo getJobInfo() {
+        return jobInfo;
     }
 
-    public void setOffice(Office office) {
-        this.office = office;
-    }
-
-    @Column(name = "WORK_CODE",length = 32)
-    @Size(max = 32)
-    public String getWorkCode() {
-        return workCode;
-    }
-
-    public void setWorkCode(String workCode) {
-        this.workCode = workCode;
-    }
-
-    @Column(name = "LEVEL",length = 32,nullable = false)
-    @Size(max = 32)
-    @NotNull
-    public String getLevel() {
-        return level;
-    }
-
-    public void setLevel(String level) {
-        this.level = level;
-    }
-
-    @ManyToOne(fetch = FetchType.LAZY,optional = false)
-    @JoinColumn(name = "JOB", nullable = false)
-    @NotNull
-    public Job getJob() {
-        return job;
-    }
-
-    public void setJob(Job job) {
-        this.job = job;
+    public void setJobInfo(JobInfo jobInfo) {
+        this.jobInfo = jobInfo;
     }
 
     public int compareTo(Employee o) {

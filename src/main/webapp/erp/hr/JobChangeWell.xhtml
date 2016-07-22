@@ -45,12 +45,12 @@
                 <b:jumbotron>
                     <h1>工作调动完成!</h1>
                     <p>员工 <span class="important-text">#{employeeHome.instance.name}</span> 于 <h:outputText
-                            styleClass="important-text" value="#{employeeOperation.validTime}"><f:convertDateTime timeZone="#{i18n.timeZone}" locale="#{i18n.locale}"
-                            pattern="yyyy年MM月dd日"/></h:outputText> 被调动到 <span
-                            class="important-text">#{employeeHome.instance.office.name}</span> 岗位 <span
-                            class="important-text">#{employeeHome.instance.job.name}</span> 级别为 <span
-                            class="important-text">#{dictionaryProducer.getDictionaryValue(employeeHome.instance.level)}</span>, 新的工作编号为
-                        <span class="important-text">#{employeeHome.instance.workCode}</span>.</p>
+                            styleClass="important-text" value="#{employeeGift.validTime}"><f:convertDateTime timeZone="#{i18n.timeZone}" locale="#{i18n.locale}"
+                                                                                                             pattern="yyyy年MM月dd日"/></h:outputText> 被调动到 <span
+                            class="important-text">#{employeeHome.instance.jobInfo.office.name}</span> 岗位 <span
+                            class="important-text">#{employeeHome.instance.jobInfo.job.name}</span> 级别为 <span
+                            class="important-text">#{dictionaryProducer.getDictionaryValue(employeeHome.instance.jobInfo.level)}</span>, 新的工作编号为
+                        <span class="important-text">#{employeeHome.instance.jobInfo.workCode}</span>.</p>
 
                     <p><h:outputLink value="#{request.contextPath}/erp/hr/employeeList.xhtml"
                                      styleClass="btn btn-primary btn-lg">返回员工管理</h:outputLink></p>

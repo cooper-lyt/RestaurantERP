@@ -10,9 +10,13 @@
 
 
             <o:form includeViewParams="true">
-            <div>
+            <div >
                 <b:commandButton action="#{paidBusinessHome.exportToExcel}" iconAwesome="sign-out" styleClass="right">
                 </b:commandButton>
+
+                <h1>
+                    #{paidBusinessHome.instance.description} 工资报表
+                </h1>
             </div>
             </o:form>
 
@@ -71,10 +75,10 @@
                     #{_item.paidBalance.employeeAction.employee.name}
                 </td>
                 <td>
-                    #{_item.paidBalance.employeeAction.employee.job.name}
+                    #{_item.paidBalance.employeeAction.employee.jobInfo.job.name}
                 </td>
                 <td>
-                    #{dictionaryProducer.getDictionaryValue(_item.paidBalance.employeeAction.employee.level)}
+                    #{dictionaryProducer.getDictionaryValue(_item.paidBalance.employeeAction.employee.jobInfo.level)}
                 </td>
 
                 <c:forEach items="#{paidBusinessHome.basePaidCategoryList}" var="_base">

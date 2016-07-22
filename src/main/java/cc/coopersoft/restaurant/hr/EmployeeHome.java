@@ -48,9 +48,6 @@ public class EmployeeHome extends EntityHome<Employee,String> {
         setId(facesContext.getExternalContext().getRequestParameterMap().get("employeeId"));
         logger.config("set Employee Home ID form param:" + getId());
     }
-
-    public void clearJob(){
-        getInstance().setJob(null);
-    }
+    
 
 }

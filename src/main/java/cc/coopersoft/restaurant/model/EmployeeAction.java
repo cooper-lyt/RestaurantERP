@@ -19,6 +19,7 @@ public class EmployeeAction implements java.io.Serializable{
     private Employee employee;
     private Business business;
     private JobInfo jobInfo;
+    private JobInfo newJob;
     private PaidBalance paidBalance;
     private EmployeeGiftMoney employeeGiftMoney;
     private EmployeePaid employeePaid;
@@ -31,12 +32,14 @@ public class EmployeeAction implements java.io.Serializable{
         this.validTime = validTime;
         this.employee = employee;
         this.business = business;
+        this.jobInfo = employee.getJobInfo();
     }
 
     public EmployeeAction(String id, Date validTime, Employee employee) {
         this.id = id;
         this.validTime = validTime;
         this.employee = employee;
+        this.jobInfo = employee.getJobInfo();
     }
 
     @Id
@@ -61,7 +64,7 @@ public class EmployeeAction implements java.io.Serializable{
         this.validTime = validTime;
     }
 
-    @ManyToOne(fetch = FetchType.LAZY,optional = false,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY,optional = false,cascade = CascadeType.PERSIST)
     @JoinColumn(name = "EMPLOYEE_ID",nullable = false)
     @NotNull
     public Employee getEmployee() {
@@ -83,14 +86,25 @@ public class EmployeeAction implements java.io.Serializable{
         this.business = business;
     }
 
-    @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
-    @PrimaryKeyJoinColumn
+    @ManyToOne(fetch = FetchType.LAZY,optional = false, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "JOB_INFO", nullable = false)
+    @NotNull
     public JobInfo getJobInfo() {
         return jobInfo;
     }
 
     public void setJobInfo(JobInfo jobInfo) {
         this.jobInfo = jobInfo;
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinColumn(name = "NEW_JOB")
+    public JobInfo getNewJob() {
+        return newJob;
+    }
+
+    public void setNewJob(JobInfo newJob) {
+        this.newJob = newJob;
     }
 
     @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL)
