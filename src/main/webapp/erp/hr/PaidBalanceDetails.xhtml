@@ -14,38 +14,34 @@
         </f:metadata>
     </ui:define>
 
+    <o:form includeViewParams="true">
 
-    <b:row styleClass="details-info" style="margin-top: 20px;">
-        <div class="col-md-6">
-            <label for="houseCode">编号</label>
+    <div class="dashboard-notice" style="margin-top: 20px;">
+        <div class="right">
+            <b:buttonGroup>
 
-                    <span class="info-value-block" id="houseCode">
-                        #{paidBusinessHome.instance.id}
-                    </span>
+                <b:commandButton icon="trash" look="danger" title="删除" value="">
+
+                </b:commandButton>
+            </b:buttonGroup>
         </div>
 
-        <div class="col-md-6">
-            <label for="workCode">操作时间</label>
+        <b:iconAwesome name="bookmark" size="3x"/>
+        <h2>
+            <strong>#{enumHelper.getLabel(paidBusinessHome.instance.type)}</strong>
+            #{paidBusinessHome.instance.id}
+        </h2>
+        <p class="repo-list-description">
 
-                    <span class="info-value-block" id="workCode">
-                        <h:outputText value="#{paidBusinessHome.instance.startTime}">
-                               <f:convertDateTime timeZone="#{i18n.timeZone}" locale="#{i18n.locale}" pattern="yyyy年MM月dd日 HH:mm"/>
-                        </h:outputText>
-                    </span>
-        </div>
+        </p>
+        <p class="repo-list-meta">
+            <h:outputText value="#{paidBusinessHome.instance.startTime}">
+                <f:convertDateTime timeZone="#{i18n.timeZone}" locale="#{i18n.locale}" pattern="yyyy年MM月dd日 HH:mm"/>
+            </h:outputText>
+        </p>
+    </div>
 
-        <div class="col-md-12">
-            <label for="name">业务描述</label>
-
-                    <span class="info-value-block" id="name">
-                        #{paidBusinessHome.instance.description}
-                    </span>
-        </div>
-
-
-
-    </b:row>
-
+    </o:form>
     <ui:include src="/erp/hr/frame/paidTable.xhtml"/>
 
 </ui:composition>

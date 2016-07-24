@@ -854,6 +854,49 @@ table.floatThead-table {
     margin: 0;
 }
 
+.dashboard-notice {
+    position: relative;
+    padding: 15px 15px 15px 55px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    background-color: #fafafa;
+    border: solid 1px #d8d8d8;
+    border-radius: 3px;
+}
+
+.dashboard-notice .fa {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+}
+
+.dashboard-notice h2 {
+    margin-top: 9px;
+    margin-bottom: 16px;
+    font-size: 18px;
+    font-weight: normal;
+    color: #000;
+}
+
+.dashboard-notice p {
+    margin-top: 0;
+}
+
+.repo-list-description {
+    max-width: 550px;
+    margin-top: 8px;
+    margin-bottom: 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.repo-list-meta {
+    display: block;
+    margin-top: 8px;
+    margin-bottom: 0;
+    font-size: 13px;
+    color: #888;
+}
 
 
 /* z-index  */
