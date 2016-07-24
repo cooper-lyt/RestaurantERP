@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:composition template="/applayout/pageTemplate.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:define name="custom-header">
+        <f:metadata>
+            <o:viewParam name="businessId" value="#{paidBusinessHome.id}"/>
+        </f:metadata>
+    </ui:define>
+
+    <o:form includeViewParams="true">
+
+        <div class="dashboard-notice" style="margin-top: 20px;">
+            <div class="right">
+                <b:buttonGroup>
+
+                    <b:commandButton icon="trash" look="danger" title="删除" value="">
+
+                    </b:commandButton>
+                </b:buttonGroup>
+            </div>
+
+            <b:iconAwesome name="bookmark" size="3x"/>
+            <h2>
+                <strong>#{enumHelper.getLabel(paidBusinessHome.instance.type)}</strong>
+                #{paidBusinessHome.instance.id}
+            </h2>
+            <p class="repo-list-description">
+
+            </p>
+            <p class="repo-list-meta">
+                操作时间:
+                <h:outputText value="#{paidBusinessHome.instance.startTime}">
+                    <f:convertDateTime timeZone="#{i18n.timeZone}" locale="#{i18n.locale}" pattern="yyyy年MM月dd日 HH:mm"/>
+                </h:outputText>
+                调动时间:
+                <h:outputText value="#{paidBusinessHome.singleEmployeeAction.validTime}">
+                    <f:convertDateTime timeZone="#{i18n.timeZone}" locale="#{i18n.locale}" pattern="yyyy年MM月dd日 HH:mm"/>
+                </h:outputText>
+            </p>
+        </div>
+
+    </o:form>
+
+
+    <ui:include src="/erp/hr/frame/employeeInfo.xhtml">
+        <ui:param name="employee" value="#{paidBusinessHome.singleEmployeeAction.employee}"/>
+    </ui:include>
+
+
+
+
+    <b:row styleClass="details-info compare-table">
+        <b:column col-xs="6" col-sm="6" col-md="6" col-lg="6" style="font-weight: bold;background-color: #f9f9f9;">
+            原岗位
+        </b:column>
+        <b:column col-xs="6" col-sm="6" col-md="6" col-lg="6" style="font-weight: bold;background-color: #f9f9f9;">
+            调动岗位
+        </b:column>
+        <b:column col-xs="6" col-sm="6" col-md="6" col-lg="6">
+            #{paidBusinessHome.singleEmployeeAction.jobInfo.office.name}
+        </b:column>
+        <b:column col-xs="6" col-sm="6" col-md="6" col-lg="6">
+            #{paidBusinessHome.singleEmployeeAction.newJob.office.name}
+        </b:column>
+        <b:column col-xs="6" col-sm="6" col-md="6" col-lg="6">
+            #{paidBusinessHome.singleEmployeeAction.jobInfo.job.name}
+        </b:column>
+        <b:column col-xs="6" col-sm="6" col-md="6" col-lg="6">
+            #{paidBusinessHome.singleEmployeeAction.newJob.job.name}
+        </b:column>
+        <b:column col-xs="6" col-sm="6" col-md="6" col-lg="6">
+            #{dictionaryProducer.getDictionaryValue(paidBusinessHome.singleEmployeeAction.jobInfo.level)}
+        </b:column>
+        <b:column col-xs="6" col-sm="6" col-md="6" col-lg="6">
+            #{dictionaryProducer.getDictionaryValue(paidBusinessHome.singleEmployeeAction.newJob.level)}
+        </b:column>
+        <b:column col-xs="6" col-sm="6" col-md="6" col-lg="6">
+            #{paidBusinessHome.singleEmployeeAction.jobInfo.workCode}
+        </b:column>
+        <b:column col-xs="6" col-sm="6" col-md="6" col-lg="6">
+            #{paidBusinessHome.singleEmployeeAction.newJob.workCode}
+        </b:column>
+
+    </b:row>
+
+    <h:outputStylesheet>
+
+
+        .compare-table [class^=col-]{
+            text-align: center;
+            vertical-align: middle;
+            line-height: 40px;
+        }
+    </h:outputStylesheet>
+
+</ui:composition>

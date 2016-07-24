@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <b:row styleClass="details-info">
+        <div class="col-md-4">
+            <label for="houseCode">编号</label>
+
+                    <span class="info-value-block" id="houseCode">
+                        #{employee.id}
+                    </span>
+        </div>
+
+        <div class="col-md-4">
+            <label for="workCode">工作编号</label>
+
+                    <span class="info-value-block" id="workCode">
+                        #{employee.jobInfo.workCode}
+
+                    </span>
+        </div>
+
+        <div class="col-md-4">
+            <label for="name">姓名</label>
+
+                    <span class="info-value-block" id="name">
+                        #{employee.name}
+                    </span>
+        </div>
+
+        <div class="col-md-4">
+            <label for="job">岗位</label>
+
+                    <span class="info-value-block" id="job">
+                        #{employee.jobInfo.job.name}
+                    </span>
+        </div>
+
+        <div class="col-md-4">
+            <label for="level">级别</label>
+
+                    <span class="info-value-block" id="level">
+                        #{dictionaryProducer.getDictionaryValue(employee.jobInfo.level)}
+                    </span>
+        </div>
+
+
+        <div class="col-md-4">
+            <label for="tel">联系电话</label>
+
+                    <span class="info-value-block" id="tel">
+                        #{employee.phone}
+                    </span>
+        </div>
+        <div class="col-md-4">
+            <label for="status">状态</label>
+
+                    <span class="info-value-block" id="status">
+                        #{enumHelper.getLabel(employee.status)}
+                    </span>
+        </div>
+
+        <div class="col-md-4">
+            <label for="office">工作地点</label>
+
+                    <span class="info-value-block" id="office">
+                        #{employee.jobInfo.office.name}
+                    </span>
+        </div>
+
+
+        <div class="col-md-4">
+            <label for="joinDate">入职时间</label>
+
+                    <span class="info-value-block" id="joinDate">
+                        <h:outputText value="#{employee.joinDate}">
+                            <f:convertDateTime timeZone="#{i18n.timeZone}" locale="#{i18n.locale}" pattern="yyyy年mm月dd日"/>
+                        </h:outputText>
+
+                    </span>
+        </div>
+
+    </b:row>
+
+
+    </ui:composition>

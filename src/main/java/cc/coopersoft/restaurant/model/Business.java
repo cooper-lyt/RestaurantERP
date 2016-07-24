@@ -15,7 +15,7 @@ import java.util.Set;
 public class Business {
 
     public enum Type{
-        EMP_JOIN(""),EMP_JOB_CHANGE(""),EMP_LEAVE(""),EMP_GIFT("/erp/hr/EmployeeGiftDetails.xhtml"),EMP_BALANCE("/erp/hr/PaidBalanceDetails.xhtml");
+        EMP_JOIN("/erp/hr/JoinDetails.xhtml"),EMP_JOB_CHANGE("/erp/hr/JobChangeDetails.xhtml"),EMP_LEAVE("/erp/hr/LeaveDetails.xhtml"),EMP_GIFT("/erp/hr/EmployeeGiftDetails.xhtml"),EMP_BALANCE("/erp/hr/PaidBalanceDetails.xhtml");
         private String detailsPage;
 
         public String getDetailsPage() {

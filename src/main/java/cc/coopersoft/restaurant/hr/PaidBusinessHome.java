@@ -179,6 +179,13 @@ public class PaidBusinessHome extends EntityHome<Business, String> {
         return employeeActionList;
     }
 
+    public EmployeeAction getSingleEmployeeAction(){
+        if (getInstance().getEmployeeActions().size() > 1){
+            throw new IllegalArgumentException("employeeAction not single");
+        }
+        return getInstance().getEmployeeActions().iterator().next();
+    }
+
     private void initPaidTable() {
 
         if (giftPaidCategories == null || basePaidCategories == null || items == null) {

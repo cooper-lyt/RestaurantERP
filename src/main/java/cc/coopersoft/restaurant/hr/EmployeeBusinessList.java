@@ -16,7 +16,7 @@ import javax.inject.Named;
 @RequestScoped
 public class EmployeeBusinessList extends BusinessList{
 
-    private static final int PAGE_SIZE = 2;
+    private static final int PAGE_SIZE = 15;
 
     @Inject
     private EmployeeBusinessRepository employeeBusinessRepository;

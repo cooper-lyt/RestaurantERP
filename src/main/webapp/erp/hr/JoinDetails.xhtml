@@ -1,0 +1,135 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:composition template="/applayout/pageTemplate.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:define name="custom-header">
+        <f:metadata>
+            <o:viewParam name="businessId" value="#{paidBusinessHome.id}"/>
+        </f:metadata>
+    </ui:define>
+
+    <o:form includeViewParams="true">
+
+        <div class="dashboard-notice" style="margin-top: 20px;">
+            <div class="right">
+                <b:buttonGroup>
+
+                    <b:commandButton icon="trash" look="danger" title="删除" value="">
+
+                    </b:commandButton>
+                </b:buttonGroup>
+            </div>
+
+            <b:iconAwesome name="bookmark" size="3x"/>
+            <h2>
+                <strong>#{enumHelper.getLabel(paidBusinessHome.instance.type)}</strong>
+                #{paidBusinessHome.instance.id}
+            </h2>
+            <p class="repo-list-description">
+
+            </p>
+            <p class="repo-list-meta">
+                操作时间:
+                <h:outputText value="#{paidBusinessHome.instance.startTime}">
+                    <f:convertDateTime timeZone="#{i18n.timeZone}" locale="#{i18n.locale}" pattern="yyyy年MM月dd日 HH:mm"/>
+                </h:outputText>
+                调动时间:
+                <h:outputText value="#{paidBusinessHome.singleEmployeeAction.validTime}">
+                    <f:convertDateTime timeZone="#{i18n.timeZone}" locale="#{i18n.locale}" pattern="yyyy年MM月dd日 HH:mm"/>
+                </h:outputText>
+            </p>
+        </div>
+
+    </o:form>
+
+
+    <b:row styleClass="details-info">
+        <div class="col-md-4">
+            <label for="houseCode">编号</label>
+
+                    <span class="info-value-block" id="houseCode">
+                        #{paidBusinessHome.singleEmployeeAction.employee.id}
+                    </span>
+        </div>
+
+
+
+        <div class="col-md-4">
+            <label for="name">姓名</label>
+
+                    <span class="info-value-block" id="name">
+                        #{paidBusinessHome.singleEmployeeAction.employee.name}
+                    </span>
+        </div>
+
+
+
+        <div class="col-md-4">
+            <label for="tel">联系电话</label>
+
+                    <span class="info-value-block" id="tel">
+                        #{paidBusinessHome.singleEmployeeAction.employee.phone}
+                    </span>
+        </div>
+        <div class="col-md-4">
+            <label for="status">状态</label>
+
+                    <span class="info-value-block" id="status">
+                        #{enumHelper.getLabel(paidBusinessHome.singleEmployeeAction.employee.status)}
+                    </span>
+        </div>
+
+        <div class="col-md-4">
+            <label for="office">工作地点</label>
+
+                    <span class="info-value-block" id="office">
+                        #{paidBusinessHome.singleEmployeeAction.jobInfo.office.name}
+                    </span>
+        </div>
+
+        <div class="col-md-4">
+            <label for="job">岗位</label>
+
+                    <span class="info-value-block" id="job">
+                        #{paidBusinessHome.singleEmployeeAction.jobInfo.job.name}
+                    </span>
+        </div>
+
+        <div class="col-md-4">
+            <label for="job">技能等级</label>
+
+                    <span class="info-value-block" id="level">
+                        #{dictionaryProducer.getDictionaryValue(paidBusinessHome.singleEmployeeAction.jobInfo.level)}
+                    </span>
+        </div>
+        <div class="col-md-4">
+            <label for="workCode">工作编号</label>
+
+                    <span class="info-value-block" id="workCode">
+ #{paidBusinessHome.singleEmployeeAction.jobInfo.workCode}
+                      </span>
+        </div>
+
+        <div class="col-md-4">
+            <label for="joinDate">入职时间</label>
+
+                    <span class="info-value-block" id="joinDate">
+                        <h:outputText value="#{paidBusinessHome.singleEmployeeAction.validTime}">
+                            <f:convertDateTime timeZone="#{i18n.timeZone}" locale="#{i18n.locale}" pattern="yyyy年mm月dd日"/>
+                        </h:outputText>
+
+                    </span>
+        </div>
+
+    </b:row>
+
+
+
+
+</ui:composition>
