@@ -11,7 +11,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "EMPLOYEE_ACTION",catalog = "RESTAURANT")
-public class EmployeeAction implements java.io.Serializable{
+public class EmployeeAction implements Comparable<EmployeeAction>,java.io.Serializable{
 
     private String id;
     private Date validTime;
@@ -135,5 +135,9 @@ public class EmployeeAction implements java.io.Serializable{
 
     public void setEmployeePaid(EmployeePaid employeePaid) {
         this.employeePaid = employeePaid;
+    }
+
+    public int compareTo(EmployeeAction o) {
+        return getEmployee().compareTo(o.getEmployee());
     }
 }

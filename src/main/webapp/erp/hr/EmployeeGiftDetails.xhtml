@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:composition template="/applayout/pageTemplate.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:define name="custom-header">
+        <f:metadata>
+            <o:viewParam name="businessId" value="#{paidBusinessHome.id}"/>
+        </f:metadata>
+    </ui:define>
+
+    <o:form includeViewParams="true">
+
+        <div class="dashboard-notice" style="margin-top: 20px;">
+            <div class="right">
+                <b:buttonGroup>
+
+                    <b:commandButton icon="trash" look="danger" title="删除" value="">
+
+                    </b:commandButton>
+                </b:buttonGroup>
+            </div>
+
+            <b:iconAwesome name="bookmark" size="3x"/>
+            <h2>
+                <strong>#{enumHelper.getLabel(paidBusinessHome.instance.type)}</strong>
+                #{paidBusinessHome.instance.id}
+            </h2>
+            <p class="repo-list-description">
+
+            </p>
+            <p class="repo-list-meta">
+                <h:outputText value="#{paidBusinessHome.instance.startTime}">
+                    <f:convertDateTime timeZone="#{i18n.timeZone}" locale="#{i18n.locale}" pattern="yyyy年MM月dd日 HH:mm"/>
+                </h:outputText>
+            </p>
+        </div>
+
+    </o:form>
+
+
+    <h:dataTable value="#{paidBusinessHome.employeeActionList}"
+                 styleClass="table table-striped table-hover table-floatThead" var="_action">
+        <h:column>
+            <f:facet name="header">
+                编号
+            </f:facet>
+            #{_action.employee.id}
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                编号
+            </f:facet>
+            #{_action.employee.id}
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                姓名
+            </f:facet>
+            #{_action.employee.name}
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                营业单位
+            </f:facet>
+            #{_action.jobInfo.office.name}
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                职位
+            </f:facet>
+            #{_action.jobInfo.job.name}
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                技能等级
+            </f:facet>
+            #{dictionaryProducer.getDictionaryValue(_action.jobInfo.level)}
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                奖惩类型
+            </f:facet>
+            #{dictionaryProducer.getDictionaryValue(_action.employeeGiftMoney.category)}
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                发放日期
+            </f:facet>
+            <h:outputText value="#{_action.validTime}">
+                <f:convertDateTime locale="#{i18n.locale}" timeZone="#{i18n.timeZone}" pattern="yyyy年MM月dd日 HH:mm"/>
+            </h:outputText>
+        </h:column>
+        <h:column>
+            <f:facet name="header">
+                金额
+            </f:facet>
+            <h:outputText value="#{_action.employeeGiftMoney.money}">
+                <f:convertNumber type="currency" locale="#{i18n.locale}"/>
+            </h:outputText>
+        </h:column>
+
+
+    </h:dataTable>
+
+
+    <h:outputScript library="floatThead" name="jquery.floatThead.min.js"/>
+    <h:outputScript>
+        $(function () {
+        $(".table.table-floatThead").floatThead({
+        top: 50,
+        responsiveContainer: function ($table) {
+        return $table.closest(".table-responsive");
+        }
+        });
+        });
+    </h:outputScript>
+
+</ui:composition>

@@ -155,6 +155,7 @@ public class PaidBusinessHome extends EntityHome<Business, String> {
         items = null;
         basePaidCategories = null;
         giftPaidCategories = null;
+        employeeActionList = null;
     }
 
     @Override
@@ -168,6 +169,15 @@ public class PaidBusinessHome extends EntityHome<Business, String> {
         logger.config("set Business Home ID form param:" + getId());
     }
 
+    private List<EmployeeAction> employeeActionList;
+
+    public List<EmployeeAction> getEmployeeActionList() {
+        if (employeeActionList == null){
+            employeeActionList = new ArrayList<EmployeeAction>(getInstance().getEmployeeActions());
+            Collections.sort(employeeActionList);
+        }
+        return employeeActionList;
+    }
 
     private void initPaidTable() {
 
