@@ -1,16 +1,100 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html>
-<ui:composition template="/applayout/pageTemplate.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition template="/applayout/dataTemplate.xhtml" xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:b="http://bootsfaces.net/ui"
                 xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
-                xmlns:ui="http://java.sun.com/jsf/facelets">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:o="http://omnifaces.org/ui">
 
-    <b:jumbotron>
-        <h1>coming soon!</h1>
-        <p>此处应能查询所有操作,并可对操作进删除!  此功能正在开发中.</p>
+    <ui:define name="custom-header">
 
-    </b:jumbotron>
+        <h:outputStylesheet library="bootstrap-datepicker" name="css/bootstrap-datetimepicker.min.css"/>
+        <h:outputScript library="bootstrap-datepicker" name="js/bootstrap-datetimepicker.min.js"/>
+        <h:outputScript library="bootstrap-datepicker" name="js/locales/bootstrap-datetimepicker.zh-CN.js"/>
+
+        </ui:define>
+
+
+    <ui:param name="fun_title" value="操作查询"/>
+    <ui:define name="search-condition">
+        <b:inputText value="#{employeeBusinessList.condition}" styleClass="form-control input-block" aria-label="Search"
+                     placeholder="查询条件">
+        </b:inputText>
+    </ui:define>
+    <ui:define name="search-action">
+        <b:commandButton look="default">查询</b:commandButton>
+    </ui:define>
+
+    <o:form id="resultData" includeViewParams="true">
+
+        <ui:fragment rendered="#{employeeBusinessList.resultData.emptyResult}">
+            <div class="blankslate blankslate-spacious blankslate-large">
+                <b:iconAwesome name="search" size="4x" styleClass="blankslate-icon"/>
+
+                <h3>没有结果返回.</h3>
+                <p>你可以 <p:link includeViewParams="false">清空条件</p:link></p>
+            </div>
+        </ui:fragment>
+
+
+
+        <h:dataTable value="#{employeeBusinessList.resultData.resultData}"
+                     styleClass="table table-striped table-hover table-floatThead"
+                     headerClass="table-tools-header"
+                     columnClasses="width-20percent,width-10percent,width-min"
+                     var="_business" rendered="#{not employeeBusinessList.resultData.emptyResult}">
+
+            <f:facet name="header">
+
+
+                <h3>
+                    找到
+                    <h:outputText value="#{employeeBusinessList.resultData.dataCount}">
+                        <f:convertNumber type="number" groupingUsed="true"/>
+                    </h:outputText> 个符合条件的操作
+                </h3>
+
+
+            </f:facet>
+
+            <h:column>
+                <f:facet name="header">
+                    编号
+                </f:facet>
+                <h:outputText value="#{_business.id}"/>
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">
+                    类型
+                </f:facet>
+                <h:outputText style="white-space:nowrap;" value="#{enumHelper.getLabel(_business.type)}"/>
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    业务描述
+                </f:facet>
+                <h:outputText style="white-space:nowrap;" value="#{_business.description}"/>
+            </h:column>
+
+            <h:column>
+                <f:facet name="header">
+
+                </f:facet>
+                <div class="list-actions right">
+                    <b:commandButton styleClass="list-action" value="编辑" process="@this" ajax="true" icon="pencil" look="link">
+                    </b:commandButton>
+                </div>
+            </h:column>
+
+
+        </h:dataTable>
+
+    </o:form>
+
+
 
 </ui:composition>

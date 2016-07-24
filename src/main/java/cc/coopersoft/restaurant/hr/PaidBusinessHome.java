@@ -2,10 +2,9 @@ package cc.coopersoft.restaurant.hr;
 
 import cc.coopersoft.common.EntityHome;
 import cc.coopersoft.restaurant.Messages;
-import cc.coopersoft.restaurant.hr.repository.BusinessRepository;
+import cc.coopersoft.restaurant.hr.repository.EmployeeBusinessRepository;
 import cc.coopersoft.restaurant.model.*;
 import cc.coopersoft.system.DictionaryProducer;
-import cc.coopersoft.system.model.*;
 import cc.coopersoft.system.model.Dictionary;
 import org.apache.deltaspike.data.api.EntityRepository;
 import org.apache.deltaspike.jsf.api.message.JsfMessage;
@@ -26,7 +25,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -42,7 +40,7 @@ public class PaidBusinessHome extends EntityHome<Business, String> {
     private EntityManager entityManager;
 
     @Inject
-    private BusinessRepository businessRepository;
+    private EmployeeBusinessRepository employeeBusinessRepository;
 
     @Inject
     private DictionaryProducer dictionaryProducer;
@@ -58,7 +56,7 @@ public class PaidBusinessHome extends EntityHome<Business, String> {
     }
 
     protected EntityRepository<Business, String> getEntityRepository() {
-        return businessRepository;
+        return employeeBusinessRepository;
     }
 
     protected EntityManager getEntityManager() {
