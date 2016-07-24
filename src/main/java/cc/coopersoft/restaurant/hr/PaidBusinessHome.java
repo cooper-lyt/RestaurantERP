@@ -164,7 +164,7 @@ public class PaidBusinessHome extends EntityHome<Business, String> {
 
     @PostConstruct
     public void initParam(){
-        setId(facesContext.getExternalContext().getRequestParameterMap().get("paidBusinessId"));
+        setId(facesContext.getExternalContext().getRequestParameterMap().get("businessId"));
         logger.config("set Business Home ID form param:" + getId());
     }
 

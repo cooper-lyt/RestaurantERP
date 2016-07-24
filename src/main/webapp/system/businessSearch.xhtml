@@ -15,7 +15,14 @@
         <h:outputScript library="bootstrap-datepicker" name="js/bootstrap-datetimepicker.min.js"/>
         <h:outputScript library="bootstrap-datepicker" name="js/locales/bootstrap-datetimepicker.zh-CN.js"/>
 
-        </ui:define>
+        <f:metadata>
+            <o:viewParam name="condition" value="#{employeeBusinessList.condition}" />
+            <o:viewParam name="filterType" value="#{employeeBusinessList.filterType}" converter="omnifaces.GenericEnumConverter"/>
+            <o:viewParam name="dateFrom" value="#{employeeBusinessList.dateFrom}"/>
+            <o:viewParam name="dateTo" value="#{employeeBusinessList.dateTo}"/>
+            <o:viewParam name="firstResult" value="#{employeeBusinessList.firstResult}"/>
+        </f:metadata>
+    </ui:define>
 
 
     <ui:param name="fun_title" value="操作查询"/>
@@ -40,11 +47,10 @@
         </ui:fragment>
 
 
-
         <h:dataTable value="#{employeeBusinessList.resultData.resultData}"
                      styleClass="table table-striped table-hover table-floatThead"
                      headerClass="table-tools-header"
-                     columnClasses="width-20percent,width-10percent,width-min"
+                     columnClasses="width-20percent,width-10percent,,width-min"
                      var="_business" rendered="#{not employeeBusinessList.resultData.emptyResult}">
 
             <f:facet name="header">
@@ -82,19 +88,55 @@
 
             <h:column>
                 <f:facet name="header">
-
+                    操作时间
                 </f:facet>
-                <div class="list-actions right">
-                    <b:commandButton styleClass="list-action" value="编辑" process="@this" ajax="true" icon="pencil" look="link">
-                    </b:commandButton>
-                </div>
+                <h:outputText style="white-space:nowrap;" value="#{_business.startTime}">
+                    <f:convertDateTime timeZone="#{i18n.timeZone}" locale="#{i18n.locale}" pattern="yyyy年MM月dd日 HH:mm"/>
+                </h:outputText>
             </h:column>
 
 
         </h:dataTable>
 
+
+        <div style="text-align: center">
+        <nav>
+            <ul class="pagination">
+                <li class="#{employeeBusinessList.resultData.havePrevious ? '' : 'disabled'}">
+
+                    <a href="#" aria-label="上一页"><span aria-hidden="true">#{messages.left}#{messages.left}</span></a>
+                </li>
+
+                <c:forEach items="#{employeeBusinessList.resultData.pages}" var="_page">
+                    <li class="#{_page.page eq employeeBusinessList.resultData.page ? 'active' : ''} ">
+                        <h:outputLink>
+                            #{_page.title} <span class="sr-only">(current)</span>
+                            <f:param name="firstResult" value="#{_page.firstResult}"/>
+                        </h:outputLink>
+                    </li>
+
+                </c:forEach>
+
+                <li class="#{employeeBusinessList.resultData.haveNext ? '' : 'disabled'}">
+                    <a href="#" aria-label="下一页">
+                        <span aria-hidden="true">#{messages.right}#{messages.right}</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        </div>
     </o:form>
 
-
+    <h:outputScript library="floatThead" name="jquery.floatThead.min.js"/>
+    <h:outputScript>
+        $(function () {
+            $(".table.table-floatThead").floatThead({
+                top: 50,
+                responsiveContainer: function ($table) {
+                    return $table.closest(".table-responsive");
+                }
+            });
+        });
+    </h:outputScript>
 
 </ui:composition>

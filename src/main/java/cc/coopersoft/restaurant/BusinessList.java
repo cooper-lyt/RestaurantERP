@@ -4,6 +4,7 @@ import cc.coopersoft.common.I18n;
 import cc.coopersoft.common.PageResultData;
 import cc.coopersoft.common.util.ConditionAdapter;
 import cc.coopersoft.restaurant.model.Business;
+import org.omnifaces.cdi.Param;
 
 import javax.inject.Inject;
 import java.util.Date;
@@ -16,15 +17,20 @@ public abstract class BusinessList implements java.io.Serializable{
     @Inject
     private I18n i18n;
 
+    @Inject @Param(name = "condition")
     private String condition;
 
+    @Inject @Param(name = "filterType")
     private Business.Type filterType;
 
+    @Inject @Param(name = "dateFrom")
     private Date dateFrom;
 
+    @Inject @Param(name = "dateTo")
     private Date dateTo;
 
-    private int firstResult = 0;
+    @Inject @Param(name = "firstResult")
+    private Integer firstResult;
 
     private PageResultData<Business> resultData;
 
@@ -65,6 +71,9 @@ public abstract class BusinessList implements java.io.Serializable{
     }
 
     public int getFirstResult() {
+        if (firstResult == null){
+            return 0;
+        }
         return firstResult;
     }
 

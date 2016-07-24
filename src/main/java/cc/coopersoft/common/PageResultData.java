@@ -47,10 +47,13 @@ public class PageResultData<E> {
 
     private long dataCount;
 
+    private int pageSize;
+
     public PageResultData(List<E> resultData, int firstResult, long dataCount,int pageSize) {
         this.resultData = resultData;
         this.firstResult = firstResult;
         this.dataCount = dataCount;
+        this.pageSize = pageSize;
         pages = new ArrayList<DataPage>();
         pageCount = dataCount/pageSize;
         if (dataCount%pageSize > 0){
@@ -67,8 +70,20 @@ public class PageResultData<E> {
 
     }
 
-    public static int getPageMaxCount() {
-        return PAGE_MAX_COUNT;
+    public boolean isHaveNext(){
+        return (page < pageCount);
+    }
+
+    public boolean isHavePrevious(){
+        return (firstResult > 0);
+    }
+
+    public int getNextFirstResult(){
+        return firstResult + pageSize;
+    }
+
+    public int getPreviousFirstResult(){
+        return firstResult - pageSize;
     }
 
     public List<E> getResultData() {
