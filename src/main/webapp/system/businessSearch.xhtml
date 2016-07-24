@@ -70,7 +70,10 @@
                 <f:facet name="header">
                     编号
                 </f:facet>
-                <h:outputText value="#{_business.id}"/>
+                <h:outputLink value="#{request.contextPath}#{_business.type.detailsPage}">
+                    <f:param name="businessId" value="#{_business.id}"/>
+                    #{_business.id}
+                </h:outputLink>
             </h:column>
 
             <h:column>
@@ -103,8 +106,10 @@
         <nav>
             <ul class="pagination">
                 <li class="#{employeeBusinessList.resultData.havePrevious ? '' : 'disabled'}">
-
-                    <a href="#" aria-label="上一页"><span aria-hidden="true">#{messages.left}#{messages.left}</span></a>
+                   <h:outputLink pt:aria-label="上一页">
+                       <span aria-hidden="true">#{messages.left}#{messages.left}</span>
+                       <f:param name="firstResult" value="#{employeeBusinessList.resultData.previousFirstResult}"/>
+                   </h:outputLink>
                 </li>
 
                 <c:forEach items="#{employeeBusinessList.resultData.pages}" var="_page">
@@ -118,9 +123,12 @@
                 </c:forEach>
 
                 <li class="#{employeeBusinessList.resultData.haveNext ? '' : 'disabled'}">
-                    <a href="#" aria-label="下一页">
+                    <h:outputLink pt:aria-label="下一页">
+
+                        <f:param name="firstResult" value="#{employeeBusinessList.resultData.nextFirstResult}"/>
                         <span aria-hidden="true">#{messages.right}#{messages.right}</span>
-                    </a>
+                    </h:outputLink>
+
                 </li>
             </ul>
         </nav>

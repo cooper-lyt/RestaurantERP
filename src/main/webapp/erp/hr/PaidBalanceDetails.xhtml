@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:composition template="/applayout/pageTemplate.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+    <ui:define name="custom-header">
+        <f:metadata>
+            <o:viewParam name="businessId" value="#{paidBusinessHome.id}"/>
+        </f:metadata>
+    </ui:define>
+
+
+    <b:row styleClass="details-info" style="margin-top: 20px;">
+        <div class="col-md-6">
+            <label for="houseCode">编号</label>
+
+                    <span class="info-value-block" id="houseCode">
+                        #{paidBusinessHome.instance.id}
+                    </span>
+        </div>
+
+        <div class="col-md-6">
+            <label for="workCode">操作时间</label>
+
+                    <span class="info-value-block" id="workCode">
+                        <h:outputText value="#{paidBusinessHome.instance.startTime}">
+                               <f:convertDateTime timeZone="#{i18n.timeZone}" locale="#{i18n.locale}" pattern="yyyy年MM月dd日 HH:mm"/>
+                        </h:outputText>
+                    </span>
+        </div>
+
+        <div class="col-md-12">
+            <label for="name">业务描述</label>
+
+                    <span class="info-value-block" id="name">
+                        #{paidBusinessHome.instance.description}
+                    </span>
+        </div>
+
+
+
+    </b:row>
+
+    <ui:include src="/erp/hr/frame/paidTable.xhtml"/>
+
+</ui:composition>

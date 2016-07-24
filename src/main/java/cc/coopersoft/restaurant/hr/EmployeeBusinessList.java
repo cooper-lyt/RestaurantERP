@@ -27,4 +27,7 @@ public class EmployeeBusinessList extends BusinessList{
         return new PageResultData<Business>(employeeBusinessRepository.searchResultData(getConditionAdapter().getCondition(),getConditionAdapter().getContains(),getConditionAdapter().isEmpty(),getDateFrom(),getDateFrom() != null,getDateTo(),getDateTo() != null,getFilterType(),getFilterType() != null,getFirstResult(),PAGE_SIZE),getFirstResult(),
                 employeeBusinessRepository.searchResultCount(getConditionAdapter().getCondition(),getConditionAdapter().getContains(),getConditionAdapter().isEmpty(),getDateFrom(),getDateFrom() != null,getDateTo(),getDateTo() != null,getFilterType(),getFilterType() != null),PAGE_SIZE);
     }
+
+
+
 }
