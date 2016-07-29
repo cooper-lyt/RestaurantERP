@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:c="http://java.sun.com/jstl/core"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <o:form id="deleteConfirmPanelForm" includeViewParams="true">
+        <b:modal id="deleteConfirmPanel" size="modal-sm" title="删除确认" styleClass="deleteConfirmPanel">
+            <p>
+                <c:if test="#{not businessOperation.canDelete}">
+                    此操作不能被删除
+
+
+                </c:if>
+
+                <c:if test="#{businessOperation.canDelete}">
+                    确认要删除#{enumHelper.getLabel(business.type)}/#{business.id}!
+                </c:if>
+            </p>
+            <p>
+                <c:if test="#{not businessOperation.canDelete}">
+
+                    #{messages[businessOperation.message]}
+
+                </c:if>
+
+                <c:if test="#{businessOperation.canDelete}">
+                    删除操作不可恢复,请谨慎操作!
+                </c:if>
+
+            </p>
+            <f:facet name="footer">
+                <b:commandButton look="danger" style="width: 100%" action="#{businessOperation.delete}" disabled="#{not businessOperation.canDelete}" value="我确认我要删除此操作">
+                    <f:setPropertyActionListener value="#{business.id}" target="#{businessOperation.businessId}"/>
+
+                </b:commandButton>
+            </f:facet>
+        </b:modal>
+    </o:form>
+
+
+
+    <o:form includeViewParams="true">
+
+        <div class="dashboard-notice" style="margin-top: 20px;">
+            <div class="right">
+                <b:buttonGroup>
+
+                    <b:commandButton update="deleteConfirmPanelForm" ajax="true"
+                                     action="#{businessOperation.prepareDelete}"
+                                     oncomplete="$('.deleteConfirmPanel').modal();return false;"
+                                     icon="trash" look="danger" title="删除" value="">
+                        <f:setPropertyActionListener value="#{business.id}" target="#{businessOperation.businessId}"/>
+                    </b:commandButton>
+                </b:buttonGroup>
+            </div>
+
+            <b:iconAwesome name="bookmark" size="3x"/>
+            <h2>
+                <strong>#{enumHelper.getLabel(business.type)}</strong>
+                #{business.id}
+            </h2>
+            <p class="repo-list-description">
+
+            </p>
+            <p class="repo-list-meta">
+                <h:outputText value="#{business.startTime}">
+                    <f:convertDateTime timeZone="#{i18n.timeZone}" locale="#{i18n.locale}" pattern="yyyy年MM月dd日 HH:mm"/>
+                </h:outputText>
+            </p>
+        </div>
+
+    </o:form>
+
+
+
+</ui:composition>

@@ -194,12 +194,9 @@ public class PaidBusinessHome extends EntityHome<Business, String> {
 
             items = new ArrayList<PaidTableItem>();
 
-            System.out.println("1C:" + getInstance().getEmployeeActions().size());
             for (EmployeeAction ea : getInstance().getEmployeeActions()) {
 
-                System.out.println("2C:" + ea.getEmployeePaid().getPaidBalances().size());
                 for (PaidBalance pb : ea.getEmployeePaid().getPaidBalances()) {
-                    System.out.println("3C:" + pb);
                     items.add(new PaidTableItem(pb));
                     for (EmployeeGiftBalance egf : pb.getEmployeeGiftBalances()) {
                         giftPaidCategories.add(dictionaryProducer.getDictionary(egf.getCategory()));

@@ -74,7 +74,7 @@ public class EmployeeGiftBalance implements java.io.Serializable {
         this.paidBalance = paidBalance;
     }
 
-    @OneToMany(fetch = FetchType.LAZY,orphanRemoval = true,mappedBy = "employeeGiftBalance", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "employeeGiftBalance", cascade = {CascadeType.PERSIST, CascadeType.DETACH})
     public Set<EmployeeGiftMoney> getEmployeeGiftMoneys() {
         return employeeGiftMoneys;
     }

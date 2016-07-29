@@ -14,34 +14,10 @@
         </f:metadata>
     </ui:define>
 
-    <o:form includeViewParams="true">
+    <ui:include src="/system/frame/businessOperation.xhtml">
+        <ui:param name="business" value="#{paidBusinessHome.instance}"/>
+    </ui:include>
 
-    <div class="dashboard-notice" style="margin-top: 20px;">
-        <div class="right">
-            <b:buttonGroup>
-
-                <b:commandButton icon="trash" look="danger" title="删除" value="">
-
-                </b:commandButton>
-            </b:buttonGroup>
-        </div>
-
-        <b:iconAwesome name="bookmark" size="3x"/>
-        <h2>
-            <strong>#{enumHelper.getLabel(paidBusinessHome.instance.type)}</strong>
-            #{paidBusinessHome.instance.id}
-        </h2>
-        <p class="repo-list-description">
-
-        </p>
-        <p class="repo-list-meta">
-            <h:outputText value="#{paidBusinessHome.instance.startTime}">
-                <f:convertDateTime timeZone="#{i18n.timeZone}" locale="#{i18n.locale}" pattern="yyyy年MM月dd日 HH:mm"/>
-            </h:outputText>
-        </p>
-    </div>
-
-    </o:form>
     <ui:include src="/erp/hr/frame/paidTable.xhtml"/>
 
 </ui:composition>
