@@ -2,16 +2,16 @@ package cc.coopersoft.restaurant.hr;
 
 import cc.coopersoft.restaurant.hr.repository.EmployeeBusinessRepository;
 import cc.coopersoft.restaurant.model.*;
-import cc.coopersoft.system.BusinessOperationEvent;
-import cc.coopersoft.system.BusinessOperationPrepareException;
-import cc.coopersoft.system.BusinessRemove;
-import cc.coopersoft.system.BusinessRemovePrepare;
+import cc.coopersoft.system.*;
+import org.apache.deltaspike.jpa.api.transaction.Transactional;
 
 import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import java.util.EnumSet;
+
+import static javax.enterprise.event.TransactionPhase.AFTER_COMPLETION;
 
 /**
  * Created by cooper on 7/25/16.
@@ -41,7 +41,7 @@ public class EmployeeBusinessOperation {
     }
 
     public void employeeBusinessRemovePrepare(@Observes @BusinessRemovePrepare BusinessOperationEvent event) {
-        Business business = employeeBusinessRepository.findBy(event.getBusinessId());
+        Business business = event.getBusiness();
         if (EnumSet.of(Business.Type.EMP_JOIN,Business.Type.EMP_JOB_CHANGE,Business.Type.EMP_LEAVE,Business.Type.EMP_GIFT,Business.Type.EMP_BALANCE).contains(business.getType())){
             for(EmployeeAction ea: business.getEmployeeActions()){
                 System.out.println("search count:" + employeeBusinessRepository.findAfterCount(ea.getValidTime(),ea.getEmployee().getId()));
@@ -53,7 +53,7 @@ public class EmployeeBusinessOperation {
     }
 
     public void removePaidBalance(@Observes @BusinessRemove(Business.Type.EMP_BALANCE) BusinessOperationEvent event) {
-        Business business = employeeBusinessRepository.findBy(event.getBusinessId());
+        Business business = event.getBusiness();
           for (EmployeeAction ea : business.getEmployeeActions()) {
                 for(PaidBalance pb: ea.getEmployeePaid().getPaidBalances()){
                     pb.setEmployeePaid(null);
@@ -65,8 +65,9 @@ public class EmployeeBusinessOperation {
         detachGiftMoney(business);
     }
 
-    public void removeJoin(@Observes @BusinessRemove(Business.Type.EMP_JOIN) BusinessOperationEvent event) {
-        Business business = employeeBusinessRepository.findBy(event.getBusinessId());
+
+    public void removeJoin(@Observes @BusinessRemoveAfter(Business.Type.EMP_JOIN) BusinessOperationEvent event) {
+        Business business = event.getBusiness();
          for (EmployeeAction ea : business.getEmployeeActions()) {
                 entityManager.remove(ea.getEmployee());
             }
@@ -74,7 +75,7 @@ public class EmployeeBusinessOperation {
     }
 
     public void removeJobChange(@Observes @BusinessRemove(Business.Type.EMP_JOB_CHANGE) BusinessOperationEvent event) {
-        Business business = employeeBusinessRepository.findBy(event.getBusinessId());
+        Business business = event.getBusiness();
           for (EmployeeAction ea : business.getEmployeeActions()) {
                 ea.getEmployee().setJobInfo(ea.getJobInfo());
             }
@@ -83,7 +84,7 @@ public class EmployeeBusinessOperation {
     }
 
     public void removeLeave(@Observes @BusinessRemove(Business.Type.EMP_LEAVE) BusinessOperationEvent event) {
-        Business business = employeeBusinessRepository.findBy(event.getBusinessId());
+        Business business = event.getBusiness();
           for (EmployeeAction ea : business.getEmployeeActions()) {
                 ea.getEmployee().setStatus(Employee.Status.NORMAL);
             }

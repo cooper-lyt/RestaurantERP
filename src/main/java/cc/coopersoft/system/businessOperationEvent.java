@@ -1,24 +1,26 @@
 package cc.coopersoft.system;
 
+import cc.coopersoft.restaurant.model.Business;
+
 /**
  * Created by cooper on 7/25/16.
  */
 public class BusinessOperationEvent {
 
-    private String businessId;
+    private Business business;
 
     public BusinessOperationEvent() {
     }
 
-    public BusinessOperationEvent(String businessId) {
-        this.businessId = businessId;
+    public BusinessOperationEvent(Business business) {
+        this.business = business;
     }
 
-    public String getBusinessId() {
-        return businessId;
+    public Business getBusiness() {
+        return business;
     }
 
-    public void setBusinessId(String businessId) {
-        this.businessId = businessId;
+    public void setBusiness(Business business) {
+        this.business = business;
     }
 }

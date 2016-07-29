@@ -32,6 +32,8 @@ public class BusinessOperation {
 
     private abstract class BusinessRemoveBinding extends AnnotationLiteral<BusinessRemove> implements BusinessRemove {}
 
+    private abstract class BusinessRemoveAfterBinding extends AnnotationLiteral<BusinessRemoveAfter> implements BusinessRemoveAfter{}
+
     private String businessId;
 
 
@@ -59,9 +61,9 @@ public class BusinessOperation {
 
     @Transactional
     public void prepareDelete(){
-
+        final Business business = entityManager.find(Business.class,businessId);
         try {
-            businessOperationEvents.select(new AnnotationLiteral<BusinessRemovePrepare>(){}).fire(new BusinessOperationEvent(businessId));
+            businessOperationEvents.select(new AnnotationLiteral<BusinessRemovePrepare>(){}).fire(new BusinessOperationEvent(business));
             canDelete = true;
         }catch (BusinessOperationPrepareException e){
             canDelete = false;
@@ -71,16 +73,27 @@ public class BusinessOperation {
     }
 
     @Transactional
-    public void delete(){
-        logger.info("delete biz 1:" + businessId);
+    public String delete(){
+
+
+        logger.info("delete biz :" + businessId);
         final Business business = entityManager.find(Business.class,businessId);
-        logger.info("delete biz 2:" + businessId);
+
+
+
         businessOperationEvents.select(
                 new BusinessRemoveBinding() {public Business.Type value() { return business.getType(); }}
-        ).fire(new BusinessOperationEvent(businessId));
-        logger.info("delete biz 3:" + businessId);
+        ).fire(new BusinessOperationEvent(business));
+
 
         entityManager.remove(business);
+
+        businessOperationEvents.select(
+                new BusinessRemoveAfterBinding() {public Business.Type value() { return business.getType(); }}
+        ).fire(new BusinessOperationEvent(business));
+
         entityManager.flush();
+
+        return "/system/businessSearch.xhtml";
     }
 }
