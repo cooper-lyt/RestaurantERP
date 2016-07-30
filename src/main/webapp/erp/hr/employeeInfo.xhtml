@@ -3,21 +3,87 @@
 <ui:composition template="/applayout/pageTemplate.xhtml" xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jstl/core"
                 xmlns:b="http://bootsfaces.net/ui"
                 xmlns:pt="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:o="http://omnifaces.org/ui"
                 xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:define name="custom-header">
+
+        <f:metadata>
+            <o:viewParam name="filterType" value="#{employeeOperationList.filterType}" converter="omnifaces.GenericEnumConverter"/>
+            <o:viewParam name="dateFrom" value="#{employeeOperationList.dateFrom}"/>
+            <o:viewParam name="dateTo" value="#{employeeOperationList.dateTo}"/>
+            <o:viewParam name="firstResult" value="#{employeeOperationList.firstResult}"/>
+        </f:metadata>
+
+            </ui:define>
 
     <div style="margin-top: 20px;">
         <ui:include src="/erp/hr/frame/employeeInfo.xhtml">
             <ui:param name="employee" value="#{employeeHome.instance}"/>
         </ui:include>
     </div>
-    
 
-    <b:jumbotron>
-        <h1>coming soon!</h1>
-        <p>此处应该显示员工的操作流水, 此功能正在开发中.</p>
 
-    </b:jumbotron>
+    <div class="details-list">
+
+        <div class="sort-bar">
+
+            <div class="right">
+
+            </div>
+
+            <h3>
+                共找到 <h:outputText value="#{employeeOperationList.resultData.dataCount}"><f:convertNumber groupingUsed="true"/></h:outputText> 条记录
+            </h3>
+
+        </div>
+
+        <ul class="repo-list">
+
+            <c:forEach items="#{employeeOperationList.resultData.resultData}" var="_action">
+            <li class="repo-list-item #{_action.business.type.name()}">
+                <h3 class="repo-list-name">
+                    #{enumHelper.getLabel(_action.business.type)}
+                </h3>
+
+
+                <p class="repo-list-description">
+                    <c:if test="#{_action.business.type.name() eq 'EMP_JOIN'}">
+                        入职到 <span class="important-text">#{_action.jobInfo.office.name}</span> 岗位 <span class="important-text">#{_action.jobInfo.job.name}</span> 级别为 <span class="important-text">#{dictionaryProducer.getDictionaryValue(_action.jobInfo.level)}</span>, 工作编号为 <span class="important-text">#{_action.jobInfo.workCode}</span>
+                    </c:if>
+                    <c:if test="#{_action.business.type.name() eq 'EMP_GIFT'}">
+                          #{dictionaryProducer.getDictionaryValue(_action.employeeGiftMoney.category)} <h:outputText styleClass="important-text" value="#{_action.employeeGiftMoney.money}"><f:convertNumber type="currency" locale="#{i18n.locale}"/></h:outputText>
+                    </c:if>
+
+                    <c:if test="#{_action.business.type.name() eq 'EMP_JOB_CHANGE'}">
+                        由 <span class="important-text">#{_action.jobInfo.office.name}</span> 岗位 <span class="important-text">#{_action.jobInfo.job.name}</span> 级别为 <span class="important-text">#{dictionaryProducer.getDictionaryValue(_action.jobInfo.level)}</span>, 工作编号为 <span class="important-text">#{_action.jobInfo.workCode}</span>
+                        调动到 <span class="important-text">#{_action.newJob.office.name}</span> 岗位 <span class="important-text">#{_action.newJob.job.name}</span> 级别为 <span class="important-text">#{dictionaryProducer.getDictionaryValue(_action.newJob.level)}</span>, 工作编号为 <span class="important-text">#{_action.newJob.workCode}</span>
+                    </c:if>
+
+
+
+                </p>
+
+                <p class="repo-list-meta">
+                    <h:outputText value="#{_action.validTime}">
+                        <f:convertDateTime locale="#{i18n.locale}" timeZone="#{i18n.timeZone}" pattern="yyyy年MM月dd日 HH:mm"/>
+                    </h:outputText>
+                </p>
+
+            </li>
+            </c:forEach>
+        </ul>
+
+        
+        <o:form includeViewParams="true">
+            <ui:include src="/tools/pageNav.xhtml">
+                <ui:param name="pageResultData" value="#{employeeOperationList.resultData}"/>
+            </ui:include>
+        </o:form>
+    </div>
+
 
 </ui:composition>

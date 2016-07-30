@@ -54,4 +54,6 @@ public interface EmployeeRepository extends EntityRepository<Employee,String> {
     @Query(value = "select ea.validTime from EmployeeAction ea where ea.employee.id = ?1 and (ea.business.type = 'EMP_JOIN' or ea.business.type = 'EMP_BALANCE') order by ea.validTime desc" ,max = 1)
     Date findLastPaidTime(String employeeId);
 
+
+
 }

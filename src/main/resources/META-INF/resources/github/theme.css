@@ -898,6 +898,50 @@ table.floatThead-table {
     color: #888;
 }
 
+.sort-bar {
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.sort-bar h3 {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.details-list .repo-list {
+    margin-top: -20px;
+}
+.repo-list {
+    position: relative;
+    padding: 0;
+}
+
+.repo-list-item {
+    position: relative;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    list-style: none;
+    border-bottom: 1px solid #eee;
+}
+
+.repo-list-name {
+    margin: 0 0 8px;
+    font-size: 20px;
+    line-height: 1.2;
+}
+
+.details-list .repo-list-name {
+    font-weight: normal;
+}
+
+.details-list .repo-list-name a, .details-list .code-list .title a {
+    word-wrap: break-word;
+}
+
+.data-page-nav{
+    text-align: center;
+}
 
 /* z-index  */
 
